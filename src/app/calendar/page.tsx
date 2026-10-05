@@ -15,6 +15,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { formatNumber } from '@/lib/math';
+import { getOfflineWorkoutQueue } from '@/lib/storage';
 
 export default function CalendarPage() {
   const [user, setUser] = useState<{
@@ -41,12 +42,22 @@ export default function CalendarPage() {
         setUser(userData.user);
       }
 
+      let remoteWorkouts: any[] = [];
       if (workoutsRes.ok) {
         const wData = await workoutsRes.json();
-        setWorkouts(wData.workouts || []);
+        remoteWorkouts = wData.workouts || [];
       }
+
+      // Merge remote workouts with any offline logged workouts
+      const offline = getOfflineWorkoutQueue();
+      const allWorkouts = [...offline, ...remoteWorkouts];
+      setWorkouts(allWorkouts);
     } catch (err) {
       console.error('Failed to load calendar data:', err);
+      const offline = getOfflineWorkoutQueue();
+      if (offline.length > 0) {
+        setWorkouts(offline);
+      }
     } finally {
       setLoading(false);
     }

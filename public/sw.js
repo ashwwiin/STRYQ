@@ -3,6 +3,7 @@ const CACHE_NAME = 'stryq-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
+  '/exercises.json',
   '/icons/icon-192x192.svg',
   '/icons/icon-512x512.svg',
 ];
