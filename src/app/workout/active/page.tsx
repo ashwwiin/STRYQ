@@ -91,7 +91,7 @@ interface Toast {
 
 /* One shared column layout so the labels and every set row line up */
 const SET_GRID =
-  'grid grid-cols-[28px_1fr_1fr_44px_24px] sm:grid-cols-[28px_96px_1fr_1fr_44px_24px] items-center gap-2 sm:gap-3';
+  'grid grid-cols-[24px_minmax(0,1fr)_minmax(0,1fr)_38px_20px] sm:grid-cols-[28px_96px_minmax(0,1fr)_minmax(0,1fr)_44px_24px] items-center gap-1.5 sm:gap-3';
 
 const TEMPLATES_KEY = 'stryq_templates';
 const REST_KEY = 'stryq_rest_seconds';
@@ -710,9 +710,9 @@ function ActiveWorkoutContent() {
         userName={userName}
       />
 
-      <main className="mx-auto w-full max-w-[1920px] flex-1 space-y-5 px-4 py-5 sm:space-y-6 sm:px-8 sm:py-8 lg:px-12 2xl:px-16">
+      <main className="mx-auto w-full max-w-[1920px] flex-1 space-y-4 px-3 py-4 sm:space-y-6 sm:px-8 sm:py-8 lg:px-12 2xl:px-16 overflow-x-hidden">
         {/* Workout name */}
-        <section>
+        <section className="min-w-0">
           <label htmlFor="workout-title" className="text-xs font-semibold text-zinc-500">
             Workout name
           </label>
@@ -721,11 +721,11 @@ function ActiveWorkoutContent() {
             type="text"
             value={workoutTitle}
             onChange={(e) => setWorkoutTitle(e.target.value)}
-            className="mt-1 w-full border-none bg-transparent p-0 text-2xl font-black uppercase tracking-tight text-zinc-900 placeholder-zinc-300 focus:outline-none focus:ring-0 sm:text-4xl"
+            className="mt-1 w-full border-none bg-transparent p-0 text-xl font-black uppercase tracking-tight text-zinc-900 placeholder-zinc-300 focus:outline-none focus:ring-0 sm:text-4xl"
             placeholder="Name your workout"
           />
 
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
             <div className="inline-flex rounded-full bg-zinc-100 p-1" role="tablist" aria-label="Workout type">
               {(['live', 'past'] as const).map((m) => (
                 <button
@@ -733,7 +733,7 @@ function ActiveWorkoutContent() {
                   role="tab"
                   aria-selected={mode === m}
                   onClick={() => switchMode(m)}
-                  className={`rounded-full px-4 py-2 text-xs font-bold transition sm:px-5 sm:text-[13px] ${
+                  className={`rounded-full px-3 py-1.5 text-xs font-bold transition sm:px-5 sm:py-2 sm:text-[13px] ${
                     mode === m ? 'bg-[#111] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-900'
                   }`}
                 >
@@ -746,23 +746,23 @@ function ActiveWorkoutContent() {
               <button
                 type="button"
                 onClick={handleDiscardWorkout}
-                className="rounded-full border border-zinc-200 px-4 py-2 text-xs font-bold text-zinc-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-600"
+                className="rounded-full border border-zinc-200 px-3 py-1.5 text-xs font-bold text-zinc-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 sm:px-4 sm:py-2"
               >
                 Clear / Start Fresh
               </button>
             )}
           </div>
         </section>
-        <div className="grid items-start gap-5 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-8">
-          <aside className="xl:order-last xl:sticky xl:top-24">
+        <div className="grid items-start gap-4 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-8 min-w-0">
+          <aside className="xl:order-last xl:sticky xl:top-24 min-w-0 w-full">
             <MuscleMap exercises={statExercises} />
           </aside>
 
-          <div className="min-w-0 space-y-5 sm:space-y-6">
+          <div className="min-w-0 space-y-4 sm:space-y-6">
 
 
             {/* Timer + live stats */}
-            <section className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-5">
+            <section className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-12 lg:gap-5 min-w-0">
               {mode === 'live' ? (
                 <div className="rounded-2xl bg-[#111] p-5 text-white sm:p-6 lg:col-span-5 xl:col-span-4">
                   <div className="flex items-center justify-between">
@@ -882,12 +882,12 @@ function ActiveWorkoutContent() {
                 </div>
               )}
 
-              <dl className="grid grid-cols-3 divide-x divide-zinc-200 overflow-hidden rounded-2xl border border-zinc-200 lg:col-span-7 xl:col-span-8">
+              <dl className="grid grid-cols-3 divide-x divide-zinc-200 overflow-hidden rounded-2xl border border-zinc-200 lg:col-span-7 xl:col-span-8 min-w-0">
                 {liveStats.map((s) => (
-                  <div key={s.label} className="flex flex-col justify-center px-4 py-4 sm:px-6">
-                    <dt className="truncate text-xs font-medium text-zinc-500 sm:text-sm">{s.label}</dt>
+                  <div key={s.label} className="flex flex-col justify-center px-2 py-3 sm:px-6 sm:py-4 min-w-0">
+                    <dt className="truncate text-[10px] sm:text-xs md:text-sm font-medium text-zinc-500">{s.label}</dt>
                     <dd
-                      className={`mt-1 truncate font-mono text-lg font-black tracking-tight sm:text-3xl ${s.color}`}
+                      className={`mt-1 truncate font-mono text-base font-black tracking-tight sm:text-2xl md:text-3xl ${s.color}`}
                     >
                       {s.value}
                     </dd>
@@ -991,37 +991,37 @@ function ActiveWorkoutContent() {
                     return (
                       <article
                         key={exercise.id}
-                        className="rounded-2xl border border-zinc-200 bg-white p-4 sm:p-6"
+                        className="rounded-2xl border border-zinc-200 bg-white p-3.5 sm:p-6 min-w-0 overflow-hidden"
                       >
                         {/* Exercise header */}
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex min-w-0 items-center gap-3">
-                            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-50 text-[#FF4A00]">
-                              <Dumbbell className="h-5 w-5" />
+                        <div className="flex items-start justify-between gap-2.5 sm:gap-3">
+                          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+                            <span className="grid h-9 w-9 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-orange-50 text-[#FF4A00]">
+                              <Dumbbell className="h-4 w-4 sm:h-5 sm:w-5" />
                             </span>
                             <div className="min-w-0">
-                              <h3 className="truncate text-base font-black uppercase tracking-tight sm:text-lg">
+                              <h3 className="truncate text-sm font-black uppercase tracking-tight sm:text-lg">
                                 {exercise.name}
                               </h3>
-                              <p className="truncate text-xs font-medium text-zinc-500">
+                              <p className="truncate text-[11px] font-medium text-zinc-500 sm:text-xs">
                                 {exercise.isCompound ? 'Compound' : 'Accessory'} &middot; {doneCount}/
                                 {exercise.sets.length} sets
                                 {exercise.supersetWithNext && (
-                                  <span className="font-bold text-[#FF4A00]"> &middot; Superset with next</span>
+                                  <span className="font-bold text-[#FF4A00]"> &middot; Superset</span>
                                 )}
                               </p>
                             </div>
                           </div>
 
                           {/* Overflow menu */}
-                          <div className="relative">
+                          <div className="relative shrink-0">
                             <button
                               onClick={() => setMenuOpenId(menuOpenId === exercise.id ? null : exercise.id)}
                               aria-label={`Options for ${exercise.name}`}
                               aria-expanded={menuOpenId === exercise.id}
-                              className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
+                              className="grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
                             >
-                              <MoreHorizontal className="h-5 w-5" />
+                              <MoreHorizontal className="h-4 w-4 sm:h-5 sm:w-5" />
                             </button>
 
                             {menuOpenId === exercise.id && (
@@ -1101,7 +1101,7 @@ function ActiveWorkoutContent() {
                         </div>
 
                         {/* Progress bar */}
-                        <div className="mt-4 h-1 overflow-hidden rounded-full bg-zinc-100">
+                        <div className="mt-3 sm:mt-4 h-1 overflow-hidden rounded-full bg-zinc-100">
                           <div
                             className="h-full rounded-full bg-[#FF4A00] transition-all duration-300"
                             style={{ width: `${progress}%` }}
@@ -1118,14 +1118,14 @@ function ActiveWorkoutContent() {
                               updateExercise(exIdx, (ex) => ({ ...ex, note: e.target.value }))
                             }
                             placeholder="Add a note, e.g. left shoulder tight"
-                            className="mt-3 w-full rounded-xl bg-zinc-50 px-3 py-2.5 text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900"
+                            className="mt-3 w-full rounded-xl bg-zinc-50 px-3 py-2 text-xs sm:text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900"
                           />
                         )}
 
                         {/* Sets */}
-                        <div className="mt-4 space-y-2">
+                        <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
                           <div
-                            className={`${SET_GRID} px-2 text-center text-[11px] font-semibold text-zinc-500`}
+                            className={`${SET_GRID} px-1 sm:px-2 text-center text-[10px] sm:text-[11px] font-semibold text-zinc-500`}
                           >
                             <span>Set</span>
                             <span className="hidden text-left sm:block">Last time</span>
@@ -1145,7 +1145,7 @@ function ActiveWorkoutContent() {
                             return (
                               <div
                                 key={setIdx}
-                                className={`rounded-2xl p-2 transition-colors ${set.completed ? 'bg-emerald-50' : 'bg-zinc-50'
+                                className={`rounded-xl sm:rounded-2xl p-1.5 sm:p-2 transition-colors ${set.completed ? 'bg-emerald-50' : 'bg-zinc-50'
                                   }`}
                               >
                                 <div className={SET_GRID}>
@@ -1158,7 +1158,7 @@ function ActiveWorkoutContent() {
                                         ? `Set ${set.setNumber} is a warm-up. Tap to make it a working set`
                                         : `Set ${set.setNumber}. Tap to mark as warm-up`
                                     }
-                                    className={`grid h-7 w-7 place-items-center rounded-full font-mono text-xs font-black transition ${set.isWarmup
+                                    className={`grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-full font-mono text-[11px] sm:text-xs font-black transition ${set.isWarmup
                                       ? 'bg-amber-100 text-amber-700'
                                       : set.completed
                                         ? 'bg-emerald-500 text-white'
@@ -1203,7 +1203,7 @@ function ActiveWorkoutContent() {
                                         focusField(`reps-${exercise.id}-${setIdx}`);
                                       }
                                     }}
-                                    className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 text-center font-mono text-base font-bold text-zinc-900 focus:border-zinc-900 focus:outline-none"
+                                    className="w-full min-w-0 rounded-xl border border-zinc-200 bg-white py-2 sm:py-2.5 px-1 sm:px-2 text-center font-mono text-sm sm:text-base font-bold text-zinc-900 focus:border-zinc-900 focus:outline-none"
                                     placeholder="0"
                                   />
 
@@ -1227,7 +1227,7 @@ function ActiveWorkoutContent() {
                                         (e.target as HTMLInputElement).blur();
                                       }
                                     }}
-                                    className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 text-center font-mono text-base font-bold text-zinc-900 focus:border-zinc-900 focus:outline-none"
+                                    className="w-full min-w-0 rounded-xl border border-zinc-200 bg-white py-2 sm:py-2.5 px-1 sm:px-2 text-center font-mono text-sm sm:text-base font-bold text-zinc-900 focus:border-zinc-900 focus:outline-none"
                                     placeholder="0"
                                   />
 
@@ -1235,21 +1235,21 @@ function ActiveWorkoutContent() {
                                     onClick={() => handleToggleComplete(exIdx, setIdx)}
                                     aria-label={set.completed ? 'Mark set not done' : 'Mark set done'}
                                     aria-pressed={set.completed}
-                                    className={`grid h-11 w-11 place-items-center rounded-full transition active:scale-90 ${set.completed
+                                    className={`grid h-9 w-9 sm:h-11 sm:w-11 place-items-center rounded-full transition active:scale-90 ${set.completed
                                       ? 'bg-emerald-500 text-white'
                                       : 'bg-white text-zinc-400 ring-1 ring-zinc-200 hover:text-zinc-900 hover:ring-zinc-400'
                                       }`}
                                   >
-                                    <Check className="h-5 w-5 stroke-[3]" />
+                                    <Check className="h-4 w-4 sm:h-5 sm:w-5 stroke-[3]" />
                                   </button>
 
                                   {exercise.sets.length > 1 ? (
                                     <button
                                       onClick={() => handleDeleteSet(exIdx, setIdx)}
                                       aria-label={`Delete set ${set.setNumber}`}
-                                      className="grid h-6 w-6 place-items-center text-zinc-300 transition hover:text-red-500"
+                                      className="grid h-5 w-5 sm:h-6 sm:w-6 place-items-center text-zinc-300 transition hover:text-red-500"
                                     >
-                                      <Trash2 className="h-3.5 w-3.5" />
+                                      <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                                     </button>
                                   ) : (
                                     <span />

@@ -412,17 +412,17 @@ export default function MuscleMap({
                 )}
             </button>
 
-            <div className={`${contentClass} px-4 pb-5 sm:px-5`}>
-                <div className="flex gap-2 rounded-2xl bg-zinc-50 px-3 py-5 sm:gap-4 sm:px-5">
+            <div className={`${contentClass} px-3 pb-4 sm:px-5 sm:pb-5`}>
+                <div className="flex gap-2 rounded-2xl bg-zinc-50 px-2 py-4 sm:gap-4 sm:px-5 sm:py-5 min-w-0">
                     <Figure view="front" scores={scores} active={active} onHover={setActive} onSelect={toggle} />
                     <Figure view="back" scores={scores} active={active} onHover={setActive} onSelect={toggle} />
                 </div>
 
                 {/* Selected muscle */}
                 {active && (
-                    <div className="mt-3 rounded-xl border border-zinc-200 px-3.5 py-3">
+                    <div className="mt-3 rounded-xl border border-zinc-200 px-3 py-2.5 sm:px-3.5 sm:py-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-black uppercase tracking-tight">{MUSCLE_LABELS[active]}</span>
+                            <span className="text-xs sm:text-sm font-black uppercase tracking-tight">{MUSCLE_LABELS[active]}</span>
                             <span className="font-mono text-xs font-black text-[#FF4A00]">
                                 {scores[active] ? `${fmt(scores[active] || 0)} sets` : 'Not worked'}
                             </span>
@@ -438,7 +438,7 @@ export default function MuscleMap({
                 {/* Ranking */}
                 {ranked.length > 0 && (
                     <div className="mt-4">
-                        <ul className="space-y-2.5">
+                        <ul className="space-y-2 sm:space-y-2.5">
                             {rows.map((m) => {
                                 const v = scores[m] || 0;
                                 return (
@@ -446,16 +446,16 @@ export default function MuscleMap({
                                         <button
                                             type="button"
                                             onClick={() => toggle(m)}
-                                            className="flex w-full items-center gap-3 text-left text-xs"
+                                            className="flex w-full items-center gap-2 sm:gap-3 text-left text-xs"
                                         >
-                                            <span className="w-20 shrink-0 truncate font-semibold text-zinc-800">{MUSCLE_LABELS[m]}</span>
+                                            <span className="w-16 sm:w-20 shrink-0 truncate font-semibold text-zinc-800">{MUSCLE_LABELS[m]}</span>
                                             <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-100">
                                                 <span
                                                     className="block h-full rounded-full transition-all duration-300"
                                                     style={{ width: `${Math.max(8, (v / top) * 100)}%`, backgroundColor: getHeatColor(v) }}
                                                 />
                                             </span>
-                                            <span className="w-14 shrink-0 text-right font-mono font-bold text-zinc-900">
+                                            <span className="w-12 sm:w-14 shrink-0 text-right font-mono font-bold text-zinc-900 text-[11px] sm:text-xs">
                                                 {fmt(v)} {v === 1 ? 'set' : 'sets'}
                                             </span>
                                         </button>

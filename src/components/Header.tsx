@@ -59,9 +59,9 @@ export default function Header({
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-zinc-200/70">
-      <div className="mx-auto relative flex h-16 w-full max-w-[1920px] items-center justify-between gap-4 px-4 sm:px-8 lg:px-12 2xl:px-16">
+      <div className="mx-auto relative flex h-16 w-full max-w-[1920px] items-center justify-between gap-1.5 sm:gap-4 px-3 sm:px-8 lg:px-12 2xl:px-16">
         {/* Left: logo */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 shrink-0">
           <Link href="/" className="flex items-center" aria-label="STRYQ home">
             <Logo size="md" variant="dark" />
           </Link>
@@ -70,7 +70,7 @@ export default function Header({
         {/* Center: segmented pill nav */}
         <nav
           aria-label="Main"
-          className="flex items-center gap-1 rounded-full bg-zinc-100 p-1 md:absolute md:left-1/2 md:-translate-x-1/2"
+          className="flex items-center gap-0.5 sm:gap-1 rounded-full bg-zinc-100 p-0.5 sm:p-1 md:absolute md:left-1/2 md:-translate-x-1/2"
         >
           {NAV.map((item) => {
             const active = isActive(item.href);
@@ -81,7 +81,7 @@ export default function Header({
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 aria-label={item.label}
-                className={`flex items-center gap-2 rounded-full px-3 py-2 text-[13px] font-bold transition-all sm:px-5 ${active
+                className={`flex items-center gap-1.5 sm:gap-2 rounded-full px-2.5 py-1.5 text-xs font-bold transition-all sm:px-5 sm:py-2 sm:text-[13px] ${active
                   ? 'bg-[#111] text-white shadow-sm'
                   : 'text-zinc-600 hover:bg-white hover:text-zinc-900'
                   }`}
@@ -92,22 +92,22 @@ export default function Header({
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-[#FF4A00]" />
                   </span>
                 ) : (
-                  <Icon className="h-3.5 w-3.5" />
+                  <Icon className="h-3.5 w-3.5 shrink-0" />
                 )}
-                <span className={active ? '' : 'hidden sm:inline'}>{item.label}</span>
+                <span className={active ? 'inline' : 'hidden sm:inline'}>{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
         {/* Right: profile */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setDropdownOpen((o) => !o)}
               aria-haspopup="menu"
               aria-expanded={dropdownOpen}
-              className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white p-1 transition hover:border-zinc-400 sm:pr-3"
+              className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-zinc-200 bg-white p-1 transition hover:border-zinc-400 sm:pr-3"
             >
               <span className="relative grid h-8 w-8 place-items-center rounded-full bg-[#111] text-xs font-black text-white">
                 {userName.charAt(0).toUpperCase()}
