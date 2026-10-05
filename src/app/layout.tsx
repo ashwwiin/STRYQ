@@ -4,7 +4,7 @@ import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 
 export const metadata: Metadata = {
   title: 'STRYQ. — High Velocity Strength Tracking',
-  description: 'Clean strength tracking Progressive Web App with 1RM computation and direct Strava / Apple Health sync.',
+  description: 'Clean strength tracking Progressive Web App with interactive workout calendar, 1RM computation, and progression logs.',
   manifest: '/manifest.json',
   icons: {
     icon: '/icons/icon-192x192.svg',

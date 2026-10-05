@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { formatDuration, formatNumber } from '@/lib/math';
-import { Trophy, Activity, Check, Heart, Dumbbell, Zap, ArrowRight, X } from 'lucide-react';
+import { Trophy, Dumbbell, Zap, ArrowRight, X, CheckCircle2 } from 'lucide-react';
 
 interface FinishWorkoutModalProps {
   isOpen: boolean;
@@ -25,8 +25,8 @@ interface FinishWorkoutModalProps {
       }[];
     }[];
   };
-  onSaveAndSync: (postToStrava: boolean) => Promise<void>;
-  stravaConnected: boolean;
+  onSaveAndSync: (postToStrava?: boolean) => Promise<void>;
+  stravaConnected?: boolean;
 }
 
 export default function FinishWorkoutModal({
@@ -34,13 +34,13 @@ export default function FinishWorkoutModal({
   onClose,
   workoutData,
   onSaveAndSync,
-  stravaConnected = false,
 }: FinishWorkoutModalProps) {
   const [submitting, setSubmitting] = useState(false);
-  const [sessionTitle, setSessionTitle] = useState(workoutData.title || 'STRYQ. Strength Session');
+  const [sessionTitle, setSessionTitle] = useState(workoutData.title || 'STRYQ Strength Session');
 
   useEffect(() => {
     if (isOpen) {
+      setSessionTitle(workoutData.title || 'STRYQ Strength Session');
       try {
         confetti({
           particleCount: 80,
@@ -50,7 +50,7 @@ export default function FinishWorkoutModal({
         });
       } catch {}
     }
-  }, [isOpen]);
+  }, [isOpen, workoutData.title]);
 
   if (!isOpen) return null;
 
@@ -68,11 +68,11 @@ export default function FinishWorkoutModal({
     }
   });
 
-  const handleFinish = async (postToStrava: boolean) => {
+  const handleFinish = async () => {
     setSubmitting(true);
     try {
       workoutData.title = sessionTitle;
-      await onSaveAndSync(postToStrava);
+      await onSaveAndSync(false);
     } catch (err) {
       console.error(err);
     } finally {
@@ -91,7 +91,7 @@ export default function FinishWorkoutModal({
             </div>
             <div>
               <h3 className="font-black text-xl text-zinc-900 tracking-tight">Session Complete!</h3>
-              <p className="text-xs text-zinc-500">Benchmark breakdown & sync</p>
+              <p className="text-xs text-zinc-500">Benchmark breakdown &amp; saving to log</p>
             </div>
           </div>
           <button
@@ -164,32 +164,16 @@ export default function FinishWorkoutModal({
           </div>
         )}
 
-        {/* Apple Health Ring Closure Notice */}
-        <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs text-zinc-700">
-          <Heart className="w-5 h-5 text-red-500 fill-red-500/20 shrink-0" />
-          <span>
-            Posting to Strava automatically credits ~<strong>{workoutData.caloriesBurned} active kcal</strong> and closes Apple Health Move Rings.
-          </span>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="space-y-2 pt-2">
+        {/* Action Button */}
+        <div className="pt-2">
           <button
-            onClick={() => handleFinish(true)}
+            onClick={handleFinish}
             disabled={submitting}
-            className="w-full py-3.5 px-4 rounded-2xl bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-600/25 active:scale-98 transition-all disabled:opacity-50"
+            className="w-full py-4 px-4 rounded-2xl bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-600/25 active:scale-98 transition-all disabled:opacity-50"
           >
-            <Activity className="w-5 h-5" />
-            <span>{submitting ? 'Syncing...' : 'Finish & Post to Strava'}</span>
+            <CheckCircle2 className="w-5 h-5" />
+            <span>{submitting ? 'Saving Workout...' : 'Save & Log Workout'}</span>
             <ArrowRight className="w-4 h-4 stroke-[3]" />
-          </button>
-
-          <button
-            onClick={() => handleFinish(false)}
-            disabled={submitting}
-            className="w-full py-2.5 px-4 rounded-2xl bg-zinc-100 hover:bg-zinc-200 text-zinc-600 font-bold text-xs transition-colors"
-          >
-            Save to STRYQ only (No Strava Sync)
           </button>
         </div>
       </div>

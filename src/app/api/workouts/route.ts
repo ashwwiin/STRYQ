@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, durationSeconds, exercises, userWeightKg, syncedToStrava, stravaActivityId } = body;
+    const { title, durationSeconds, exercises, userWeightKg, createdAt } = body;
 
     const formattedExercises = (exercises || []).map((ex: any) => ({
       name: ex.name,
@@ -57,16 +57,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Database connection unavailable' }, { status: 503 });
     }
 
-    const savedWorkout = await Workout.create({
+    const workoutDoc: any = {
       userId: session.userId,
       title: title || 'STRYQ Strength Session',
       durationSeconds: durationSeconds || 0,
       totalVolumeKg: totalVolume,
       caloriesBurned,
       exercises: formattedExercises,
-      syncedToStrava: Boolean(syncedToStrava),
-      stravaActivityId: stravaActivityId || undefined,
-    });
+      syncedToStrava: false,
+    };
+
+    if (createdAt) {
+      workoutDoc.createdAt = new Date(createdAt);
+    }
+
+    const savedWorkout = await Workout.create(workoutDoc);
 
     return NextResponse.json({
       success: true,

@@ -110,7 +110,7 @@ export default function WeightQuickEditModal({
           <div className="flex items-start gap-2 p-3 bg-orange-50/60 rounded-xl border border-orange-200/60 text-xs text-zinc-600">
             <Info className="w-4 h-4 text-[#FF4A00] shrink-0 mt-0.5" />
             <span>
-              Accurate body weight calibrates exact Metabolic Equivalent of Task (MET) calorie burn for Strava and Apple Health.
+              Accurate body weight calibrates exact Metabolic Equivalent of Task (MET) calorie expenditure and relative strength.
             </span>
           </div>
 

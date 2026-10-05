@@ -122,12 +122,13 @@ function ActiveWorkoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateId = searchParams.get('templateId');
+  const urlMode = searchParams.get('mode');
+  const urlDate = searchParams.get('date');
 
   const [workoutTitle, setWorkoutTitle] = useState('Strength Workout');
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false); // starts only when the user taps Start
   const [userWeightKg, setUserWeightKg] = useState(75);
-  const [stravaConnected, setStravaConnected] = useState(false);
   const [userName, setUserName] = useState('Athlete');
 
   const [exercises, setExercises] = useState<ActiveExercise[]>([]);
@@ -145,8 +146,8 @@ function ActiveWorkoutContent() {
   const [autoRest, setAutoRest] = useState(true);
 
   // Live workout vs. adding a workout after the fact
-  const [mode, setMode] = useState<'live' | 'past'>('live');
-  const [pastDate, setPastDate] = useState('');
+  const [mode, setMode] = useState<'live' | 'past'>(urlMode === 'past' ? 'past' : 'live');
+  const [pastDate, setPastDate] = useState(urlDate || '');
   const [pastTime, setPastTime] = useState('');
   const [pastMinutes, setPastMinutes] = useState<number | null>(null); // null = use the estimate
 
@@ -202,7 +203,6 @@ function ActiveWorkoutContent() {
       .then((data) => {
         if (data?.user) {
           setUserWeightKg(data.user.weightKg || 75);
-          setStravaConnected(Boolean(data.user.stravaConnected));
           setUserName(data.user.name || 'Athlete');
         }
       })
@@ -235,8 +235,8 @@ function ActiveWorkoutContent() {
       })
       .catch(() => { });
 
-    // Only restore draft if templateId is not present
-    if (!templateId) {
+    // Only restore draft if templateId and custom date are not present
+    if (!templateId && !urlDate) {
       const draft = loadActiveWorkoutDraft();
       if (draft && draft.exercises && draft.exercises.length > 0) {
         setWorkoutTitle(draft.title || 'Strength Workout');
@@ -246,13 +246,21 @@ function ActiveWorkoutContent() {
     }
 
     const now = new Date();
-    setPastDate(formatLocalDate(now));
+    if (urlDate) {
+      setPastDate(urlDate);
+    } else {
+      setPastDate(formatLocalDate(now));
+    }
     setPastTime(formatLocalTime(new Date(now.getTime() - 60 * 60 * 1000))); // default: an hour ago
+
+    if (urlMode === 'past') {
+      setMode('past');
+    }
 
     setRestSeconds(readLocal<number>(REST_KEY, 90));
     setAutoRest(readLocal<boolean>(AUTO_REST_KEY, true));
     fetchTemplates();
-  }, [router, fetchTemplates, templateId]);
+  }, [router, fetchTemplates, templateId, urlDate, urlMode]);
 
   /* ───── Accurate timer: computed from the clock, not by adding 1 each tick ───── */
   useEffect(() => {
@@ -608,7 +616,7 @@ function ActiveWorkoutContent() {
     }
   };
 
-  const handleSaveAndSync = async (postToStrava: boolean) => {
+  const handleSaveAndSync = async () => {
     const finalWorkoutPayload = {
       title: workoutTitle,
       durationSeconds,
@@ -626,29 +634,18 @@ function ActiveWorkoutContent() {
     };
 
     try {
-      const res = await fetch('/api/workouts', {
+      await fetch('/api/workouts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalWorkoutPayload),
       });
 
-      const savedData = await res.json();
-      const workoutId = savedData.workout?._id;
-
-      if (postToStrava) {
-        await fetch('/api/strava/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ workoutId, workoutData: finalWorkoutPayload }),
-        });
-      }
-
       clearActiveWorkoutDraft();
-      router.push('/dashboard');
+      router.push('/calendar');
     } catch (err) {
       console.error('Failed to complete workout:', err);
       clearActiveWorkoutDraft();
-      router.push('/dashboard');
+      router.push('/calendar');
     }
   };
 
@@ -676,7 +673,6 @@ function ActiveWorkoutContent() {
       <Header
         userWeight={userWeightKg}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
-        stravaConnected={stravaConnected}
         userName={userName}
       />
 
@@ -1302,20 +1298,11 @@ function ActiveWorkoutContent() {
 
       {/* Bottom action bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200/70 bg-white/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center gap-3 px-4 py-3 sm:px-8 lg:px-12 2xl:px-16">
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center justify-center gap-2 rounded-full bg-zinc-100 px-5 py-3.5 text-xs font-black uppercase tracking-wider text-zinc-900 transition hover:bg-zinc-200 active:scale-95"
-          >
-            <Plus className="h-4 w-4 text-[#FF4A00]" />
-            <span className="hidden sm:inline">Add exercise</span>
-            <span className="sm:hidden">Add</span>
-          </button>
-
+        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-end px-4 py-3 sm:px-8 lg:px-12 2xl:px-16">
           <button
             onClick={() => setIsFinishModalOpen(true)}
             disabled={mode === 'past' && (pastInFuture || exercises.length === 0)}
-            className="flex-1 rounded-full bg-[#FF4A00] px-8 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-orange-600/25 transition hover:bg-[#e04000] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 sm:ml-auto sm:max-w-sm"
+            className="w-full sm:w-auto sm:min-w-[280px] rounded-full bg-[#FF4A00] px-8 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-orange-600/25 transition hover:bg-[#e04000] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
           >
             {mode === 'past' ? 'Save workout' : 'Finish workout'}
           </button>
@@ -1357,7 +1344,6 @@ function ActiveWorkoutContent() {
           exercises,
         }}
         onSaveAndSync={handleSaveAndSync}
-        stravaConnected={stravaConnected}
       />
 
       <SaveAsTemplateModal

@@ -3,29 +3,24 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
-import AppleHealthGuideModal from '@/components/AppleHealthGuideModal';
 import WeightQuickEditModal from '@/components/WeightQuickEditModal';
 import {
   User,
-  Activity,
-  Heart,
   Weight,
-  Smartphone,
   CheckCircle2,
-  ExternalLink,
   LogOut,
   Save,
-  Zap,
+  Dumbbell,
+  Shield,
 } from 'lucide-react';
 
 export default function SettingsPage() {
   const router = useRouter();
-  const [user, setUser] = useState<{ id: string; name: string; email: string; weightKg: number; stravaConnected: boolean } | null>(null);
+  const [user, setUser] = useState<{ id: string; name: string; email: string; weightKg: number } | null>(null);
   const [name, setName] = useState('');
   const [weightKg, setWeightKg] = useState(75);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [isHealthGuideOpen, setIsHealthGuideOpen] = useState(false);
   const [isWeightModalOpen, setIsWeightModalOpen] = useState(false);
 
   useEffect(() => {
@@ -71,18 +66,6 @@ export default function SettingsPage() {
     }
   };
 
-  const handleConnectStrava = async () => {
-    try {
-      const res = await fetch('/api/strava/auth-url');
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch {
-      setUser((prev) => (prev ? { ...prev, stravaConnected: true } : null));
-    }
-  };
-
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
@@ -97,7 +80,6 @@ export default function SettingsPage() {
       <Header
         userWeight={user?.weightKg || 75}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
-        stravaConnected={user?.stravaConnected || false}
         userName={user?.name || 'Lifter'}
       />
 
@@ -105,7 +87,7 @@ export default function SettingsPage() {
         <div>
           <h1 className="text-3xl font-black text-zinc-900 tracking-tight uppercase">Settings</h1>
           <p className="text-xs sm:text-sm text-zinc-500 mt-1 font-medium">
-            Manage your body weight calibration, Strava authorization, and HealthKit bridge.
+            Manage your body weight calibration and athlete profile preferences.
           </p>
         </div>
 
@@ -117,7 +99,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <h2 className="font-bold text-lg text-zinc-900 uppercase">Athlete Calibration</h2>
-              <p className="text-xs text-zinc-500 font-medium">Body weight calibrates active MET calorie expenditure</p>
+              <p className="text-xs text-zinc-500 font-medium">Body weight calibrates active MET calorie expenditure and relative strength</p>
             </div>
           </div>
 
@@ -186,66 +168,21 @@ export default function SettingsPage() {
           </form>
         </div>
 
-        {/* Strava Integration Card */}
-        <div className="nike-card p-8 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-[#FC4C02]/10 text-[#FC4C02]">
-                <Activity className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="font-bold text-lg text-zinc-900 uppercase">Strava REST Integration</h2>
-                <p className="text-xs text-zinc-500 font-medium">Official OAuth 2.0 connection</p>
-              </div>
-            </div>
-
-            {user?.stravaConnected ? (
-              <span className="px-4 py-1 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 uppercase">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Connected
-              </span>
-            ) : (
-              <span className="px-4 py-1 rounded-full text-xs font-black bg-zinc-100 text-zinc-500 uppercase">
-                Disconnected
-              </span>
-            )}
-          </div>
-
-          <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-medium">
-            Completed workouts are pushed as &ldquo;WeightTraining&rdquo; activities to Strava with complete breakdown descriptions (tonnage, 1RMs, and MET active calories).
-          </p>
-
-          <button
-            onClick={handleConnectStrava}
-            className="w-full py-3.5 px-6 rounded-full bg-[#FC4C02] hover:bg-[#e04402] text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md shadow-orange-600/20 active:scale-[0.99] transition-all"
-          >
-            <Activity className="w-5 h-5" />
-            <span>{user?.stravaConnected ? 'Reconnect Strava Account' : 'Connect Strava Account'}</span>
-          </button>
-        </div>
-
-        {/* Apple Health Setup */}
+        {/* Database Storage Information Card */}
         <div className="nike-card p-8 space-y-4">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-red-50 text-red-500">
-              <Heart className="w-5 h-5 fill-red-500/20" />
+            <div className="p-3 rounded-2xl bg-zinc-100 text-zinc-800">
+              <Shield className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="font-bold text-lg text-zinc-900 uppercase">Apple HealthKit Ring Closure</h2>
-              <p className="text-xs text-zinc-500 font-medium">Background sync through Strava iOS</p>
+              <h2 className="font-bold text-lg text-zinc-900 uppercase">Cloud Workout Storage</h2>
+              <p className="text-xs text-zinc-500 font-medium">Secure MongoDB Atlas Database</p>
             </div>
           </div>
 
           <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-medium">
-            Configure Strava on your iPhone to write directly into Apple HealthKit, auto-closing Move and Exercise rings.
+            All your workout logs, exercise sets, weights, reps, volume calculations, and custom split templates are persisted safely in the cloud with zero paywalls.
           </p>
-
-          <button
-            onClick={() => setIsHealthGuideOpen(true)}
-            className="w-full py-3 px-6 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-[0.99]"
-          >
-            <span>View 3-Step Setup Guide</span>
-            <ExternalLink className="w-4 h-4 text-zinc-500" />
-          </button>
         </div>
 
         {/* Log Out */}
@@ -259,11 +196,6 @@ export default function SettingsPage() {
           </button>
         </div>
       </main>
-
-      <AppleHealthGuideModal
-        isOpen={isHealthGuideOpen}
-        onClose={() => setIsHealthGuideOpen(false)}
-      />
 
       <WeightQuickEditModal
         isOpen={isWeightModalOpen}

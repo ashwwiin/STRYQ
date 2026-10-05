@@ -6,14 +6,11 @@ import { Activity, Dumbbell, CheckCircle2, ChevronDown, Trash2 } from 'lucide-re
 
 interface WorkoutCardProps {
   workout: any;
-  onSyncStrava?: (workout: any) => Promise<void>;
   onDelete?: (workoutId: string) => Promise<void>;
 }
 
-export default function WorkoutCard({ workout, onSyncStrava, onDelete }: WorkoutCardProps) {
+export default function WorkoutCard({ workout, onDelete }: WorkoutCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const [syncing, setSyncing] = useState(false);
-  const [isSynced, setIsSynced] = useState(!!workout.syncedToStrava);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const formattedDate = new Date(workout.createdAt || Date.now()).toLocaleDateString('en-US', {
@@ -24,20 +21,6 @@ export default function WorkoutCard({ workout, onSyncStrava, onDelete }: Workout
 
   const exerciseCount = workout.exercises?.length || 0;
 
-  const handleSync = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!onSyncStrava || isSynced) return;
-    setSyncing(true);
-    try {
-      await onSyncStrava(workout);
-      setIsSynced(true);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSyncing(false);
-    }
-  };
-
   const metrics = [
     { label: 'Duration', value: formatDuration(workout.durationSeconds || 0), accent: false },
     { label: 'Weight lifted', value: `${formatNumber(workout.totalVolumeKg || 0)} kg`, accent: true },
@@ -46,7 +29,7 @@ export default function WorkoutCard({ workout, onSyncStrava, onDelete }: Workout
 
   return (
     <article className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-5 transition-shadow hover:shadow-lg sm:p-6">
-      {/* Top row: date, title, sync status */}
+      {/* Top row: date, title, icon */}
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs font-semibold text-zinc-500">{formattedDate}</p>
@@ -55,21 +38,10 @@ export default function WorkoutCard({ workout, onSyncStrava, onDelete }: Workout
           </h4>
         </div>
 
-        {isSynced ? (
-          <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700">
-            <CheckCircle2 className="h-3.5 w-3.5" />
-            Synced
-          </span>
-        ) : (
-          <button
-            onClick={handleSync}
-            disabled={syncing}
-            className="flex shrink-0 items-center gap-1.5 rounded-full bg-[#FF4A00] px-3.5 py-1.5 text-xs font-bold text-white transition hover:bg-[#e04000] active:scale-95 disabled:opacity-50"
-          >
-            <Activity className="h-3.5 w-3.5" />
-            {syncing ? 'Syncing…' : 'Sync to Strava'}
-          </button>
-        )}
+        <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1.5 text-xs font-black text-[#FF4A00] border border-orange-100 uppercase">
+          <Dumbbell className="h-3.5 w-3.5" />
+          Logged
+        </span>
       </div>
 
       {/* Metrics: divided columns, no extra box */}

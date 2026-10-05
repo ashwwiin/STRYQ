@@ -4,24 +4,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
-import { Weight, Settings, LogOut, LayoutGrid, Dumbbell, ChevronDown } from 'lucide-react';
+import { Weight, Settings, LogOut, LayoutGrid, Dumbbell, Calendar, ChevronDown } from 'lucide-react';
 
 interface HeaderProps {
   userWeight?: number;
   onOpenWeightModal?: () => void;
-  stravaConnected?: boolean;
   userName?: string;
+  stravaConnected?: boolean;
 }
 
 const NAV = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
+  { href: '/calendar', label: 'Calendar', icon: Calendar },
   { href: '/workout/active', label: 'Workout', icon: Dumbbell, live: true },
 ];
 
 export default function Header({
   userWeight = 75,
   onOpenWeightModal,
-  stravaConnected = false,
   userName = 'Athlete',
 }: HeaderProps) {
   const router = useRouter();
@@ -111,10 +111,6 @@ export default function Header({
             >
               <span className="relative grid h-8 w-8 place-items-center rounded-full bg-[#111] text-xs font-black text-white">
                 {userName.charAt(0).toUpperCase()}
-                <span
-                  className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white ${stravaConnected ? 'bg-emerald-500' : 'bg-zinc-300'
-                    }`}
-                />
               </span>
               <span className="hidden max-w-[110px] truncate text-xs font-bold text-zinc-900 lg:inline">
                 {userName}
@@ -136,13 +132,7 @@ export default function Header({
                   </span>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-bold text-zinc-900">{userName}</p>
-                    <p className="flex items-center gap-1.5 text-xs text-zinc-500">
-                      <span
-                        className={`h-1.5 w-1.5 rounded-full ${stravaConnected ? 'bg-emerald-500' : 'bg-zinc-300'
-                          }`}
-                      />
-                      {stravaConnected ? 'Strava connected' : 'Strava not connected'}
-                    </p>
+                    <p className="text-xs text-zinc-500">STRYQ Lifter</p>
                   </div>
                 </div>
 
@@ -166,7 +156,7 @@ export default function Header({
                   className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
                 >
                   <Settings className="h-4 w-4 text-zinc-400" />
-                  Settings &amp; sync
+                  Settings &amp; Profile
                 </Link>
 
                 <button

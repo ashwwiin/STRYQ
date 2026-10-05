@@ -1,5 +1,5 @@
 // STRYQ Service Worker for Offline Basement Gym Resilience
-const CACHE_NAME = 'stryq-cache-v1';
+const CACHE_NAME = 'stryq-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -33,32 +33,31 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
 
-  // Exclude API requests from SW cache (they are handled with client fallback / IndexedDB)
-  if (url.pathname.startsWith('/api/')) {
+  // Exclude API requests and HMR
+  if (url.pathname.startsWith('/api/') || url.pathname.includes('webpack-hmr')) {
     return;
   }
 
+  // Network-first strategy so fresh Next.js CSS/JS chunks and pages are always prioritized
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request)
-        .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-          }
-          return networkResponse;
-        })
-        .catch(() => {
-          // If offline and not in cache, fallback to root if navigating
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
           if (event.request.mode === 'navigate') {
             return caches.match('/');
           }
-          return cachedResponse;
+          return new Response('Offline', { status: 503, statusText: 'Offline' });
         });
-
-      return cachedResponse || fetchPromise;
-    })
+      })
   );
 });

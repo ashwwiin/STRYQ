@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '@/components/Logo';
-import { Activity, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Dumbbell, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -66,18 +66,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleStravaAuth = async () => {
-    try {
-      const res = await fetch('/api/strava/auth-url');
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch {
-      router.push('/dashboard?strava=connected');
-    }
-  };
-
   return (
     <div className="min-h-screen w-full bg-white text-[#111111] flex flex-col justify-between selection:bg-[#FF4A00] selection:text-white">
       {/* Top Navbar */}
@@ -85,8 +73,6 @@ export default function LoginPage() {
         <Link href="/" className="flex items-center">
           <Logo size="md" variant="dark" />
         </Link>
-
-
       </header>
 
       {/* Main Content Area */}
@@ -101,21 +87,21 @@ export default function LoginPage() {
               className="object-cover object-center"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-10 text-white">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-10 text-white">
               <span className="text-xs font-black uppercase tracking-widest text-[#FF4A00] mb-2">
-                Nike-Grade Engineering
+                STRYQ Training Club
               </span>
               <h2 className="text-4xl font-black tracking-tight text-white leading-none uppercase">
-                Lift Heavy. <br />
-                Close Rings.
+                Heavy Sets. <br />
+                Complete Logs.
               </h2>
               <p className="text-sm text-zinc-300 mt-2 max-w-md font-medium">
-                Automatic 1RM calculations, active MET calories, and background Apple Health sync via Strava.
+                Accurate 1RM calculations, training calendar breakdown, active MET calories, and split routines with zero paywalls.
               </p>
             </div>
           </div>
 
-          {/* Right Column: Clean Nike Style Auth */}
+          {/* Right Column: Clean Auth */}
           <div className="lg:col-span-5 w-full max-w-md mx-auto space-y-6">
             <div className="space-y-2">
               <h1 className="text-3xl font-black text-zinc-900 tracking-tight uppercase">
@@ -123,24 +109,9 @@ export default function LoginPage() {
               </h1>
               <p className="text-sm text-zinc-500 font-medium">
                 {tab === 'login'
-                  ? 'Sign in to access your workout history and benchmarks.'
-                  : 'Start tracking your strength training with zero paywalls.'}
+                  ? 'Sign in to access your workout calendar, history, and routines.'
+                  : 'Start logging workouts with full set-by-set detail.'}
               </p>
-            </div>
-
-            {/* Strava One-Tap */}
-            <button
-              onClick={handleStravaAuth}
-              className="w-full py-4 px-6 rounded-full bg-[#FC4C02] hover:bg-[#e04402] text-white font-black text-sm flex items-center justify-center gap-2.5 shadow-md shadow-orange-600/20 active:scale-[0.98] transition-all uppercase tracking-wide"
-            >
-              <Activity className="w-5 h-5" />
-              <span>Continue with Strava</span>
-            </button>
-
-            <div className="flex items-center gap-4">
-              <div className="flex-1 h-[1px] bg-zinc-200" />
-              <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">or email</span>
-              <div className="flex-1 h-[1px] bg-zinc-200" />
             </div>
 
             {/* Tab Pill Switcher */}
@@ -259,7 +230,7 @@ export default function LoginPage() {
 
       {/* Footer */}
       <footer className="w-full px-6 sm:px-12 py-6 border-t border-zinc-100 text-center text-xs text-zinc-400 font-bold uppercase tracking-wider">
-        STRYQ. &bull; Engineered for Lifters &bull; Apple Health & Strava Sync
+        STRYQ. &bull; Engineered for Strength Athletes &bull; Workout Calendar &amp; Progression
       </footer>
     </div>
   );
