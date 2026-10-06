@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import WeightQuickEditModal from '@/components/WeightQuickEditModal';
+import { getCachedUser, saveCachedUser, clearCachedUser } from '@/lib/storage';
 import {
   User,
   Weight,
@@ -16,9 +17,10 @@ import {
 
 export default function SettingsPage() {
   const router = useRouter();
-  const [user, setUser] = useState<{ id: string; name: string; email: string; weightKg: number } | null>(null);
-  const [name, setName] = useState('');
-  const [weightKg, setWeightKg] = useState(75);
+  const [cached] = useState(() => getCachedUser());
+  const [user, setUser] = useState<{ id?: string; name: string; email?: string; weightKg: number } | null>(cached);
+  const [name, setName] = useState(cached?.name || '');
+  const [weightKg, setWeightKg] = useState(cached?.weightKg || 75);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isWeightModalOpen, setIsWeightModalOpen] = useState(false);
@@ -27,7 +29,8 @@ export default function SettingsPage() {
     fetch('/api/auth/me')
       .then((res) => {
         if (!res.ok) {
-          router.push('/login');
+          clearCachedUser();
+          window.location.href = '/login';
           return null;
         }
         return res.json();
@@ -37,6 +40,7 @@ export default function SettingsPage() {
           setUser(data.user);
           setName(data.user.name || '');
           setWeightKg(data.user.weightKg || 75);
+          saveCachedUser(data.user);
         }
       })
       .catch(() => {});
@@ -55,7 +59,9 @@ export default function SettingsPage() {
       });
 
       if (res.ok) {
-        setUser((prev) => (prev ? { ...prev, name, weightKg: Number(weightKg) || 75 } : null));
+        const updated = { ...(user || {}), name, weightKg: Number(weightKg) || 75 };
+        setUser(updated as any);
+        saveCachedUser(updated as any);
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 3000);
       }
@@ -68,19 +74,19 @@ export default function SettingsPage() {
 
   const handleLogout = async () => {
     try {
+      clearCachedUser();
       await fetch('/api/auth/logout', { method: 'POST' });
-      router.push('/login');
-    } catch {
-      router.push('/login');
+    } finally {
+      window.location.href = '/login';
     }
   };
 
   return (
     <div className="min-h-screen w-full bg-white text-[#111111] flex flex-col pb-24 selection:bg-[#FF4A00] selection:text-white">
       <Header
-        userWeight={user?.weightKg || 75}
+        userWeight={user?.weightKg}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
-        userName={user?.name || 'Lifter'}
+        userName={user?.name}
       />
 
       <main className="flex-1 w-full max-w-4xl mx-auto px-6 sm:px-10 py-10 space-y-8">
@@ -110,6 +116,7 @@ export default function SettingsPage() {
                   Athlete Name
                 </label>
                 <input
+                  suppressHydrationWarning
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -123,6 +130,7 @@ export default function SettingsPage() {
                 </label>
                 <div className="relative">
                   <input
+                    suppressHydrationWarning
                     type="number"
                     step="0.5"
                     min="30"
@@ -143,6 +151,7 @@ export default function SettingsPage() {
                 Email Address
               </label>
               <input
+                suppressHydrationWarning
                 type="email"
                 disabled
                 value={user?.email || ''}

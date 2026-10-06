@@ -93,3 +93,44 @@ export function clearOfflineWorkoutQueue(): void {
     console.error('Failed to clear offline queue:', err);
   }
 }
+
+export interface CachedUser {
+  id?: string;
+  name: string;
+  email?: string;
+  weightKg: number;
+  stravaConnected?: boolean;
+}
+
+const STORAGE_KEY_USER = 'stryq_user';
+
+export function saveCachedUser(user: CachedUser | null): void {
+  if (typeof window === 'undefined' || !user) return;
+  try {
+    localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user));
+  } catch {}
+}
+
+export function getCachedUser(): CachedUser | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_USER);
+    if (raw) return JSON.parse(raw);
+    const dRaw = localStorage.getItem('stryq_dashboard_cache');
+    if (dRaw) {
+      const parsed = JSON.parse(dRaw);
+      if (parsed.user) return parsed.user;
+    }
+  } catch {}
+  return null;
+}
+
+export function clearCachedUser(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(STORAGE_KEY_USER);
+    localStorage.removeItem('stryq_dashboard_cache');
+    localStorage.removeItem('stryq_calendar_cache');
+  } catch {}
+}
+

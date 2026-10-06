@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
+import SplashScreen from '@/components/SplashScreen';
 
 export const metadata: Metadata = {
   title: 'STRYQ. — High Velocity Strength Tracking',
@@ -9,6 +10,11 @@ export const metadata: Metadata = {
   icons: {
     icon: '/icons/icon-192x192.svg',
     apple: '/icons/icon-192x192.svg',
+  },
+  appleWebApp: {
+    capable: true,
+    title: 'STRYQ.',
+    statusBarStyle: 'default',
   },
 };
 
@@ -31,6 +37,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="min-h-screen bg-[#fafafa] text-zinc-900 antialiased flex flex-col font-sans selection:bg-[#FF4A00] selection:text-white">
+        <SplashScreen />
         <ServiceWorkerRegister />
         {children}
       </body>

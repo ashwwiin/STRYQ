@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Logo from '@/components/Logo';
 import { Weight, Settings, LogOut, LayoutGrid, Dumbbell, Calendar, ChevronDown } from 'lucide-react';
+import { getCachedUser, clearCachedUser, type CachedUser } from '@/lib/storage';
 
 interface HeaderProps {
   userWeight?: number;
@@ -19,15 +20,34 @@ const NAV = [
   { href: '/workout/active', label: 'Workout', icon: Dumbbell, live: true },
 ];
 
+/* Runs before paint on the client; falls back to useEffect during SSR to avoid warnings */
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 export default function Header({
-  userWeight = 75,
+  userWeight,
   onOpenWeightModal,
-  userName = 'Athlete',
+  userName,
 }: HeaderProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  /*
+   * Never read localStorage during render: the server has no storage, so the
+   * HTML would differ from the client's first render (hydration mismatch).
+   * Start with null on both sides, then load the cached user before paint.
+   */
+  const [cachedUser, setCachedUser] = useState<CachedUser | null>(null);
+  useIsoLayoutEffect(() => {
+    setCachedUser(getCachedUser());
+  }, []);
+
+  const displayName =
+    userName && userName !== 'Athlete' ? userName : cachedUser?.name || userName || 'Athlete';
+  const displayWeight =
+    userWeight !== undefined && userWeight !== null && userWeight !== 75
+      ? userWeight
+      : cachedUser?.weightKg || userWeight || 75;
 
   useEffect(() => {
     setDropdownOpen(false);
@@ -49,9 +69,10 @@ export default function Header({
 
   const handleLogout = async () => {
     try {
+      clearCachedUser();
       await fetch('/api/auth/logout', { method: 'POST' });
     } finally {
-      router.push('/login');
+      window.location.href = '/login';
     }
   };
 
@@ -82,8 +103,8 @@ export default function Header({
                 aria-current={active ? 'page' : undefined}
                 aria-label={item.label}
                 className={`flex items-center gap-1.5 sm:gap-2 rounded-full px-2.5 py-1.5 text-xs font-bold transition-all sm:px-5 sm:py-2 sm:text-[13px] ${active
-                  ? 'bg-[#111] text-white shadow-sm'
-                  : 'text-zinc-600 hover:bg-white hover:text-zinc-900'
+                    ? 'bg-[#111] text-white shadow-sm'
+                    : 'text-zinc-600 hover:bg-white hover:text-zinc-900'
                   }`}
               >
                 {item.live && !active ? (
@@ -110,10 +131,10 @@ export default function Header({
               className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-zinc-200 bg-white p-1 transition hover:border-zinc-400 sm:pr-3"
             >
               <span className="relative grid h-8 w-8 place-items-center rounded-full bg-[#111] text-xs font-black text-white">
-                {userName.charAt(0).toUpperCase()}
+                {displayName.charAt(0).toUpperCase()}
               </span>
               <span className="hidden max-w-[110px] truncate text-xs font-bold text-zinc-900 lg:inline">
-                {userName}
+                {displayName}
               </span>
               <ChevronDown
                 className={`hidden h-3.5 w-3.5 text-zinc-500 transition-transform sm:block ${dropdownOpen ? 'rotate-180' : ''
@@ -128,10 +149,10 @@ export default function Header({
               >
                 <div className="flex items-center gap-3 px-3 py-3">
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-[#111] text-sm font-black text-white">
-                    {userName.charAt(0).toUpperCase()}
+                    {displayName.charAt(0).toUpperCase()}
                   </span>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-zinc-900">{userName}</p>
+                    <p className="truncate text-sm font-bold text-zinc-900">{displayName}</p>
                     <p className="text-xs text-zinc-500">STRYQ Lifter</p>
                   </div>
                 </div>
@@ -147,7 +168,7 @@ export default function Header({
                   className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
                 >
                   <Weight className="h-4 w-4 text-[#FF4A00]" />
-                  Body weight: {userWeight} kg
+                  <span>Body weight: {displayWeight} kg</span>
                 </button>
 
                 <Link
@@ -172,7 +193,6 @@ export default function Header({
           </div>
         </div>
       </div>
-
     </header>
   );
 }

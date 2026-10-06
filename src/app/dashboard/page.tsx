@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
@@ -24,7 +24,10 @@ import {
   X,
 } from 'lucide-react';
 import { formatNumber, calculate1RM } from '@/lib/math';
-import { loadActiveWorkoutDraft, clearActiveWorkoutDraft } from '@/lib/storage';
+import { loadActiveWorkoutDraft, clearActiveWorkoutDraft, getCachedUser, saveCachedUser, clearCachedUser } from '@/lib/storage';
+
+/* Runs before paint on the client; falls back to useEffect during SSR to avoid warnings */
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 /* Local-time yyyy-mm-dd, so "today" matches what the user sees */
 const ymd = (d: Date) =>
@@ -49,10 +52,16 @@ const SWIPE_ROW =
 const DASHBOARD_CACHE_KEY = 'stryq_dashboard_cache';
 
 export default function DashboardPage() {
+  /*
+   * IMPORTANT: the initial state must be identical on the server and on the
+   * client's first render, otherwise React throws a hydration error.
+   * Cached data from localStorage is applied in a layout effect below,
+   * which runs after hydration but before the browser paints.
+   */
   const [user, setUser] = useState<{
-    id: string;
+    id?: string;
     name: string;
-    email: string;
+    email?: string;
     weightKg: number;
   } | null>(null);
 
@@ -71,13 +80,21 @@ export default function DashboardPage() {
     try {
       // 1-flight unified dashboard fetch
       const res = await fetch('/api/dashboard');
+      if (res.status === 401) {
+        clearCachedUser();
+        window.location.href = '/login';
+        return;
+      }
       if (res.ok) {
         const data = await res.json();
-        if (data.user) setUser(data.user);
+        if (data.user) {
+          setUser(data.user);
+          saveCachedUser(data.user);
+        }
         if (data.workouts) setWorkouts(data.workouts);
         if (data.templates) setTemplates(data.templates);
 
-        // Update local cache for 0ms instant reload next time
+        // Update local cache for instant reload next time
         try {
           localStorage.setItem(
             DASHBOARD_CACHE_KEY,
@@ -99,6 +116,12 @@ export default function DashboardPage() {
           fetch('/api/templates'),
         ]);
 
+        if (userRes.status === 401) {
+          clearCachedUser();
+          window.location.href = '/login';
+          return;
+        }
+
         if (userRes.ok) {
           const userData = await userRes.json();
           setUser(userData.user);
@@ -119,26 +142,33 @@ export default function DashboardPage() {
     }
   };
 
-  useEffect(() => {
-    // ⚡ INSTANT 0ms HYDRATION: Load cached dashboard state immediately
+  // Apply cached dashboard state after hydration but before paint (no skeleton flash, no mismatch)
+  useIsoLayoutEffect(() => {
     try {
-      const cached = localStorage.getItem(DASHBOARD_CACHE_KEY);
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (parsed.user) setUser(parsed.user);
-        if (Array.isArray(parsed.workouts)) setWorkouts(parsed.workouts);
-        if (Array.isArray(parsed.templates)) setTemplates(parsed.templates);
-        // If we have cached data, immediately set loading to false
-        if (parsed.user || (parsed.workouts && parsed.workouts.length > 0)) {
-          setLoading(false);
-        }
+      const raw = localStorage.getItem(DASHBOARD_CACHE_KEY);
+      const cachedUser = getCachedUser();
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const cachedWorkouts = Array.isArray(parsed.workouts) ? parsed.workouts : [];
+        const cachedTemplates = Array.isArray(parsed.templates) ? parsed.templates : [];
+        const u = parsed.user || cachedUser || null;
+        if (u) setUser(u);
+        setWorkouts(cachedWorkouts);
+        setTemplates(cachedTemplates);
+        setLoading(false);
+      } else if (cachedUser) {
+        setUser(cachedUser);
+        setLoading(false);
       }
     } catch {
       /* ignore */
     }
+  }, []);
 
-    // Background fetch to sync latest database state
+  // Background fetch to sync latest database state
+  useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -421,9 +451,9 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen w-full bg-white text-[#111] flex flex-col selection:bg-[#FF4A00] selection:text-white pb-10 sm:pb-24">
       <Header
-        userWeight={user?.weightKg || 75}
+        userWeight={user?.weightKg}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
-        userName={user?.name || 'Athlete'}
+        userName={user?.name}
       />
 
       <main className="flex-1 w-full px-3.5 sm:px-8 lg:px-12 2xl:px-16 py-4 sm:py-8 space-y-5 sm:space-y-8 max-w-[1920px] mx-auto">
@@ -445,14 +475,22 @@ export default function DashboardPage() {
               <span className="px-3 py-1 rounded-full bg-[#FF4A00] text-white text-[10px] sm:text-xs font-black uppercase tracking-widest shadow-md">
                 STRYQ. ENGINE
               </span>
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/10">
+              <span
+                suppressHydrationWarning
+                className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/10"
+              >
                 <CalendarIcon className="w-3 h-3 text-[#FF4A00]" />
                 {todayFormatted}
               </span>
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-zinc-300 sm:hidden">Hey, {firstName}</p>
+              <p
+                suppressHydrationWarning
+                className="text-sm font-semibold text-zinc-300 sm:hidden"
+              >
+                Hey, {firstName}
+              </p>
               <h1 className="text-[1.65rem] sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.05] sm:leading-tight uppercase">
                 Heavy Sets. <br />
                 <span className="text-[#FF4A00]">Complete Logs.</span>
@@ -631,7 +669,7 @@ export default function DashboardPage() {
                       />
                     </svg>
                     <div className="absolute inset-0 grid place-items-center text-center">
-                      <span className="font-mono text-lg font-black leading-none">
+                      <span suppressHydrationWarning className="font-mono text-lg font-black leading-none">
                         {week.sessions}
                         <span className="text-xs text-zinc-400">/{weeklyGoal}</span>
                       </span>
@@ -640,12 +678,12 @@ export default function DashboardPage() {
 
                   <div className="min-w-0 flex-1">
                     <h2 className="text-sm font-black uppercase tracking-tight">This week</h2>
-                    <p className="text-xs font-medium text-zinc-500">
+                    <p suppressHydrationWarning className="text-xs font-medium text-zinc-500">
                       {week.sessions >= weeklyGoal
                         ? 'Goal reached. Nice work!'
                         : `${weeklyGoal - week.sessions} more to hit your goal`}
                     </p>
-                    <p className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-zinc-800">
+                    <p suppressHydrationWarning className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-zinc-800">
                       <Flame className="h-3.5 w-3.5 fill-[#FF4A00] text-[#FF4A00]" />
                       {weekStreak > 0
                         ? `${weekStreak} week${weekStreak === 1 ? '' : 's'} in a row`
@@ -683,6 +721,7 @@ export default function DashboardPage() {
                     <div key={i} className="flex flex-col items-center gap-1.5">
                       <span className="text-[10px] font-bold text-zinc-400">{d.label}</span>
                       <span
+                        suppressHydrationWarning
                         className={`grid h-9 w-9 place-items-center rounded-full text-xs font-black ${d.count > 0
                             ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-600/25'
                             : d.isToday
@@ -727,6 +766,7 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <p
+                  suppressHydrationWarning
                   className={`text-2xl sm:text-3xl font-black font-mono tracking-tight leading-none ${s.accent ? 'text-[#FF4A00]' : 'text-zinc-900'
                     }`}
                 >
@@ -778,7 +818,7 @@ export default function DashboardPage() {
                       <li key={i} className="flex items-center gap-3 rounded-xl bg-zinc-50 p-3">
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-bold text-zinc-900">{pr.name}</p>
-                          <p className="text-xs text-zinc-500">
+                          <p suppressHydrationWarning className="text-xs text-zinc-500">
                             {pr.weight} kg × {pr.reps} &middot; {daysAgoLabel(pr.date)}
                           </p>
                         </div>
@@ -790,7 +830,6 @@ export default function DashboardPage() {
                   </ul>
                 </section>
               )}
-
             </div>
 
             {/* Recent workouts */}

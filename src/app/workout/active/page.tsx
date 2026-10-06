@@ -14,6 +14,9 @@ import {
   loadActiveWorkoutDraft,
   clearActiveWorkoutDraft,
   queueOfflineWorkout,
+  getCachedUser,
+  saveCachedUser,
+  clearCachedUser,
 } from '@/lib/storage';
 import { triggerVibration } from '@/lib/sound';
 import Header from '@/components/Header';
@@ -132,8 +135,8 @@ function ActiveWorkoutContent() {
   const [workoutTitle, setWorkoutTitle] = useState('Strength Workout');
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false); // starts only when the user taps Start
-  const [userWeightKg, setUserWeightKg] = useState(75);
-  const [userName, setUserName] = useState('Athlete');
+  const [userWeightKg, setUserWeightKg] = useState(() => getCachedUser()?.weightKg || 75);
+  const [userName, setUserName] = useState(() => getCachedUser()?.name || 'Athlete');
 
   const [exercises, setExercises] = useState<ActiveExercise[]>([]);
 
@@ -199,7 +202,8 @@ function ActiveWorkoutContent() {
     fetch('/api/auth/me')
       .then((res) => {
         if (!res.ok) {
-          router.push('/login');
+          clearCachedUser();
+          window.location.href = '/login';
           return null;
         }
         return res.json();
@@ -208,6 +212,7 @@ function ActiveWorkoutContent() {
         if (data?.user) {
           setUserWeightKg(data.user.weightKg || 75);
           setUserName(data.user.name || 'Athlete');
+          saveCachedUser(data.user);
         }
       })
       .catch(() => { });

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '@/components/Logo';
 import { Dumbbell, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react';
+import { saveCachedUser } from '@/lib/storage';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,7 +41,11 @@ export default function LoginPage() {
         throw new Error(data.error || 'Authentication failed');
       }
 
-      router.push('/dashboard');
+      if (data.user) {
+        saveCachedUser(data.user);
+      }
+
+      window.location.href = '/dashboard';
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -56,11 +61,13 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: 'demo@stryq.app', password: 'demopassword123' }),
       });
-      if (res.ok) {
-        router.push('/dashboard');
+      const data = await res.json();
+      if (res.ok && data.user) {
+        saveCachedUser(data.user);
       }
+      window.location.href = '/dashboard';
     } catch {
-      router.push('/dashboard');
+      window.location.href = '/dashboard';
     } finally {
       setLoading(false);
     }

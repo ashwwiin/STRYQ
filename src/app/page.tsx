@@ -1,5 +1,13 @@
-import DashboardPage from './dashboard/page';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return <DashboardPage />;
+export default async function Home() {
+  const cookieStore = await cookies();
+  const session = cookieStore.get('stryq_session')?.value;
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  redirect('/dashboard');
 }

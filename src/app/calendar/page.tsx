@@ -15,15 +15,15 @@ import {
   Layers,
 } from 'lucide-react';
 import { formatNumber } from '@/lib/math';
-import { getOfflineWorkoutQueue } from '@/lib/storage';
+import { getOfflineWorkoutQueue, getCachedUser, saveCachedUser, clearCachedUser } from '@/lib/storage';
 
 export default function CalendarPage() {
   const [user, setUser] = useState<{
-    id: string;
+    id?: string;
     name: string;
-    email: string;
+    email?: string;
     weightKg: number;
-  } | null>(null);
+  } | null>(() => getCachedUser());
 
   const [workouts, setWorkouts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,9 +37,18 @@ export default function CalendarPage() {
         fetch('/api/workouts'),
       ]);
 
+      if (userRes.status === 401) {
+        clearCachedUser();
+        window.location.href = '/login';
+        return;
+      }
+
       if (userRes.ok) {
         const userData = await userRes.json();
-        setUser(userData.user);
+        if (userData.user) {
+          setUser(userData.user);
+          saveCachedUser(userData.user);
+        }
       }
 
       let remoteWorkouts: any[] = [];
@@ -98,9 +107,9 @@ export default function CalendarPage() {
   return (
     <div className="min-h-screen w-full bg-white text-[#111111] flex flex-col selection:bg-[#FF4A00] selection:text-white pb-24">
       <Header
-        userWeight={user?.weightKg || 75}
+        userWeight={user?.weightKg}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
-        userName={user?.name || 'Athlete'}
+        userName={user?.name}
       />
 
       <main className="flex-1 w-full px-3 sm:px-8 lg:px-12 2xl:px-16 py-5 sm:py-8 space-y-6 sm:space-y-8 max-w-[1920px] mx-auto">
