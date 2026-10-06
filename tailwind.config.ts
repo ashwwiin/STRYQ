@@ -14,7 +14,6 @@ const config: Config = {
         card: "#121215",
         "card-subtle": "#18181b",
         border: "#27272a",
-        strava: "#fc4c02",
         amber: {
           400: "#fbbf24",
           500: "#f59e0b",

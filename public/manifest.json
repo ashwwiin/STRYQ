@@ -1,7 +1,7 @@
 {
   "name": "STRYQ - High Velocity Strength Tracker",
   "short_name": "STRYQ",
-  "description": "Unbloated, high-velocity strength tracking Progressive Web App with 1RM computation and direct Strava / Apple Health sync.",
+  "description": "Unbloated, high-velocity strength tracking Progressive Web App with 1RM computation and offline capabilities.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#09090b",

@@ -25,8 +25,7 @@ interface FinishWorkoutModalProps {
       }[];
     }[];
   };
-  onSaveAndSync: (postToStrava?: boolean) => Promise<void>;
-  stravaConnected?: boolean;
+  onSaveAndSync: () => Promise<void>;
 }
 
 export default function FinishWorkoutModal({
@@ -72,7 +71,7 @@ export default function FinishWorkoutModal({
     setSubmitting(true);
     try {
       workoutData.title = sessionTitle;
-      await onSaveAndSync(false);
+      await onSaveAndSync();
     } catch (err) {
       console.error(err);
     } finally {

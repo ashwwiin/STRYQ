@@ -2,30 +2,55 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Header from '@/components/Header';
-import WeightQuickEditModal from '@/components/WeightQuickEditModal';
 import { getCachedUser, saveCachedUser, clearCachedUser } from '@/lib/storage';
 import {
   User,
-  Weight,
-  CheckCircle2,
-  LogOut,
-  Save,
-  Dumbbell,
+  Settings as SettingsIcon,
+  Timer,
+  Volume2,
+  VolumeX,
+  Vibrate,
   Shield,
+  LogOut,
+  ArrowRight,
+  CheckCircle2,
+  Sparkles,
 } from 'lucide-react';
+
+const REST_KEY = 'stryq_rest_seconds';
+const AUTO_REST_KEY = 'stryq_auto_rest';
+const SOUND_KEY = 'stryq_sound_enabled';
 
 export default function SettingsPage() {
   const router = useRouter();
   const [cached] = useState(() => getCachedUser());
-  const [user, setUser] = useState<{ id?: string; name: string; email?: string; weightKg: number } | null>(cached);
-  const [name, setName] = useState(cached?.name || '');
-  const [weightKg, setWeightKg] = useState(cached?.weightKg || 75);
-  const [saving, setSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
-  const [isWeightModalOpen, setIsWeightModalOpen] = useState(false);
+  const [user, setUser] = useState<{
+    id?: string;
+    name: string;
+    email?: string;
+    weightKg: number;
+    sex?: string;
+    heightCm?: number;
+  } | null>(cached);
+
+  // Local preferences
+  const [restSeconds, setRestSeconds] = useState<number>(90);
+  const [autoRest, setAutoRest] = useState<boolean>(true);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [prefSaved, setPrefSaved] = useState(false);
 
   useEffect(() => {
+    try {
+      const storedRest = localStorage.getItem(REST_KEY);
+      if (storedRest) setRestSeconds(Number(storedRest) || 90);
+      const storedAuto = localStorage.getItem(AUTO_REST_KEY);
+      if (storedAuto !== null) setAutoRest(storedAuto === 'true');
+      const storedSound = localStorage.getItem(SOUND_KEY);
+      if (storedSound !== null) setSoundEnabled(storedSound !== 'false');
+    } catch {}
+
     fetch('/api/auth/me')
       .then((res) => {
         if (!res.ok) {
@@ -38,38 +63,35 @@ export default function SettingsPage() {
       .then((data) => {
         if (data?.user) {
           setUser(data.user);
-          setName(data.user.name || '');
-          setWeightKg(data.user.weightKg || 75);
           saveCachedUser(data.user);
         }
       })
       .catch(() => {});
   }, [router]);
 
-  const handleSaveProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    setSaveSuccess(false);
+  const handleUpdateRest = (sec: number) => {
+    setRestSeconds(sec);
+    localStorage.setItem(REST_KEY, String(sec));
+    showSavedFeedback();
+  };
 
-    try {
-      const res = await fetch('/api/auth/me', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, weightKg: Number(weightKg) || 75 }),
-      });
+  const handleToggleAutoRest = () => {
+    const next = !autoRest;
+    setAutoRest(next);
+    localStorage.setItem(AUTO_REST_KEY, String(next));
+    showSavedFeedback();
+  };
 
-      if (res.ok) {
-        const updated = { ...(user || {}), name, weightKg: Number(weightKg) || 75 };
-        setUser(updated as any);
-        saveCachedUser(updated as any);
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSaving(false);
-    }
+  const handleToggleSound = () => {
+    const next = !soundEnabled;
+    setSoundEnabled(next);
+    localStorage.setItem(SOUND_KEY, String(next));
+    showSavedFeedback();
+  };
+
+  const showSavedFeedback = () => {
+    setPrefSaved(true);
+    setTimeout(() => setPrefSaved(false), 2000);
   };
 
   const handleLogout = async () => {
@@ -85,106 +107,140 @@ export default function SettingsPage() {
     <div className="min-h-screen w-full bg-white text-[#111111] flex flex-col pb-24 selection:bg-[#FF4A00] selection:text-white">
       <Header
         userWeight={user?.weightKg}
-        onOpenWeightModal={() => setIsWeightModalOpen(true)}
         userName={user?.name}
       />
 
-      <main className="flex-1 w-full max-w-4xl mx-auto px-6 sm:px-10 py-10 space-y-8">
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-10 py-8 sm:py-10 space-y-8">
         <div>
-          <h1 className="text-3xl font-black text-zinc-900 tracking-tight uppercase">Settings</h1>
+          <h1 className="text-3xl sm:text-4xl font-black text-zinc-900 tracking-tight uppercase">
+            Settings &amp; Preferences
+          </h1>
           <p className="text-xs sm:text-sm text-zinc-500 mt-1 font-medium">
-            Manage your body weight calibration and athlete profile preferences.
+            Customize workout timers, feedback audio, and system preferences.
           </p>
         </div>
 
-        {/* Profile Card */}
-        <div className="nike-card p-8 space-y-6">
-          <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-orange-50 text-[#FF4A00]">
-              <User className="w-5 h-5" />
+        {/* Athlete Profile Summary Card */}
+        <div className="nike-card p-6 sm:p-8 space-y-6">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3.5 rounded-2xl bg-orange-50 text-[#FF4A00]">
+                <User className="w-6 h-6" />
+              </div>
+              <div>
+                <h2 suppressHydrationWarning className="font-black text-lg text-zinc-900 uppercase">
+                  {user?.name || 'Athlete Profile'}
+                </h2>
+                <p className="text-xs text-zinc-500 font-medium">
+                  {user?.weightKg || 75} kg &bull; {user?.heightCm || 175} cm &bull; {user?.sex || 'unspecified'}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="font-bold text-lg text-zinc-900 uppercase">Athlete Calibration</h2>
-              <p className="text-xs text-zinc-500 font-medium">Body weight calibrates active MET calorie expenditure and relative strength</p>
+
+            <Link
+              href="/profile"
+              className="py-2.5 px-5 rounded-full bg-[#111] hover:bg-[#222] text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5 active:scale-95 transition-all shrink-0"
+            >
+              <span>Edit Profile</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Workout & Timer Preferences */}
+        <div className="nike-card p-6 sm:p-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-2xl bg-zinc-100 text-zinc-800">
+                <Timer className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="font-bold text-base text-zinc-900 uppercase">Default Rest Timer</h2>
+                <p className="text-xs text-zinc-500 font-medium">Auto-prompted countdown between sets</p>
+              </div>
             </div>
+
+            {prefSaved && (
+              <span className="text-xs font-bold text-emerald-600 flex items-center gap-1 animate-in fade-in">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Saved
+              </span>
+            )}
           </div>
 
-          <form onSubmit={handleSaveProfile} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs font-black uppercase tracking-wider text-zinc-700 block mb-1">
-                  Athlete Name
-                </label>
-                <input
-                  suppressHydrationWarning
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:outline-none focus:border-zinc-900 focus:bg-white font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-black uppercase tracking-wider text-zinc-700 block mb-1">
-                  Body Weight (kg)
-                </label>
-                <div className="relative">
-                  <input
-                    suppressHydrationWarning
-                    type="number"
-                    step="0.5"
-                    min="30"
-                    max="250"
-                    value={weightKg}
-                    onChange={(e) => setWeightKg(parseFloat(e.target.value) || 75)}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:outline-none focus:border-zinc-900 focus:bg-white font-medium"
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono font-bold text-zinc-400">
-                    KG
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-black uppercase tracking-wider text-zinc-700 block mb-1">
-                Email Address
-              </label>
-              <input
-                suppressHydrationWarning
-                type="email"
-                disabled
-                value={user?.email || ''}
-                className="w-full bg-zinc-100 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-zinc-400 cursor-not-allowed font-medium"
-              />
-            </div>
-
-            <div className="flex items-center justify-between pt-2">
-              {saveSuccess && (
-                <span className="text-xs font-bold text-emerald-600 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4" /> Calibration saved
-                </span>
-              )}
+          {/* Quick presets */}
+          <div className="grid grid-cols-4 gap-2.5">
+            {[60, 90, 120, 180].map((s) => (
               <button
-                type="submit"
-                disabled={saving}
-                className="ml-auto py-3 px-8 rounded-full bg-[#111111] hover:bg-[#222222] text-white font-black text-xs uppercase tracking-wider flex items-center gap-2 active:scale-95 shadow-md disabled:opacity-50"
+                key={s}
+                type="button"
+                onClick={() => handleUpdateRest(s)}
+                className={`py-3 rounded-xl font-mono text-xs font-black uppercase transition-all ${
+                  restSeconds === s
+                    ? 'bg-[#111] text-white shadow-md'
+                    : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border border-zinc-200/70'
+                }`}
               >
-                <Save className="w-4 h-4" />
-                <span>{saving ? 'Saving...' : 'Save Profile'}</span>
+                {s >= 60 ? `${s / 60}m` : `${s}s`}
+                <span className="block text-[9px] font-sans font-normal opacity-70">
+                  {s === 60 ? 'Hypertrophy' : s === 90 ? 'Standard' : s === 120 ? 'Compound' : 'Heavy'}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="pt-2 border-t border-zinc-100 space-y-4">
+            {/* Auto-start rest */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-zinc-900">Auto-start rest timer</p>
+                <p className="text-xs text-zinc-500">Automatically trigger countdown when a set is marked complete</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleToggleAutoRest}
+                className={`w-12 h-7 rounded-full p-1 transition-colors ${
+                  autoRest ? 'bg-[#FF4A00]' : 'bg-zinc-200'
+                }`}
+              >
+                <div
+                  className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                    autoRest ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
               </button>
             </div>
-          </form>
+
+            {/* Audio Feedback */}
+            <div className="flex items-center justify-between pt-2">
+              <div>
+                <p className="text-sm font-bold text-zinc-900">Audio &amp; Vibration cues</p>
+                <p className="text-xs text-zinc-500">Play timer completions and set check-in haptics</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleToggleSound}
+                className={`w-12 h-7 rounded-full p-1 transition-colors ${
+                  soundEnabled ? 'bg-[#FF4A00]' : 'bg-zinc-200'
+                }`}
+              >
+                <div
+                  className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                    soundEnabled ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Database Storage Information Card */}
-        <div className="nike-card p-8 space-y-4">
+        <div className="nike-card p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-2xl bg-zinc-100 text-zinc-800">
               <Shield className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="font-bold text-lg text-zinc-900 uppercase">Cloud Workout Storage</h2>
+              <h2 className="font-bold text-base text-zinc-900 uppercase">Cloud Workout Storage</h2>
               <p className="text-xs text-zinc-500 font-medium">Secure MongoDB Atlas Database</p>
             </div>
           </div>
@@ -205,20 +261,6 @@ export default function SettingsPage() {
           </button>
         </div>
       </main>
-
-      <WeightQuickEditModal
-        isOpen={isWeightModalOpen}
-        onClose={() => setIsWeightModalOpen(false)}
-        currentWeight={user?.weightKg || 75}
-        onSaveWeight={async (w) => {
-          setWeightKg(w);
-          await fetch('/api/auth/me', {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ weightKg: w }),
-          });
-        }}
-      />
     </div>
   );
 }

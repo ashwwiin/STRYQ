@@ -22,6 +22,7 @@ import {
   History,
   Minus,
   X,
+  Sparkles,
 } from 'lucide-react';
 import { formatNumber, calculate1RM } from '@/lib/math';
 import { loadActiveWorkoutDraft, clearActiveWorkoutDraft, getCachedUser, saveCachedUser, clearCachedUser } from '@/lib/storage';
@@ -263,21 +264,6 @@ export default function DashboardPage() {
     }
   };
 
-  const handleSaveStarterTemplate = async (starter: any) => {
-    try {
-      const res = await fetch('/api/templates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(starter),
-      });
-      if (res.ok) {
-        fetchData();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const totalTonnage = workouts.reduce((sum, w) => sum + (w.totalVolumeKg || 0), 0);
   const totalCalories = workouts.reduce((sum, w) => sum + (w.caloriesBurned || 0), 0);
   const totalSessions = workouts.length;
@@ -404,48 +390,11 @@ export default function DashboardPage() {
     )
     : 0;
 
-  // Starter templates recommendation
-  const starterTemplates = [
-    {
-      name: 'Push Power & Chest Hypertrophy',
-      category: 'Push',
-      notes: 'Focus on progressive overload on bench press.',
-      exercises: [
-        { name: 'Barbell Bench Press', isCompound: true, defaultSets: 3, defaultWeightKg: 80, defaultReps: 6 },
-        { name: 'Incline Dumbbell Bench Press', isCompound: true, defaultSets: 3, defaultWeightKg: 28, defaultReps: 8 },
-        { name: 'Dumbbell Lateral Raise', isCompound: false, defaultSets: 3, defaultWeightKg: 12, defaultReps: 12 },
-        { name: 'Tricep Rope Pushdown', isCompound: false, defaultSets: 3, defaultWeightKg: 25, defaultReps: 12 },
-      ],
-    },
-    {
-      name: 'Heavy Pull & Deadlift Focus',
-      category: 'Pull',
-      notes: 'Warm up thoroughly before working deadlift sets.',
-      exercises: [
-        { name: 'Conventional Deadlift', isCompound: true, defaultSets: 3, defaultWeightKg: 120, defaultReps: 5 },
-        { name: 'Barbell Bent-Over Row', isCompound: true, defaultSets: 3, defaultWeightKg: 70, defaultReps: 8 },
-        { name: 'Pull-Up', isCompound: true, defaultSets: 3, defaultWeightKg: 0, defaultReps: 8 },
-        { name: 'Incline Dumbbell Curl', isCompound: false, defaultSets: 3, defaultWeightKg: 14, defaultReps: 10 },
-      ],
-    },
-    {
-      name: 'Leg Day & Squat Progression',
-      category: 'Legs',
-      notes: 'Full depth on squats with 2-minute rests.',
-      exercises: [
-        { name: 'Barbell Back Squat', isCompound: true, defaultSets: 3, defaultWeightKg: 100, defaultReps: 5 },
-        { name: 'Romanian Deadlift (RDL)', isCompound: true, defaultSets: 3, defaultWeightKg: 80, defaultReps: 8 },
-        { name: 'Leg Press', isCompound: true, defaultSets: 3, defaultWeightKg: 160, defaultReps: 10 },
-        { name: 'Leg Extension', isCompound: false, defaultSets: 3, defaultWeightKg: 50, defaultReps: 12 },
-      ],
-    },
-  ];
-
   const stats = [
     { label: 'Lifetime tonnage', short: 'Tonnage', value: formatNumber(totalTonnage), unit: 'kg', note: 'Sum of weight × completed reps', icon: Dumbbell, accent: false },
     { label: 'Active MET burn', short: 'Calories', value: `~${formatNumber(totalCalories)}`, unit: 'kcal', note: 'Metabolic energy expenditure', icon: Flame, accent: true },
-    { label: 'Logged sessions', short: 'Sessions', value: String(totalSessions), unit: 'logs', note: 'Recorded in database', icon: Trophy, accent: false },
-    { label: 'Saved splits', short: 'Routines', value: String(templates.length), unit: 'routines', note: 'Stored in database', icon: BookmarkPlus, accent: false },
+    { label: 'Logged sessions', short: 'Sessions', value: String(totalSessions), unit: totalSessions === 1 ? 'session' : 'sessions', note: 'Recorded in database', icon: Trophy, accent: false },
+    { label: 'Saved splits', short: 'Routines', value: String(templates.length), unit: templates.length === 1 ? 'routine' : 'routines', note: 'Stored in database', icon: BookmarkPlus, accent: false },
   ];
 
   return (
@@ -568,168 +517,223 @@ export default function DashboardPage() {
             </>
           ) : (
             <>
-              {/* Up next */}
-              <section className="flex flex-col justify-between gap-5 rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 lg:col-span-7">
+              {/* Up next / Launchpad */}
+              <section className="flex flex-col justify-between gap-6 rounded-2xl border border-zinc-200 bg-white p-6 sm:p-7 shadow-sm transition-shadow hover:shadow-md lg:col-span-7">
                 {upNext ? (
                   <>
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold uppercase tracking-wider text-[#FF4A00]">
-                          {trainedToday ? 'Trained today · next up' : 'Up next'}
-                        </p>
-                        <h2 className="mt-1 truncate text-xl font-black uppercase tracking-tight sm:text-2xl">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[#FF4A00] text-[10px] font-black uppercase tracking-wider">
+                          <Dumbbell className="w-3 h-3" />
+                          {trainedToday ? 'Trained Today · Up Next' : 'Up Next Routine'}
+                        </span>
+                        <span className="px-3 py-1 rounded-full bg-zinc-100 text-zinc-600 text-[10px] font-bold uppercase tracking-wider">
+                          {upNext.tpl.category || 'Routine'}
+                        </span>
+                      </div>
+
+                      <div>
+                        <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight uppercase">
                           {upNext.tpl.name}
                         </h2>
-                        <p className="mt-0.5 text-xs font-medium text-zinc-500">
-                          {upNext.tpl.exercises?.length || 0} exercises &middot;{' '}
+                        <p className="text-xs text-zinc-500 font-medium mt-1">
+                          {upNext.tpl.exercises?.length || 0} exercises scheduled &middot;{' '}
                           {upNext.days === null
-                            ? 'Not done yet'
+                            ? 'Not logged yet'
                             : upNext.days === 0
-                              ? 'Done earlier today'
+                              ? 'Completed earlier today'
                               : upNext.days === 1
                                 ? 'Last done yesterday'
                                 : `Last done ${upNext.days} days ago`}
                         </p>
                       </div>
-                      <span className="shrink-0 rounded-full border border-orange-100 bg-orange-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-[#FF4A00]">
-                        {upNext.tpl.category || 'Routine'}
-                      </span>
+
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {(upNext.tpl.exercises || []).slice(0, 4).map((ex: any, i: number) => (
+                          <span key={i} className="rounded-lg bg-zinc-50 border border-zinc-200/70 px-2.5 py-1 text-xs font-semibold text-zinc-700">
+                            {ex.name}
+                          </span>
+                        ))}
+                        {(upNext.tpl.exercises?.length || 0) > 4 && (
+                          <span className="rounded-lg bg-zinc-50 border border-zinc-200/70 px-2.5 py-1 text-xs font-semibold text-zinc-400">
+                            +{upNext.tpl.exercises.length - 4} more
+                          </span>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-1.5">
-                      {(upNext.tpl.exercises || []).slice(0, 4).map((ex: any, i: number) => (
-                        <span key={i} className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-700">
-                          {ex.name}
-                        </span>
-                      ))}
-                      {(upNext.tpl.exercises?.length || 0) > 4 && (
-                        <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-500">
-                          +{upNext.tpl.exercises.length - 4} more
-                        </span>
-                      )}
-                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-zinc-100">
+                      <Link
+                        href={`/workout/active?templateId=${upNext.tpl._id}`}
+                        className="flex-1 py-3.5 px-6 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-600/25 active:scale-95 transition-all text-center"
+                      >
+                        <Play className="h-4 w-4 fill-white" />
+                        <span>Start This Workout</span>
+                      </Link>
 
-                    <Link
-                      href={`/workout/active?templateId=${upNext.tpl._id}`}
-                      className="flex items-center justify-center gap-2 rounded-full bg-[#FF4A00] py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-orange-600/25 transition hover:bg-[#e04000] active:scale-[0.99] sm:w-fit sm:px-9"
-                    >
-                      <Play className="h-4 w-4 fill-white" />
-                      Start this workout
-                    </Link>
+                      <Link
+                        href="/workout/active"
+                        className="py-3.5 px-6 rounded-full border border-zinc-200 hover:border-zinc-900 text-zinc-800 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
+                      >
+                        <Plus className="h-4 w-4" />
+                        <span>Blank Session</span>
+                      </Link>
+                    </div>
                   </>
                 ) : (
                   <>
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-[#FF4A00]">
-                        {trainedToday ? 'Trained today' : 'Ready when you are'}
-                      </p>
-                      <h2 className="mt-1 text-xl font-black uppercase tracking-tight sm:text-2xl">
-                        What are we training?
-                      </h2>
-                      <p className="mt-1 max-w-md text-sm text-zinc-500">
-                        Save a routine and it will show up here as your next workout. Until then, start from
-                        scratch or pick a preset split.
-                      </p>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[#FF4A00] text-[10px] font-black uppercase tracking-wider">
+                          <Sparkles className="w-3 h-3" />
+                          Ready To Train
+                        </span>
+                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                          STRYQ Protocol
+                        </span>
+                      </div>
+
+                      <div>
+                        <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight uppercase">
+                          Choose Your Session.
+                        </h2>
+                        <p className="text-xs sm:text-sm text-zinc-500 font-medium mt-1 leading-relaxed">
+                          Log exercise sets with live 1RM math and calorie burn, or execute a structured split routine.
+                        </p>
+                      </div>
+
+                      {/* 3 clean athletic split cards */}
+                      <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
+                        <a
+                          href="#routines"
+                          className="rounded-2xl bg-zinc-50 hover:bg-orange-50/50 border border-zinc-200/70 hover:border-orange-200 p-3 sm:p-3.5 transition-all text-left group"
+                        >
+                          <span className="text-[10px] font-black text-[#FF4A00] uppercase tracking-wider block">Push</span>
+                          <span className="text-xs font-bold text-zinc-900 block mt-0.5">Chest &amp; Arms</span>
+                          <span className="text-[10px] text-zinc-400 block mt-0.5 font-medium">4 exercises</span>
+                        </a>
+
+                        <a
+                          href="#routines"
+                          className="rounded-2xl bg-zinc-50 hover:bg-orange-50/50 border border-zinc-200/70 hover:border-orange-200 p-3 sm:p-3.5 transition-all text-left group"
+                        >
+                          <span className="text-[10px] font-black text-[#FF4A00] uppercase tracking-wider block">Pull</span>
+                          <span className="text-xs font-bold text-zinc-900 block mt-0.5">Back &amp; Deadlift</span>
+                          <span className="text-[10px] text-zinc-400 block mt-0.5 font-medium">4 exercises</span>
+                        </a>
+
+                        <a
+                          href="#routines"
+                          className="rounded-2xl bg-zinc-50 hover:bg-orange-50/50 border border-zinc-200/70 hover:border-orange-200 p-3 sm:p-3.5 transition-all text-left group"
+                        >
+                          <span className="text-[10px] font-black text-[#FF4A00] uppercase tracking-wider block">Legs</span>
+                          <span className="text-xs font-bold text-zinc-900 block mt-0.5">Squats &amp; Hams</span>
+                          <span className="text-[10px] text-zinc-400 block mt-0.5 font-medium">4 exercises</span>
+                        </a>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-2 sm:flex-row">
+
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-zinc-100">
                       <Link
                         href="/workout/active"
-                        className="flex items-center justify-center gap-2 rounded-full bg-[#FF4A00] px-7 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-orange-600/25 transition hover:bg-[#e04000] active:scale-[0.99]"
+                        className="flex-1 py-3.5 px-6 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-600/25 active:scale-95 transition-all text-center"
                       >
                         <Dumbbell className="h-4 w-4" />
-                        Start empty session
+                        <span>Start Blank Session</span>
                       </Link>
+
                       <a
                         href="#routines"
-                        className="flex items-center justify-center gap-2 rounded-full border border-zinc-300 px-7 py-3.5 text-sm font-black uppercase tracking-wider text-zinc-900 transition hover:border-zinc-900"
+                        className="py-3.5 px-6 rounded-full border border-zinc-200 hover:border-zinc-900 text-zinc-800 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
                       >
-                        Browse splits
+                        <Layers className="h-4 w-4 text-zinc-400" />
+                        <span>Browse Splits</span>
                       </a>
                     </div>
                   </>
                 )}
               </section>
 
-              {/* Weekly goal */}
-              <section className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 lg:col-span-5">
-                <div className="flex items-center gap-4">
-                  <div className="relative h-20 w-20 shrink-0">
-                    <svg viewBox="0 0 80 80" className="h-full w-full -rotate-90" aria-hidden>
-                      <circle cx="40" cy="40" r="34" fill="none" stroke="#F4F4F5" strokeWidth="8" />
-                      <circle
-                        cx="40"
-                        cy="40"
-                        r="34"
-                        fill="none"
-                        stroke="#FF4A00"
-                        strokeWidth="8"
-                        strokeLinecap="round"
-                        strokeDasharray={`${2 * Math.PI * 34 * goalPct} ${2 * Math.PI * 34}`}
-                        className="transition-all duration-700"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 grid place-items-center text-center">
-                      <span suppressHydrationWarning className="font-mono text-lg font-black leading-none">
-                        {week.sessions}
-                        <span className="text-xs text-zinc-400">/{weeklyGoal}</span>
+              {/* Weekly goal & Consistency */}
+              <section className="flex flex-col justify-between gap-5 rounded-2xl border border-zinc-200 bg-white p-6 sm:p-7 shadow-sm transition-shadow hover:shadow-md lg:col-span-5">
+                <div className="space-y-4">
+                  {/* Top Bar: Title, streak badge, and Goal controls */}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-base font-black uppercase tracking-tight text-zinc-900">
+                        This Week
+                      </h2>
+                      <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-50 text-[#FF4A00] border border-orange-100 text-[10px] font-black uppercase tracking-wider">
+                        <Flame className="w-3 h-3 fill-[#FF4A00]" />
+                        {weekStreak > 0 ? `${weekStreak}w Streak` : 'Consistency'}
                       </span>
+                    </div>
+
+                    {/* Compact Goal Stepper */}
+                    <div className="flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-1 border border-zinc-200/70">
+                      <button
+                        type="button"
+                        onClick={() => changeGoal(-1)}
+                        disabled={weeklyGoal <= 1}
+                        aria-label="Decrease weekly goal"
+                        className="w-5 h-5 rounded-full grid place-items-center text-zinc-600 hover:bg-white hover:text-zinc-900 transition-colors disabled:opacity-30"
+                      >
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="font-mono text-[11px] font-black text-zinc-900 px-1">
+                        {weeklyGoal}/wk
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => changeGoal(1)}
+                        disabled={weeklyGoal >= 7}
+                        aria-label="Increase weekly goal"
+                        className="w-5 h-5 rounded-full grid place-items-center text-zinc-600 hover:bg-white hover:text-zinc-900 transition-colors disabled:opacity-30"
+                      >
+                        <Plus className="h-3 w-3" />
+                      </button>
                     </div>
                   </div>
 
-                  <div className="min-w-0 flex-1">
-                    <h2 className="text-sm font-black uppercase tracking-tight">This week</h2>
-                    <p suppressHydrationWarning className="text-xs font-medium text-zinc-500">
-                      {week.sessions >= weeklyGoal
-                        ? 'Goal reached. Nice work!'
-                        : `${weeklyGoal - week.sessions} more to hit your goal`}
-                    </p>
-                    <p suppressHydrationWarning className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-zinc-800">
-                      <Flame className="h-3.5 w-3.5 fill-[#FF4A00] text-[#FF4A00]" />
-                      {weekStreak > 0
-                        ? `${weekStreak} week${weekStreak === 1 ? '' : 's'} in a row`
-                        : 'Start your streak this week'}
-                    </p>
-                  </div>
-
-                  <div className="flex shrink-0 flex-col items-center gap-1">
-                    <button
-                      onClick={() => changeGoal(1)}
-                      disabled={weeklyGoal >= 7}
-                      aria-label="Increase weekly goal"
-                      className="grid h-8 w-8 place-items-center rounded-full bg-zinc-100 text-zinc-700 transition hover:bg-zinc-200 disabled:opacity-40"
-                    >
-                      <Plus className="h-3.5 w-3.5" />
-                    </button>
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">Goal</span>
-                    <button
-                      onClick={() => changeGoal(-1)}
-                      disabled={weeklyGoal <= 1}
-                      aria-label="Decrease weekly goal"
-                      className="grid h-8 w-8 place-items-center rounded-full bg-zinc-100 text-zinc-700 transition hover:bg-zinc-200 disabled:opacity-40"
-                    >
-                      <Minus className="h-3.5 w-3.5" />
-                    </button>
+                  {/* Progress bar and summary */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span suppressHydrationWarning className="font-bold text-zinc-700">
+                        {week.sessions} of {weeklyGoal} workouts logged
+                      </span>
+                      <span suppressHydrationWarning className="font-mono font-black text-[#FF4A00]">
+                        {Math.round(goalPct * 100)}%
+                      </span>
+                    </div>
+                    <div className="w-full h-2.5 bg-zinc-100 rounded-full overflow-hidden border border-zinc-200/60">
+                      <div
+                        style={{ width: `${Math.min(100, Math.round(goalPct * 100))}%` }}
+                        className="h-full bg-gradient-to-r from-[#e04000] to-[#FF4A00] rounded-full transition-all duration-500"
+                      />
+                    </div>
                   </div>
                 </div>
 
+                {/* Day strip */}
                 <Link
                   href="/calendar"
-                  aria-label="Open calendar"
-                  className="mt-5 grid grid-cols-7 gap-1.5 rounded-xl transition active:opacity-70"
+                  aria-label="Open full training calendar"
+                  className="pt-3 border-t border-zinc-100 grid grid-cols-7 gap-1.5"
                 >
                   {week.days.map((d, i) => (
-                    <div key={i} className="flex flex-col items-center gap-1.5">
-                      <span className="text-[10px] font-bold text-zinc-400">{d.label}</span>
+                    <div key={i} className="flex flex-col items-center gap-1.5 group">
+                      <span className="text-[10px] font-black uppercase text-zinc-400 group-hover:text-zinc-700 transition-colors">
+                        {d.label}
+                      </span>
                       <span
                         suppressHydrationWarning
-                        className={`grid h-9 w-9 place-items-center rounded-full text-xs font-black ${d.count > 0
-                            ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-600/25'
+                        className={`grid h-9 w-9 place-items-center rounded-xl text-xs font-black transition-all ${
+                          d.count > 0
+                            ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-600/30'
                             : d.isToday
-                              ? 'bg-[#111] text-white'
-                              : d.isFuture
-                                ? 'bg-zinc-50 text-zinc-300'
-                                : 'bg-zinc-100 text-zinc-500'
-                          }`}
+                              ? 'bg-[#111] text-white ring-2 ring-[#FF4A00] ring-offset-2'
+                              : 'bg-zinc-100 text-zinc-700 border border-zinc-200/60 group-hover:bg-zinc-200'
+                        }`}
                       >
                         {d.count > 0 ? <Dumbbell className="h-4 w-4" /> : d.date}
                       </span>
@@ -741,39 +745,42 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* ───────── Stats: one joined card on phones, separate cards on large screens ───────── */}
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-200 lg:grid-cols-4 lg:gap-4 lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent">
+        {/* ───────── Stats: 4 individual athletic cards ───────── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
           {stats.map((s) => {
             const Icon = s.icon;
             return (
               <div
                 key={s.label}
-                className="bg-white p-4 lg:p-5 space-y-1 lg:space-y-1.5 lg:rounded-2xl lg:border lg:border-zinc-200 lg:hover:shadow-md lg:transition-shadow"
+                className="bg-white rounded-2xl border border-zinc-200 p-4 sm:p-5 space-y-1 sm:space-y-2 shadow-sm hover:shadow-md transition-all"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span
-                    className={`text-[10px] sm:text-xs font-bold uppercase tracking-wider truncate ${s.accent ? 'text-[#FF4A00]' : 'text-zinc-400'
-                      }`}
+                    className={`text-[10px] sm:text-xs font-black uppercase tracking-wider truncate ${
+                      s.accent ? 'text-[#FF4A00]' : 'text-zinc-500'
+                    }`}
                   >
                     <span className="sm:hidden">{s.short}</span>
                     <span className="hidden sm:inline">{s.label}</span>
                   </span>
                   <span
-                    className={`p-1.5 rounded-lg shrink-0 ${s.accent ? 'bg-orange-100 text-[#FF4A00]' : 'bg-orange-50 text-[#FF4A00]'
-                      }`}
+                    className={`p-2 rounded-xl shrink-0 ${
+                      s.accent ? 'bg-orange-100 text-[#FF4A00]' : 'bg-zinc-100 text-zinc-700'
+                    }`}
                   >
                     <Icon className={`w-3.5 h-3.5 ${s.accent ? 'fill-[#FF4A00]' : ''}`} />
                   </span>
                 </div>
                 <p
                   suppressHydrationWarning
-                  className={`text-2xl sm:text-3xl font-black font-mono tracking-tight leading-none ${s.accent ? 'text-[#FF4A00]' : 'text-zinc-900'
-                    }`}
+                  className={`text-2xl sm:text-3xl font-black font-mono tracking-tight leading-none ${
+                    s.accent ? 'text-[#FF4A00]' : 'text-zinc-900'
+                  }`}
                 >
                   {loading ? '—' : s.value}{' '}
-                  <span className="text-[10px] sm:text-xs font-semibold text-zinc-400 font-sans">{s.unit}</span>
+                  <span className="text-xs sm:text-sm font-bold text-zinc-400 font-sans">{s.unit}</span>
                 </p>
-                <p className="hidden lg:block text-[10px] text-zinc-400 font-semibold truncate">{s.note}</p>
+                <p className="hidden lg:block text-[10px] text-zinc-400 font-medium truncate">{s.note}</p>
               </div>
             );
           })}
@@ -906,7 +913,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Your saved routines */}
-          {templates.length > 0 && (
+          {templates.length > 0 ? (
             <div className="space-y-2.5">
               <span className="text-[11px] font-black uppercase tracking-wider text-zinc-400">
                 Your Saved Routines ({templates.length})
@@ -974,57 +981,26 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
-          )}
-
-          {/* Preset splits */}
-          <div className="space-y-2.5 pt-1">
-            <span className="text-[11px] font-black uppercase tracking-wider text-zinc-400">
-              {templates.length > 0 ? 'Explore Preset Splits' : 'Ready-to-Use Training Splits'}
-            </span>
-
-            <div className={`${SWIPE_ROW} md:grid-cols-3`}>
-              {starterTemplates.map((starter, idx) => (
-                <div
-                  key={idx}
-                  className="shrink-0 snap-start w-[84%] sm:w-[60%] md:w-auto bg-zinc-50/70 hover:bg-white rounded-2xl p-4 sm:p-5 border border-zinc-200 hover:border-zinc-400 flex flex-col justify-between space-y-3 transition-all shadow-sm"
-                >
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-100/70 text-[#FF4A00]">
-                        {starter.category}
-                      </span>
-                      <span className="text-[10px] font-bold text-zinc-400 uppercase">
-                        {starter.exercises.length} moves
-                      </span>
-                    </div>
-
-                    <h4 className="font-black text-sm text-zinc-900 uppercase tracking-tight">{starter.name}</h4>
-
-                    <p className="text-xs text-zinc-500 line-clamp-2 font-medium">{starter.notes}</p>
-
-                    <div className="space-y-1 pt-2 border-t border-zinc-200/60">
-                      {starter.exercises.slice(0, 2).map((ex, exIdx) => (
-                        <div key={exIdx} className="flex items-center justify-between gap-2 text-[11px] text-zinc-600">
-                          <span className="font-medium truncate">{ex.name}</span>
-                          <span className="font-mono text-zinc-400 text-[10px] shrink-0">
-                            {ex.defaultSets} &times; {ex.defaultWeightKg}kg
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => handleSaveStarterTemplate(starter)}
-                    className="w-full py-3 sm:py-2 px-3.5 rounded-full bg-white hover:bg-zinc-900 hover:text-white border border-zinc-300 hover:border-zinc-900 text-zinc-900 font-black text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all"
-                  >
-                    <BookmarkPlus className="w-3.5 h-3.5 text-[#FF4A00]" />
-                    <span>Save Split Routine</span>
-                  </button>
-                </div>
-              ))}
+          ) : (
+            <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center bg-zinc-50/50 space-y-3">
+              <div className="w-10 h-10 rounded-2xl bg-orange-50 text-[#FF4A00] flex items-center justify-center mx-auto">
+                <Layers className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-black text-zinc-900 uppercase">No Saved Routines Yet</h3>
+                <p className="text-xs text-zinc-500 max-w-sm mx-auto mt-0.5 font-medium">
+                  Create your custom training routines or save workouts directly from the active workout page.
+                </p>
+              </div>
+              <button
+                onClick={() => setIsCreateTemplateOpen(true)}
+                className="py-2.5 px-5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-wider inline-flex items-center gap-2 active:scale-95 transition-all shadow-sm"
+              >
+                <Plus className="w-4 h-4 text-[#FF4A00]" />
+                <span>Create Routine</span>
+              </button>
             </div>
-          </div>
+          )}
         </section>
       </main>
 

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Play, Pause, X, BellRing } from 'lucide-react';
-import { triggerVibration, playRestTimerBeep } from '@/lib/sound';
+import { Play, Pause, X, BellRing, Volume2, VolumeX, Minimize2 } from 'lucide-react';
+import { triggerVibration, playRestTimerBeep, isSoundEnabled, setSoundEnabled } from '@/lib/sound';
 
 interface RestTimerModalProps {
   isOpen: boolean;
@@ -18,6 +18,11 @@ export default function RestTimerModal({
   const [targetSeconds, setTargetSeconds] = useState(defaultSeconds);
   const [remainingSeconds, setRemainingSeconds] = useState(defaultSeconds);
   const [isRunning, setIsRunning] = useState(true);
+  const [soundActive, setSoundActive] = useState(true);
+
+  useEffect(() => {
+    setSoundActive(isSoundEnabled());
+  }, []);
 
   useEffect(() => {
     setRemainingSeconds(targetSeconds);
@@ -32,14 +37,14 @@ export default function RestTimerModal({
         if (prev <= 1) {
           clearInterval(interval);
           triggerVibration([200, 100, 200, 100, 300]);
-          playRestTimerBeep('long');
+          playRestTimerBeep('finish');
           setIsRunning(false);
           return 0;
         }
 
         if (prev === 4 || prev === 3 || prev === 2) {
           triggerVibration([80]);
-          playRestTimerBeep('short');
+          playRestTimerBeep('countdown');
         }
 
         return prev - 1;
@@ -67,6 +72,12 @@ export default function RestTimerModal({
     setTargetSeconds((prev) => Math.max(0, prev + delta));
   };
 
+  const toggleSound = () => {
+    const next = !soundActive;
+    setSoundActive(next);
+    setSoundEnabled(next);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
       <div className="bg-white border border-zinc-200 rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-6 text-center">
@@ -81,12 +92,23 @@ export default function RestTimerModal({
               <p className="text-xs text-zinc-500">Audio & haptic alerts on zero</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={toggleSound}
+              className={`p-2 rounded-xl text-xs font-bold transition-all ${
+                soundActive ? 'text-zinc-700 hover:bg-zinc-100' : 'text-zinc-400 bg-zinc-100'
+              }`}
+              title={soundActive ? 'Mute sound' : 'Unmute sound'}
+            >
+              {soundActive ? <Volume2 className="w-4 h-4 text-[#FF4A00]" /> : <VolumeX className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Circular Display */}

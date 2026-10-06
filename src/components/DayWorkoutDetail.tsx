@@ -179,21 +179,175 @@ export default function DayWorkoutDetail({
             </button>
           </div>
 
-          {/* Muscle Map for this specific day */}
-          {(activeTab === 'all' || activeTab === 'muscles') && (
+          {/* Content Views */}
+          {activeTab === 'all' && (
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+              {/* Muscle Map Column */}
+              <div className="xl:col-span-5 space-y-3">
+                <MuscleMap
+                  exercises={dayExercises}
+                  title={`Muscles Worked`}
+                  subtitle={`${dayWorkouts.length} ${dayWorkouts.length === 1 ? 'session' : 'sessions'} on ${formattedDate}`}
+                  defaultOpen={true}
+                  collapsible={false}
+                />
+              </div>
+
+              {/* Logged Workouts Column */}
+              <div className="xl:col-span-7 space-y-3">
+                <div className="flex items-center justify-between px-1">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-zinc-500">
+                    Logged Sessions ({dayWorkouts.length})
+                  </h4>
+                </div>
+
+                {dayWorkouts.map((workout, wIdx) => {
+                  const open = isExpanded(workout._id || `w_${wIdx}`);
+                  const exercises = workout.exercises || [];
+
+                  return (
+                    <div
+                      key={workout._id || wIdx}
+                      className="rounded-xl sm:rounded-2xl border border-zinc-200 bg-white overflow-hidden shadow-sm transition-all"
+                    >
+                      {/* Workout Header Bar */}
+                      <div
+                        onClick={() => toggleExpand(workout._id || `w_${wIdx}`)}
+                        className="p-3.5 sm:p-4 flex items-center justify-between cursor-pointer hover:bg-zinc-50/70 transition-colors gap-2"
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="p-2 rounded-xl bg-zinc-900 text-white shrink-0">
+                            <Dumbbell className="w-4 h-4 text-[#FF4A00]" />
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="font-black text-sm sm:text-base text-zinc-900 uppercase tracking-tight truncate">
+                              {workout.title || 'Strength Workout'}
+                            </h4>
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] text-zinc-500 font-medium">
+                              <span>{formatDuration(workout.durationSeconds || 0)}</span>
+                              <span>&bull;</span>
+                              <span className="font-bold text-[#FF4A00]">
+                                {formatNumber(workout.totalVolumeKg || 0)} kg
+                              </span>
+                              <span>&bull;</span>
+                              <span>{exercises.length} moves</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(workout._id);
+                            }}
+                            disabled={deletingId === workout._id}
+                            className="p-1.5 rounded-lg text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                            title="Delete workout"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                          <div className="p-1 text-zinc-400">
+                            {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Expanded Workout Breakdown: Sets & Exercises */}
+                      {open && (
+                        <div className="p-3 sm:p-4 border-t border-zinc-100 bg-zinc-50/40 space-y-3">
+                          {exercises.map((ex: any, exIndex: number) => {
+                            const sets = ex.sets || [];
+
+                            const topSet = sets.reduce(
+                              (max: any, s: any) => (s.est1RM > (max?.est1RM || 0) ? s : max),
+                              null
+                            );
+
+                            return (
+                              <div
+                                key={exIndex}
+                                className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-3.5 border border-zinc-200/80 space-y-2.5"
+                              >
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="flex items-center gap-1.5 min-w-0">
+                                    <span className="font-black text-xs sm:text-sm text-zinc-900 uppercase truncate">
+                                      {ex.name}
+                                    </span>
+                                    {ex.isCompound && (
+                                      <span className="px-1.5 py-0.2 rounded-full text-[8px] sm:text-[9px] font-black uppercase bg-orange-100 text-[#FF4A00] shrink-0">
+                                        Compound
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {topSet && topSet.est1RM > 0 && (
+                                    <span className="text-[10px] font-mono font-black text-zinc-600 bg-zinc-100 px-1.5 py-0.5 rounded-md flex items-center gap-1 shrink-0">
+                                      <Zap className="w-2.5 h-2.5 text-[#FF4A00]" />
+                                      1RM ~{topSet.est1RM}kg
+                                    </span>
+                                  )}
+                                </div>
+
+                                {/* Sets Table */}
+                                <div className="space-y-1">
+                                  <div className="grid grid-cols-4 text-[9px] font-bold uppercase tracking-wider text-zinc-400 px-2">
+                                    <span>Set</span>
+                                    <span className="text-center">Weight</span>
+                                    <span className="text-center">Reps</span>
+                                    <span className="text-right">1RM</span>
+                                  </div>
+
+                                  {sets.map((set: any, sIdx: number) => (
+                                    <div
+                                      key={sIdx}
+                                      className={`grid grid-cols-4 items-center px-2 sm:px-3 py-1.5 rounded-lg text-xs font-mono ${
+                                        set.completed !== false
+                                          ? 'bg-zinc-50 text-zinc-800'
+                                          : 'bg-zinc-100/50 text-zinc-400 line-through'
+                                      }`}
+                                    >
+                                      <span className="font-bold text-zinc-500 font-sans text-[11px]">
+                                        #{set.setNumber || sIdx + 1}
+                                      </span>
+                                      <span className="text-center font-black">
+                                        {set.weightKg}<span className="text-[10px] text-zinc-400 font-sans">kg</span>
+                                      </span>
+                                      <span className="text-center font-black">{set.reps}</span>
+                                      <span className="text-right font-black text-[#FF4A00]">
+                                        {set.est1RM ? `${set.est1RM}kg` : '-'}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Muscle Map Only Tab */}
+          {activeTab === 'muscles' && (
             <div className="space-y-2">
               <MuscleMap
                 exercises={dayExercises}
                 title={`Muscles Worked on ${formattedDate}`}
                 subtitle={`${dayWorkouts.length} ${dayWorkouts.length === 1 ? 'session' : 'sessions'} logged`}
                 defaultOpen={true}
-                collapsible={activeTab === 'all'}
+                collapsible={false}
               />
             </div>
           )}
 
-          {/* List of workouts on this day */}
-          {(activeTab === 'all' || activeTab === 'exercises') && (
+          {/* Workouts Only Tab */}
+          {activeTab === 'exercises' && (
             <div className="space-y-3">
               <div className="flex items-center justify-between px-1">
                 <h4 className="text-xs font-black uppercase tracking-wider text-zinc-500">
@@ -277,7 +431,7 @@ export default function DayWorkoutDetail({
                                   </span>
                                   {ex.isCompound && (
                                     <span className="px-1.5 py-0.2 rounded-full text-[8px] sm:text-[9px] font-black uppercase bg-orange-100 text-[#FF4A00] shrink-0">
-                                     Compound
+                                      Compound
                                     </span>
                                   )}
                                 </div>

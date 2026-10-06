@@ -17,6 +17,7 @@ export interface ActiveWorkoutDraft {
       reps: number;
       est1RM: number;
       completed: boolean;
+      type?: 'N' | 'W' | 'D' | 'F';
     }[];
   }[];
   lastSavedAt: number;
@@ -99,7 +100,8 @@ export interface CachedUser {
   name: string;
   email?: string;
   weightKg: number;
-  stravaConnected?: boolean;
+  sex?: string;
+  heightCm?: number;
 }
 
 const STORAGE_KEY_USER = 'stryq_user';

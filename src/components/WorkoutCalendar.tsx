@@ -198,12 +198,12 @@ export default function WorkoutCalendar({
       </div>
 
       {/* Day of Week Headers */}
-      <div className="grid grid-cols-7 gap-1 sm:gap-1.5 mb-1.5 text-center">
+      <div className="grid grid-cols-7 gap-1 sm:gap-1.5 mb-2 text-center">
         {DAYS_FULL.map((day, idx) => (
           <div
             key={idx}
-            className={`py-1 text-[10px] sm:text-[11px] font-black uppercase tracking-wider ${
-              idx === 0 || idx === 6 ? 'text-zinc-400' : 'text-zinc-500'
+            className={`py-1 text-[11px] font-black uppercase tracking-wider ${
+              idx === 0 || idx === 6 ? 'text-zinc-400' : 'text-zinc-600'
             }`}
           >
             <span className="sm:hidden">{DAYS_SHORT[idx]}</span>
@@ -222,8 +222,6 @@ export default function WorkoutCalendar({
           const hasWorkouts = dayWorkouts.length > 0;
           const dayNumber = date.getDate();
 
-          const dayTonnage = dayWorkouts.reduce((sum, w) => sum + (w.totalVolumeKg || 0), 0);
-
           return (
             <button
               key={index}
@@ -234,18 +232,18 @@ export default function WorkoutCalendar({
                   setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1));
                 }
               }}
-              className={`group relative flex flex-col items-center justify-between p-1 sm:p-2 rounded-xl sm:rounded-2xl min-h-[48px] sm:min-h-[70px] border transition-all text-center ${
+              className={`group relative flex flex-col items-center justify-between p-1.5 sm:p-2 rounded-xl sm:rounded-2xl aspect-square min-h-[46px] sm:min-h-[54px] border transition-all text-center ${
                 isSelected
-                  ? 'bg-zinc-900 text-white border-zinc-900 shadow-md ring-2 ring-[#FF4A00] ring-offset-1 sm:ring-offset-2'
+                  ? 'bg-zinc-900 text-white border-zinc-900 shadow-md ring-2 ring-[#FF4A00]'
                   : hasWorkouts
-                  ? 'bg-orange-50/70 hover:bg-orange-100 border-orange-200 text-zinc-900'
+                  ? 'bg-orange-50 hover:bg-orange-100/80 border-orange-200/80 text-zinc-900 font-bold'
                   : isCurrentMonth
                   ? 'bg-white hover:bg-zinc-50 border-zinc-200/70 text-zinc-800'
                   : 'bg-zinc-50/40 hover:bg-zinc-100/40 border-transparent text-zinc-300'
               }`}
             >
-              {/* Day Number Row */}
-              <div className="w-full flex items-center justify-center">
+              {/* Day Number */}
+              <div className="w-full flex items-center justify-center flex-1">
                 <span
                   className={`inline-grid place-items-center h-6 w-6 sm:h-7 sm:w-7 rounded-full text-xs sm:text-sm font-black font-mono transition-colors ${
                     isSelected
@@ -261,40 +259,19 @@ export default function WorkoutCalendar({
                 </span>
               </div>
 
-              {/* Workout Indicators */}
-              <div className="w-full flex items-center justify-center mt-0.5 sm:mt-1">
-                {hasWorkouts ? (
-                  <>
-                    {/* Desktop detailed badge */}
-                    <div
-                      className={`hidden sm:flex items-center justify-center gap-1 w-full px-1 py-0.5 rounded-md text-[9px] font-black truncate ${
-                        isSelected
-                          ? 'bg-[#FF4A00] text-white'
-                          : 'bg-[#FF4A00]/15 text-[#FF4A00]'
-                      }`}
-                    >
-                      <Dumbbell className="w-2.5 h-2.5 shrink-0" />
-                      <span className="truncate">
-                        {dayWorkouts.length > 1
-                          ? `${dayWorkouts.length} sets`
-                          : `${formatNumber(dayTonnage)}kg`}
-                      </span>
-                    </div>
-
-                    {/* Mobile clean dot badge */}
-                    <div className="sm:hidden flex items-center justify-center gap-0.5 pb-0.5">
-                      {dayWorkouts.slice(0, 3).map((_, i) => (
-                        <span
-                          key={i}
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            isSelected ? 'bg-[#FF4A00]' : 'bg-[#FF4A00]'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <div className="h-2 sm:h-4" />
+              {/* Workout Indicator Dots */}
+              <div className="w-full flex items-center justify-center gap-1 h-2">
+                {hasWorkouts && (
+                  <div className="flex items-center justify-center gap-0.5">
+                    {dayWorkouts.slice(0, 3).map((_, i) => (
+                      <span
+                        key={i}
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          isSelected ? 'bg-[#FF4A00]' : 'bg-[#FF4A00]'
+                        }`}
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             </button>

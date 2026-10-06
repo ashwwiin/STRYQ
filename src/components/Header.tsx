@@ -4,14 +4,13 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '@/components/Logo';
-import { Weight, Settings, LogOut, LayoutGrid, Dumbbell, Calendar, ChevronDown } from 'lucide-react';
+import { User, Settings, LogOut, LayoutGrid, Dumbbell, Calendar, ChevronDown } from 'lucide-react';
 import { getCachedUser, clearCachedUser, type CachedUser } from '@/lib/storage';
 
 interface HeaderProps {
   userWeight?: number;
   onOpenWeightModal?: () => void;
   userName?: string;
-  stravaConnected?: boolean;
 }
 
 const NAV = [
@@ -147,37 +146,40 @@ export default function Header({
                 role="menu"
                 className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]"
               >
-                <div className="flex items-center gap-3 px-3 py-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-[#111] text-sm font-black text-white">
+                <Link
+                  href="/profile"
+                  onClick={() => setDropdownOpen(false)}
+                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-50 transition-colors"
+                >
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#111] text-sm font-black text-white">
                     {displayName.charAt(0).toUpperCase()}
                   </span>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-bold text-zinc-900">{displayName}</p>
-                    <p className="text-xs text-zinc-500">STRYQ Lifter</p>
+                    <p className="text-xs text-zinc-500">View Athlete Profile</p>
                   </div>
-                </div>
+                </Link>
 
                 <div className="my-1 h-px bg-zinc-100" />
 
-                <button
-                  onClick={() => {
-                    setDropdownOpen(false);
-                    onOpenWeightModal?.();
-                  }}
+                <Link
+                  href="/profile"
                   role="menuitem"
-                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
+                  onClick={() => setDropdownOpen(false)}
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
                 >
-                  <Weight className="h-4 w-4 text-[#FF4A00]" />
-                  <span>Body weight: {displayWeight} kg</span>
-                </button>
+                  <User className="h-4 w-4 text-[#FF4A00]" />
+                  Athlete Profile
+                </Link>
 
                 <Link
                   href="/settings"
                   role="menuitem"
+                  onClick={() => setDropdownOpen(false)}
                   className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
                 >
                   <Settings className="h-4 w-4 text-zinc-400" />
-                  Settings &amp; Profile
+                  Settings &amp; Preferences
                 </Link>
 
                 <button

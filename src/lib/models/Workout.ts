@@ -6,6 +6,7 @@ export interface IWorkoutSet {
   reps: number;
   est1RM: number;
   completed: boolean;
+  type?: 'N' | 'W' | 'D' | 'F'; // Normal, Warmup, Drop set, Failure
 }
 
 export interface IWorkoutExercise {
@@ -21,8 +22,6 @@ export interface IWorkoutDocument extends Document {
   totalVolumeKg: number;
   caloriesBurned: number;
   exercises: IWorkoutExercise[];
-  stravaActivityId?: string;
-  syncedToStrava: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,6 +33,7 @@ const WorkoutSetSchema = new Schema<IWorkoutSet>(
     reps: { type: Number, required: true, min: 0, max: 100 },
     est1RM: { type: Number, default: 0 },
     completed: { type: Boolean, default: false },
+    type: { type: String, enum: ['N', 'W', 'D', 'F'], default: 'N' },
   },
   { _id: false }
 );
@@ -55,8 +55,6 @@ const WorkoutSchema = new Schema<IWorkoutDocument>(
     totalVolumeKg: { type: Number, required: true, min: 0 },
     caloriesBurned: { type: Number, required: true, min: 0 },
     exercises: [WorkoutExerciseSchema],
-    stravaActivityId: { type: String },
-    syncedToStrava: { type: Boolean, default: false },
   },
   {
     timestamps: true,

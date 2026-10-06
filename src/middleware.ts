@@ -12,6 +12,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/workout') ||
     pathname.startsWith('/calendar') ||
+    pathname.startsWith('/profile') ||
     pathname.startsWith('/settings');
 
   // Root route '/' -> redirect to /dashboard if logged in, otherwise /login

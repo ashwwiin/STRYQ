@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
           name: session.name,
           email: session.email,
           weightKg: 75,
-          stravaConnected: false,
         },
       });
     }
@@ -34,7 +33,8 @@ export async function GET(req: NextRequest) {
         name: user.name,
         email: user.email,
         weightKg: user.weightKg || 75,
-        stravaConnected: Boolean(user.strava?.accessToken),
+        sex: user.sex || 'unspecified',
+        heightCm: user.heightCm || 175,
       },
     });
   } catch (error: any) {
@@ -49,7 +49,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { weightKg, name } = await req.json();
+    const { weightKg, name, sex, heightCm } = await req.json();
 
     const conn = await connectDB();
     if (conn) {
@@ -60,6 +60,12 @@ export async function PATCH(req: NextRequest) {
       if (name && typeof name === 'string' && name.trim()) {
         updateData.name = name.trim();
       }
+      if (sex && typeof sex === 'string') {
+        updateData.sex = sex.trim();
+      }
+      if (typeof heightCm === 'number' && heightCm >= 50 && heightCm <= 280) {
+        updateData.heightCm = heightCm;
+      }
 
       await User.findByIdAndUpdate(session.userId, { $set: updateData });
     }
@@ -69,6 +75,8 @@ export async function PATCH(req: NextRequest) {
       message: 'Profile updated successfully',
       weightKg,
       name,
+      sex,
+      heightCm,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });

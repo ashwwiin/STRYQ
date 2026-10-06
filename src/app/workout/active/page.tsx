@@ -25,7 +25,7 @@ import AddExerciseModal from '@/components/AddExerciseModal';
 import RestTimerModal from '@/components/RestTimerModal';
 import FinishWorkoutModal from '@/components/FinishWorkoutModal';
 import SaveAsTemplateModal from '@/components/SaveAsTemplateModal';
-import MuscleMap from '@/components/MuscleMap'
+import MuscleMap from '@/components/MuscleMap';
 import {
   Plus,
   Minus,
@@ -56,6 +56,7 @@ interface WorkoutSet {
   completed: boolean;
   previous?: string;
   isWarmup?: boolean;
+  type?: 'N' | 'W' | 'D' | 'F';
 }
 
 interface ActiveExercise {
@@ -503,16 +504,30 @@ function ActiveWorkoutContent() {
     handleUpdateSet(exIndex, setIndex, field, Math.round((current + delta) * 100) / 100);
   };
 
-  const handleToggleWarmup = (exIndex: number, setIndex: number) => {
+  const handleCycleSetType = (exIndex: number, setIndex: number) => {
     updateExercise(exIndex, (ex) => ({
       ...ex,
-      sets: ex.sets.map((s, i) => (i === setIndex ? { ...s, isWarmup: !s.isWarmup } : s)),
+      sets: ex.sets.map((s, i) => {
+        if (i !== setIndex) return s;
+        const currentType = s.type || (s.isWarmup ? 'W' : 'N');
+        let nextType: 'N' | 'W' | 'D' | 'F' = 'N';
+        if (currentType === 'N') nextType = 'W';
+        else if (currentType === 'W') nextType = 'D';
+        else if (currentType === 'D') nextType = 'F';
+        else nextType = 'N';
+
+        return {
+          ...s,
+          type: nextType,
+          isWarmup: nextType === 'W',
+        };
+      }),
     }));
   };
 
   const isNewBest = (exName: string, set: WorkoutSet) => {
     const best = history[nameKey(exName)]?.best || 0;
-    return set.completed && !set.isWarmup && best > 0 && calculate1RM(set.weightKg, set.reps) > best;
+    return set.completed && !set.isWarmup && set.type !== 'W' && best > 0 && calculate1RM(set.weightKg, set.reps) > best;
   };
 
   const handleToggleComplete = (exIndex: number, setIndex: number) => {
@@ -658,7 +673,6 @@ function ActiveWorkoutContent() {
       caloriesBurned: totalCalories,
       userWeightKg,
       exercises,
-      syncedToStrava: false,
       durationEstimated: durationIsEstimated,
       manualEntry: mode === 'past',
       // For a past workout, save it on the day it happened
@@ -924,47 +938,82 @@ function ActiveWorkoutContent() {
                 </div>
 
                 {templates.length > 0 && (
-                  <section className="space-y-3">
-                    <h2 className="text-lg font-black uppercase tracking-tight sm:text-xl">
-                      Start from a template
-                    </h2>
-                    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  <section className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-black uppercase tracking-tight sm:text-xl text-zinc-900">
+                          Start from a template
+                        </h2>
+                        <p className="text-xs text-zinc-500 font-medium mt-0.5">
+                          Launch a saved routine with your configured movements and targets
+                        </p>
+                      </div>
+                      <span className="px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 text-xs font-bold font-mono">
+                        {templates.length} saved
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4 items-stretch">
                       {templates.map((tpl) => (
                         <div
                           key={tpl._id || tpl.id}
-                          className="flex items-center justify-between gap-3 rounded-2xl border border-zinc-200 p-4 sm:p-5 hover:border-zinc-900 transition-colors"
+                          className="bg-white rounded-2xl border border-zinc-200 hover:border-zinc-900/80 p-4 sm:p-5 flex flex-col justify-between space-y-4 transition-all shadow-sm group"
                         >
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-orange-100 text-[#FF4A00]">
+                          <div className="space-y-3">
+                            <div className="flex items-start justify-between gap-2">
+                              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-50 text-[#FF4A00] border border-orange-100">
                                 {tpl.category || 'Routine'}
                               </span>
+                              <button
+                                onClick={() => handleDeleteTemplate(tpl._id || tpl.id)}
+                                aria-label={`Delete template ${tpl.name}`}
+                                title="Delete Routine"
+                                className="grid h-8 w-8 -m-1 place-items-center rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
                             </div>
-                            <p className="truncate font-black uppercase tracking-tight text-sm text-zinc-900">{tpl.name}</p>
-                            <p className="truncate text-xs text-zinc-500 mt-0.5">
-                              {tpl.exercises?.length || 0} movements &middot;{' '}
-                              {tpl.exercises
-                                ?.slice(0, 2)
-                                .map((e: any) => e.name)
-                                .join(', ')}
-                              {(tpl.exercises?.length || 0) > 2 ? '…' : ''}
-                            </p>
+
+                            <div>
+                              <h3 className="text-base font-black text-zinc-900 uppercase tracking-tight group-hover:text-[#FF4A00] transition-colors">
+                                {tpl.name}
+                              </h3>
+                              {tpl.notes && (
+                                <p className="text-xs text-zinc-500 line-clamp-2 mt-0.5 font-medium">{tpl.notes}</p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5 pt-2.5 border-t border-zinc-100">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
+                                {tpl.exercises?.length || 0} Movements
+                              </span>
+                              <div className="space-y-1">
+                                {tpl.exercises?.slice(0, 3).map((ex: any, idx: number) => (
+                                  <div key={idx} className="flex items-center justify-between gap-2 text-xs text-zinc-700">
+                                    <span className="font-semibold truncate">{ex.name}</span>
+                                    {ex.defaultSets && (
+                                      <span className="text-zinc-400 font-mono text-[10px] shrink-0">
+                                        {ex.defaultSets} &times; {ex.defaultWeightKg || 0}kg
+                                      </span>
+                                    )}
+                                  </div>
+                                ))}
+                                {(tpl.exercises?.length || 0) > 3 && (
+                                  <p className="text-[11px] text-zinc-400 font-medium">
+                                    +{(tpl.exercises?.length || 0) - 3} more movements
+                                  </p>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex shrink-0 items-center gap-1.5">
-                            <button
-                              onClick={() => handleDeleteTemplate(tpl._id || tpl.id)}
-                              aria-label={`Delete template ${tpl.name}`}
-                              className="grid h-9 w-9 place-items-center rounded-full text-zinc-400 transition hover:bg-red-50 hover:text-red-600"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => handleStartTemplate(tpl)}
-                              className="rounded-full bg-[#FF4A00] px-4 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[#e04000] active:scale-95 shadow-sm"
-                            >
-                              Use
-                            </button>
-                          </div>
+
+                          <button
+                            onClick={() => handleStartTemplate(tpl)}
+                            className="w-full py-2.5 px-4 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md shadow-orange-600/20 active:scale-95 transition-all mt-auto"
+                          >
+                            <Play className="w-3.5 h-3.5 fill-current" />
+                            <span>Start Routine</span>
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -1154,23 +1203,30 @@ function ActiveWorkoutContent() {
                                   }`}
                               >
                                 <div className={SET_GRID}>
-                                  {/* Set number (tap to mark warm-up) */}
+                                  {/* Set type / number badge (tap to cycle Normal -> Warmup -> Drop -> Failure) */}
                                   <button
-                                    onClick={() => handleToggleWarmup(exIdx, setIdx)}
-                                    title={set.isWarmup ? 'Warm-up set (tap to change)' : 'Tap to mark as warm-up'}
-                                    aria-label={
-                                      set.isWarmup
-                                        ? `Set ${set.setNumber} is a warm-up. Tap to make it a working set`
-                                        : `Set ${set.setNumber}. Tap to mark as warm-up`
-                                    }
-                                    className={`grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-full font-mono text-[11px] sm:text-xs font-black transition ${set.isWarmup
-                                      ? 'bg-amber-100 text-amber-700'
-                                      : set.completed
+                                    onClick={() => handleCycleSetType(exIdx, setIdx)}
+                                    title={`Set type: ${set.type || (set.isWarmup ? 'W' : 'N')} (Tap to cycle: Normal -> Warmup -> Drop-set -> Failure)`}
+                                    aria-label={`Set ${set.setNumber} type`}
+                                    className={`grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-full font-mono text-[11px] sm:text-xs font-black transition active:scale-95 ${
+                                      set.type === 'W' || set.isWarmup
+                                        ? 'bg-amber-100 text-amber-700 border border-amber-300'
+                                        : set.type === 'D'
+                                        ? 'bg-purple-100 text-purple-700 border border-purple-300'
+                                        : set.type === 'F'
+                                        ? 'bg-rose-100 text-rose-700 border border-rose-300'
+                                        : set.completed
                                         ? 'bg-emerald-500 text-white'
                                         : 'bg-zinc-200 text-zinc-800 hover:bg-zinc-300'
-                                      }`}
+                                    }`}
                                   >
-                                    {set.isWarmup ? 'W' : set.setNumber}
+                                    {set.type === 'W' || set.isWarmup
+                                      ? 'W'
+                                      : set.type === 'D'
+                                      ? 'D'
+                                      : set.type === 'F'
+                                      ? 'F'
+                                      : set.setNumber}
                                   </button>
 
                                   {/* Last time (tap to fill) */}
@@ -1263,7 +1319,7 @@ function ActiveWorkoutContent() {
 
                                 {/* Quick adjust bar for the row you're editing */}
                                 {isActive && (
-                                  <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-black/5 px-1 pt-2">
+                                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-black/5 px-1 pt-2">
                                     <Stepper
                                       label="kg"
                                       onMinus={() => adjustSet(exIdx, setIdx, 'weightKg', -2.5)}

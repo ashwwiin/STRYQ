@@ -64,7 +64,6 @@ export async function POST(req: NextRequest) {
       totalVolumeKg: totalVolume,
       caloriesBurned,
       exercises: formattedExercises,
-      syncedToStrava: false,
     };
 
     if (createdAt) {

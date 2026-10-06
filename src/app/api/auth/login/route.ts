@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
         name: user.name,
         email: user.email,
         weightKg: user.weightKg,
-        stravaConnected: Boolean(user.strava?.accessToken),
       },
     });
 

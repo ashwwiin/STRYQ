@@ -54,7 +54,6 @@ export async function POST(req: NextRequest) {
         name: newUser.name,
         email: newUser.email,
         weightKg: newUser.weightKg,
-        stravaConnected: false,
       },
     });
 

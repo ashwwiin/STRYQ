@@ -25,7 +25,6 @@ export async function GET(req: NextRequest) {
           name: session.name,
           email: session.email,
           weightKg: 75,
-          stravaConnected: false,
         },
         workouts: [],
         templates: [],
@@ -34,7 +33,7 @@ export async function GET(req: NextRequest) {
 
     // Execute queries concurrently using lean() for maximum performance
     const [userDoc, workouts, templates] = await Promise.all([
-      User.findById(session.userId).select('name email weightKg strava').lean(),
+      User.findById(session.userId).select('name email weightKg sex heightCm').lean(),
       Workout.find({ userId: session.userId }).sort({ createdAt: -1 }).lean(),
       Template.find({ userId: session.userId }).sort({ createdAt: -1 }).lean(),
     ]);
@@ -45,14 +44,16 @@ export async function GET(req: NextRequest) {
           name: userDoc.name,
           email: userDoc.email,
           weightKg: userDoc.weightKg || 75,
-          stravaConnected: Boolean(userDoc.strava?.accessToken),
+          sex: userDoc.sex || 'unspecified',
+          heightCm: userDoc.heightCm || 175,
         }
       : {
           id: session.userId,
           name: session.name,
           email: session.email,
           weightKg: 75,
-          stravaConnected: false,
+          sex: 'unspecified',
+          heightCm: 175,
         };
 
     return NextResponse.json({
