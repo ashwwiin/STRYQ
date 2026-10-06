@@ -63,5 +63,7 @@ const WorkoutSchema = new Schema<IWorkoutDocument>(
   }
 );
 
+WorkoutSchema.index({ userId: 1, createdAt: -1 });
+
 export const Workout: Model<IWorkoutDocument> =
   mongoose.models.Workout || mongoose.model<IWorkoutDocument>('Workout', WorkoutSchema);

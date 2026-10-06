@@ -1,14 +1,16 @@
 import mongoose from 'mongoose';
 import dns from 'dns';
 
-// Configure reliable DNS servers to resolve MongoDB Atlas SRV records on Windows
-try {
-  dns.setServers(['8.8.8.8', '1.1.1.1', '8.8.4.4']);
-} catch {
-  // Ignore in environments where setting DNS servers is restricted
-}
-
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/stryq';
+
+// Only configure external DNS if using an SRV record (mongodb+srv://)
+if (MONGODB_URI.startsWith('mongodb+srv://')) {
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1', '8.8.4.4']);
+  } catch {
+    // Ignore in restricted environments
+  }
+}
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -20,7 +22,7 @@ declare global {
   var mongooseCache: MongooseCache | undefined;
 }
 
-let cached: MongooseCache = global.mongooseCache || { conn: null, promise: null };
+const cached: MongooseCache = global.mongooseCache || { conn: null, promise: null };
 
 if (!global.mongooseCache) {
   global.mongooseCache = cached;
@@ -34,8 +36,11 @@ export async function connectDB(): Promise<typeof mongoose | null> {
   if (!cached.promise) {
     const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 5000,
-      connectTimeoutMS: 5000,
+      maxPoolSize: 10,
+      minPoolSize: 1,
+      serverSelectionTimeoutMS: 4000,
+      connectTimeoutMS: 4000,
+      socketTimeoutMS: 20000,
     };
 
     cached.promise = mongoose

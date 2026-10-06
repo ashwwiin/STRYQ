@@ -42,5 +42,7 @@ const TemplateSchema = new Schema<ITemplateDocument>(
   }
 );
 
+TemplateSchema.index({ userId: 1, createdAt: -1 });
+
 export const Template: Model<ITemplateDocument> =
   mongoose.models.Template || mongoose.model<ITemplateDocument>('Template', TemplateSchema);
