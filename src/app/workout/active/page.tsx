@@ -93,9 +93,9 @@ interface Toast {
 
 /* ───────────────────────── Constants / helpers ───────────────────────── */
 
-/* One shared column layout so the labels and every set row line up */
+/* One shared column layout so the labels and every set row line up in Hevy format */
 const SET_GRID =
-  'grid grid-cols-[24px_minmax(0,1fr)_minmax(0,1fr)_38px_20px] sm:grid-cols-[28px_96px_minmax(0,1fr)_minmax(0,1fr)_44px_24px] items-center gap-1.5 sm:gap-3';
+  'grid grid-cols-[28px_minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_36px_20px] sm:grid-cols-[32px_105px_minmax(0,1fr)_minmax(0,1fr)_42px_24px] items-center gap-1.5 sm:gap-2.5';
 
 const TEMPLATES_KEY = 'stryq_templates';
 const REST_KEY = 'stryq_rest_seconds';
@@ -722,7 +722,7 @@ function ActiveWorkoutContent() {
   /* ───────────────────────── Render ───────────────────────── */
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-white pb-28 text-[#111] selection:bg-[#FF4A00] selection:text-white">
+    <div className="flex min-h-screen w-full flex-col bg-[#09090b] pb-28 text-white selection:bg-[#FF4A00] selection:text-white">
       <Header
         userWeight={userWeightKg}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
@@ -732,7 +732,7 @@ function ActiveWorkoutContent() {
       <main className="mx-auto w-full max-w-[1920px] flex-1 space-y-4 px-3 py-4 sm:space-y-6 sm:px-8 sm:py-8 lg:px-12 2xl:px-16 overflow-x-hidden">
         {/* Workout name */}
         <section className="min-w-0">
-          <label htmlFor="workout-title" className="text-xs font-semibold text-zinc-500">
+          <label htmlFor="workout-title" className="text-xs font-semibold text-zinc-400">
             Workout name
           </label>
           <input
@@ -740,12 +740,12 @@ function ActiveWorkoutContent() {
             type="text"
             value={workoutTitle}
             onChange={(e) => setWorkoutTitle(e.target.value)}
-            className="mt-1 w-full border-none bg-transparent p-0 text-xl font-black uppercase tracking-tight text-zinc-900 placeholder-zinc-300 focus:outline-none focus:ring-0 sm:text-4xl"
+            className="mt-1 w-full border-none bg-transparent p-0 text-xl font-black uppercase tracking-tight text-white placeholder-zinc-600 focus:outline-none focus:ring-0 sm:text-4xl"
             placeholder="Name your workout"
           />
 
           <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
-            <div className="inline-flex rounded-full bg-zinc-100 p-1" role="tablist" aria-label="Workout type">
+            <div className="inline-flex rounded-full bg-zinc-900 border border-zinc-800 p-1" role="tablist" aria-label="Workout type">
               {(['live', 'past'] as const).map((m) => (
                 <button
                   key={m}
@@ -753,7 +753,7 @@ function ActiveWorkoutContent() {
                   aria-selected={mode === m}
                   onClick={() => switchMode(m)}
                   className={`rounded-full px-3 py-1.5 text-xs font-bold transition sm:px-5 sm:py-2 sm:text-[13px] ${
-                    mode === m ? 'bg-[#111] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-900'
+                    mode === m ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-600/30' : 'text-zinc-400 hover:text-white'
                   }`}
                 >
                   {m === 'live' ? 'Live workout' : 'Log a past workout'}
@@ -765,7 +765,7 @@ function ActiveWorkoutContent() {
               <button
                 type="button"
                 onClick={handleDiscardWorkout}
-                className="rounded-full border border-zinc-200 px-3 py-1.5 text-xs font-bold text-zinc-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 sm:px-4 sm:py-2"
+                className="rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-bold text-zinc-400 transition hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 sm:px-4 sm:py-2"
               >
                 Clear / Start Fresh
               </button>
@@ -783,9 +783,9 @@ function ActiveWorkoutContent() {
             {/* Timer + live stats */}
             <section className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-12 lg:gap-5 min-w-0">
               {mode === 'live' ? (
-                <div className="rounded-2xl bg-[#111] p-5 text-white sm:p-6 lg:col-span-5 xl:col-span-4">
+                <div className="rounded-2xl sm:rounded-3xl bg-[#141417] border border-zinc-800/80 p-5 text-white sm:p-6 lg:col-span-5 xl:col-span-4 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold text-zinc-400">Workout time</p>
+                    <p className="text-xs font-black uppercase tracking-wider text-zinc-400">Workout time</p>
                     <span className="flex items-center gap-2 text-xs font-semibold text-zinc-400">
                       <span
                         className={`h-2 w-2 rounded-full ${isTimerRunning ? 'animate-pulse bg-[#FF4A00]' : 'bg-zinc-600'
@@ -795,7 +795,7 @@ function ActiveWorkoutContent() {
                     </span>
                   </div>
 
-                  <p className="mt-2 font-mono text-5xl font-black tabular-nums tracking-tight sm:text-6xl">
+                  <p className="mt-2 font-mono text-5xl font-black tabular-nums tracking-tight sm:text-6xl text-white">
                     {formatDuration(elapsedSeconds)}
                   </p>
 
@@ -806,8 +806,8 @@ function ActiveWorkoutContent() {
                         setIsTimerRunning((r) => !r);
                       }}
                       className={`flex flex-1 items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-black uppercase tracking-wider transition active:scale-95 ${isTimerRunning
-                        ? 'bg-white text-[#111] hover:bg-zinc-200'
-                        : 'bg-[#FF4A00] text-white hover:bg-[#e04000]'
+                        ? 'bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700'
+                        : 'bg-[#FF4A00] text-white hover:bg-[#e04000] shadow-lg shadow-orange-600/30'
                         }`}
                     >
                       {isTimerRunning ? (
@@ -833,7 +833,7 @@ function ActiveWorkoutContent() {
                           </button>
                           <button
                             onClick={() => setConfirmReset(false)}
-                            className="rounded-full px-3 py-3.5 text-xs font-bold text-zinc-300 transition hover:text-white"
+                            className="rounded-full px-3 py-3.5 text-xs font-bold text-zinc-400 transition hover:text-white"
                           >
                             Cancel
                           </button>
@@ -842,7 +842,7 @@ function ActiveWorkoutContent() {
                         <button
                           onClick={() => setConfirmReset(true)}
                           aria-label="Reset timer"
-                          className="flex items-center justify-center gap-2 rounded-full border border-white/20 px-5 py-3.5 text-xs font-bold transition hover:bg-white/10 active:scale-95"
+                          className="flex items-center justify-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-5 py-3.5 text-xs font-bold text-zinc-300 transition hover:bg-zinc-800 hover:text-white active:scale-95"
                         >
                           <RotateCcw className="h-4 w-4 text-[#FF4A00]" />
                           Reset
@@ -851,8 +851,8 @@ function ActiveWorkoutContent() {
                   </div>
                 </div>
               ) : (
-                <div className="rounded-2xl bg-[#111] p-5 text-white sm:p-6 lg:col-span-5 xl:col-span-4">
-                  <p className="text-xs font-semibold text-zinc-400">When did you train?</p>
+                <div className="rounded-2xl sm:rounded-3xl bg-[#141417] border border-zinc-800/80 p-5 text-white sm:p-6 lg:col-span-5 xl:col-span-4 shadow-sm">
+                  <p className="text-xs font-black uppercase tracking-wider text-zinc-400">When did you train?</p>
 
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     <label className="space-y-1 text-xs font-semibold text-zinc-400">
@@ -862,7 +862,7 @@ function ActiveWorkoutContent() {
                         value={pastDate}
                         max={todayLocal}
                         onChange={(e) => setPastDate(e.target.value)}
-                        className="w-full rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold text-white [color-scheme:dark] focus:outline-none focus:ring-1 focus:ring-[#FF4A00]"
+                        className="w-full rounded-xl bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-sm font-bold text-white [color-scheme:dark] focus:outline-none focus:border-[#FF4A00]"
                       />
                     </label>
                     <label className="space-y-1 text-xs font-semibold text-zinc-400">
@@ -871,7 +871,7 @@ function ActiveWorkoutContent() {
                         type="time"
                         value={pastTime}
                         onChange={(e) => setPastTime(e.target.value)}
-                        className="w-full rounded-xl bg-white/10 px-3 py-2.5 text-sm font-bold text-white [color-scheme:dark] focus:outline-none focus:ring-1 focus:ring-[#FF4A00]"
+                        className="w-full rounded-xl bg-zinc-900 border border-zinc-800 px-3 py-2.5 text-sm font-bold text-white [color-scheme:dark] focus:outline-none focus:border-[#FF4A00]"
                       />
                     </label>
                   </div>
@@ -886,7 +886,7 @@ function ActiveWorkoutContent() {
                       value={pastDurationMin || ''}
                       onChange={(e) => setPastMinutes(Math.max(0, parseInt(e.target.value, 10) || 0))}
                       placeholder="0"
-                      className="w-full rounded-xl bg-white/10 px-3 py-2.5 font-mono text-lg font-black text-white focus:outline-none focus:ring-1 focus:ring-[#FF4A00]"
+                      className="w-full rounded-xl bg-zinc-900 border border-zinc-800 px-3 py-2.5 font-mono text-lg font-black text-white focus:outline-none focus:border-[#FF4A00]"
                     />
                   </label>
 
@@ -901,12 +901,12 @@ function ActiveWorkoutContent() {
                 </div>
               )}
 
-              <dl className="grid grid-cols-3 divide-x divide-zinc-200 overflow-hidden rounded-2xl border border-zinc-200 lg:col-span-7 xl:col-span-8 min-w-0">
+              <dl className="grid grid-cols-3 divide-x divide-zinc-800/80 overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-[#141417] lg:col-span-7 xl:col-span-8 min-w-0 shadow-sm">
                 {liveStats.map((s) => (
                   <div key={s.label} className="flex flex-col justify-center px-2 py-3 sm:px-6 sm:py-4 min-w-0">
-                    <dt className="truncate text-[10px] sm:text-xs md:text-sm font-medium text-zinc-500">{s.label}</dt>
+                    <dt className="truncate text-[10px] sm:text-xs md:text-sm font-black uppercase tracking-wider text-zinc-400">{s.label}</dt>
                     <dd
-                      className={`mt-1 truncate font-mono text-base font-black tracking-tight sm:text-2xl md:text-3xl ${s.color}`}
+                      className={`mt-1 truncate font-mono text-base font-black tracking-tight sm:text-2xl md:text-3xl ${s.color === 'text-zinc-900' ? 'text-white' : s.color}`}
                     >
                       {s.value}
                     </dd>
@@ -918,21 +918,21 @@ function ActiveWorkoutContent() {
             {/* Empty state with templates */}
             {exercises.length === 0 ? (
               <div className="space-y-6">
-                <div className="rounded-2xl border border-dashed border-zinc-300 px-6 py-12 text-center sm:py-16">
-                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-orange-50 text-[#FF4A00]">
+                <div className="rounded-2xl sm:rounded-3xl border border-dashed border-zinc-800 bg-[#141417] px-6 py-12 text-center sm:py-16">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-orange-500/15 text-[#FF4A00] border border-orange-500/20">
                     <Dumbbell className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-xl font-black uppercase tracking-tight sm:text-2xl">
+                  <h3 className="mt-5 text-xl font-black uppercase tracking-tight sm:text-2xl text-white">
                     Add your first exercise
                   </h3>
-                  <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-500">
+                  <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-400">
                     Log your sets and reps as you go. Your weight lifted and calories update live.
                   </p>
                   <button
                     onClick={() => setIsAddModalOpen(true)}
-                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#111] px-7 py-3.5 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[#2a2a2a] active:scale-95"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#FF4A00] hover:bg-[#e04000] px-7 py-3.5 text-xs font-black uppercase tracking-wider text-white transition active:scale-95 shadow-lg shadow-orange-600/30"
                   >
-                    <Plus className="h-4 w-4 text-[#FF4A00]" />
+                    <Plus className="h-4 w-4" />
                     Add exercise
                   </button>
                 </div>
@@ -941,14 +941,14 @@ function ActiveWorkoutContent() {
                   <section className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h2 className="text-lg font-black uppercase tracking-tight sm:text-xl text-zinc-900">
+                        <h2 className="text-lg font-black uppercase tracking-tight sm:text-xl text-white">
                           Start from a template
                         </h2>
-                        <p className="text-xs text-zinc-500 font-medium mt-0.5">
+                        <p className="text-xs text-zinc-400 font-medium mt-0.5">
                           Launch a saved routine with your configured movements and targets
                         </p>
                       </div>
-                      <span className="px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 text-xs font-bold font-mono">
+                      <span className="px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-bold font-mono">
                         {templates.length} saved
                       </span>
                     </div>
@@ -957,49 +957,49 @@ function ActiveWorkoutContent() {
                       {templates.map((tpl) => (
                         <div
                           key={tpl._id || tpl.id}
-                          className="bg-white rounded-2xl border border-zinc-200 hover:border-zinc-900/80 p-4 sm:p-5 flex flex-col justify-between space-y-4 transition-all shadow-sm group"
+                          className="bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 hover:border-zinc-700 p-4 sm:p-5 flex flex-col justify-between space-y-4 transition-all shadow-sm group"
                         >
                           <div className="space-y-3">
                             <div className="flex items-start justify-between gap-2">
-                              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-50 text-[#FF4A00] border border-orange-100">
+                              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-500/15 text-[#FF4A00] border border-orange-500/20">
                                 {tpl.category || 'Routine'}
                               </span>
                               <button
                                 onClick={() => handleDeleteTemplate(tpl._id || tpl.id)}
                                 aria-label={`Delete template ${tpl.name}`}
                                 title="Delete Routine"
-                                className="grid h-8 w-8 -m-1 place-items-center rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                                className="grid h-8 w-8 -m-1 place-items-center rounded-full text-zinc-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             </div>
 
                             <div>
-                              <h3 className="text-base font-black text-zinc-900 uppercase tracking-tight group-hover:text-[#FF4A00] transition-colors">
+                              <h3 className="text-base font-black text-white uppercase tracking-tight group-hover:text-[#FF4A00] transition-colors">
                                 {tpl.name}
                               </h3>
                               {tpl.notes && (
-                                <p className="text-xs text-zinc-500 line-clamp-2 mt-0.5 font-medium">{tpl.notes}</p>
+                                <p className="text-xs text-zinc-400 line-clamp-2 mt-0.5 font-medium">{tpl.notes}</p>
                               )}
                             </div>
 
-                            <div className="space-y-1.5 pt-2.5 border-t border-zinc-100">
+                            <div className="space-y-1.5 pt-2.5 border-t border-zinc-800/80">
                               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
                                 {tpl.exercises?.length || 0} Movements
                               </span>
                               <div className="space-y-1">
                                 {tpl.exercises?.slice(0, 3).map((ex: any, idx: number) => (
-                                  <div key={idx} className="flex items-center justify-between gap-2 text-xs text-zinc-700">
+                                  <div key={idx} className="flex items-center justify-between gap-2 text-xs text-zinc-300">
                                     <span className="font-semibold truncate">{ex.name}</span>
                                     {ex.defaultSets && (
-                                      <span className="text-zinc-400 font-mono text-[10px] shrink-0">
+                                      <span className="text-zinc-500 font-mono text-[10px] shrink-0">
                                         {ex.defaultSets} &times; {ex.defaultWeightKg || 0}kg
                                       </span>
                                     )}
                                   </div>
                                 ))}
                                 {(tpl.exercises?.length || 0) > 3 && (
-                                  <p className="text-[11px] text-zinc-400 font-medium">
+                                  <p className="text-[11px] text-zinc-500 font-medium">
                                     +{(tpl.exercises?.length || 0) - 3} more movements
                                   </p>
                                 )}
@@ -1023,12 +1023,12 @@ function ActiveWorkoutContent() {
             ) : (
               <>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-black uppercase tracking-tight sm:text-xl">
+                  <h2 className="text-lg font-black uppercase tracking-tight sm:text-xl text-white">
                     Exercises <span className="text-zinc-400">({exercises.length})</span>
                   </h2>
                   <button
                     onClick={handleSaveTemplate}
-                    className="flex items-center gap-2 rounded-full border border-zinc-200 px-4 py-2 text-xs font-bold text-zinc-800 transition hover:border-zinc-900 active:scale-95"
+                    className="flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-zinc-700 hover:text-white active:scale-95"
                   >
                     <BookmarkPlus className="h-4 w-4 text-[#FF4A00]" />
                     Save as template
@@ -1045,19 +1045,19 @@ function ActiveWorkoutContent() {
                     return (
                       <article
                         key={exercise.id}
-                        className="rounded-2xl border border-zinc-200 bg-white p-3.5 sm:p-6 min-w-0 overflow-hidden"
+                        className="rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-[#141417] p-3.5 sm:p-6 min-w-0 overflow-hidden shadow-sm"
                       >
                         {/* Exercise header */}
                         <div className="flex items-start justify-between gap-2.5 sm:gap-3">
                           <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-                            <span className="grid h-9 w-9 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-orange-50 text-[#FF4A00]">
+                            <span className="grid h-9 w-9 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-orange-500/15 text-[#FF4A00] border border-orange-500/20">
                               <Dumbbell className="h-4 w-4 sm:h-5 sm:w-5" />
                             </span>
                             <div className="min-w-0">
-                              <h3 className="truncate text-sm font-black uppercase tracking-tight sm:text-lg">
+                              <h3 className="truncate text-sm font-black uppercase tracking-tight sm:text-lg text-white">
                                 {exercise.name}
                               </h3>
-                              <p className="truncate text-[11px] font-medium text-zinc-500 sm:text-xs">
+                              <p className="truncate text-[11px] font-medium text-zinc-400 sm:text-xs">
                                 {exercise.isCompound ? 'Compound' : 'Accessory'} &middot; {doneCount}/
                                 {exercise.sets.length} sets
                                 {exercise.supersetWithNext && (
@@ -1073,7 +1073,7 @@ function ActiveWorkoutContent() {
                               onClick={() => setMenuOpenId(menuOpenId === exercise.id ? null : exercise.id)}
                               aria-label={`Options for ${exercise.name}`}
                               aria-expanded={menuOpenId === exercise.id}
-                              className="grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
+                              className="grid h-8 w-8 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-full text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
                             >
                               <MoreHorizontal className="h-4 w-4 sm:h-5 sm:w-5" />
                             </button>
@@ -1087,7 +1087,7 @@ function ActiveWorkoutContent() {
                                 />
                                 <div
                                   role="menu"
-                                  className="absolute right-0 z-40 mt-1 w-56 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]"
+                                  className="absolute right-0 z-40 mt-1 w-56 rounded-2xl border border-zinc-800 bg-[#18181c] p-1.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] text-white"
                                 >
                                   <MenuItem
                                     icon={<ArrowUp className="h-4 w-4" />}
@@ -1138,7 +1138,7 @@ function ActiveWorkoutContent() {
                                       setMenuOpenId(null);
                                     }}
                                   />
-                                  <div className="my-1 h-px bg-zinc-100" />
+                                  <div className="my-1 h-px bg-zinc-800" />
                                   <MenuItem
                                     icon={<Trash2 className="h-4 w-4" />}
                                     label="Remove exercise"
@@ -1155,7 +1155,7 @@ function ActiveWorkoutContent() {
                         </div>
 
                         {/* Progress bar */}
-                        <div className="mt-3 sm:mt-4 h-1 overflow-hidden rounded-full bg-zinc-100">
+                        <div className="mt-3 sm:mt-4 h-1 overflow-hidden rounded-full bg-zinc-900">
                           <div
                             className="h-full rounded-full bg-[#FF4A00] transition-all duration-300"
                             style={{ width: `${progress}%` }}
@@ -1172,20 +1172,20 @@ function ActiveWorkoutContent() {
                               updateExercise(exIdx, (ex) => ({ ...ex, note: e.target.value }))
                             }
                             placeholder="Add a note, e.g. left shoulder tight"
-                            className="mt-3 w-full rounded-xl bg-zinc-50 px-3 py-2 text-xs sm:text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-900"
+                            className="mt-3 w-full rounded-xl bg-zinc-900 border border-zinc-800 px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF4A00]"
                           />
                         )}
 
                         {/* Sets */}
                         <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
                           <div
-                            className={`${SET_GRID} px-1 sm:px-2 text-center text-[10px] sm:text-[11px] font-semibold text-zinc-500`}
+                            className={`${SET_GRID} px-1 sm:px-2 text-center text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400`}
                           >
                             <span>Set</span>
-                            <span className="hidden text-left sm:block">Last time</span>
+                            <span className="text-left">Previous</span>
                             <span>kg</span>
                             <span>Reps</span>
-                            <span />
+                            <span className="text-center">✓</span>
                             <span />
                           </div>
 
@@ -1199,8 +1199,11 @@ function ActiveWorkoutContent() {
                             return (
                               <div
                                 key={setIdx}
-                                className={`rounded-xl sm:rounded-2xl p-1.5 sm:p-2 transition-colors ${set.completed ? 'bg-emerald-50' : 'bg-zinc-50'
-                                  }`}
+                                className={`rounded-xl sm:rounded-2xl p-1.5 sm:p-2 transition-colors ${
+                                  set.completed
+                                    ? 'bg-emerald-950/25 border border-emerald-500/30'
+                                    : 'bg-zinc-900/60 border border-zinc-800/70'
+                                }`}
                               >
                                 <div className={SET_GRID}>
                                   {/* Set type / number badge (tap to cycle Normal -> Warmup -> Drop -> Failure) */}
@@ -1208,16 +1211,16 @@ function ActiveWorkoutContent() {
                                     onClick={() => handleCycleSetType(exIdx, setIdx)}
                                     title={`Set type: ${set.type || (set.isWarmup ? 'W' : 'N')} (Tap to cycle: Normal -> Warmup -> Drop-set -> Failure)`}
                                     aria-label={`Set ${set.setNumber} type`}
-                                    className={`grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-full font-mono text-[11px] sm:text-xs font-black transition active:scale-95 ${
+                                    className={`grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-lg font-mono text-[11px] sm:text-xs font-black transition active:scale-95 ${
                                       set.type === 'W' || set.isWarmup
-                                        ? 'bg-amber-100 text-amber-700 border border-amber-300'
+                                        ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
                                         : set.type === 'D'
-                                        ? 'bg-purple-100 text-purple-700 border border-purple-300'
+                                        ? 'bg-purple-500/20 text-purple-400 border border-purple-500/40'
                                         : set.type === 'F'
-                                        ? 'bg-rose-100 text-rose-700 border border-rose-300'
+                                        ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40'
                                         : set.completed
                                         ? 'bg-emerald-500 text-white'
-                                        : 'bg-zinc-200 text-zinc-800 hover:bg-zinc-300'
+                                        : 'bg-zinc-800 text-zinc-300 border border-zinc-700/60 hover:bg-zinc-700'
                                     }`}
                                   >
                                     {set.type === 'W' || set.isWarmup
@@ -1229,20 +1232,20 @@ function ActiveWorkoutContent() {
                                       : set.setNumber}
                                   </button>
 
-                                  {/* Last time (tap to fill) */}
+                                  {/* Previous set data (tap to fill) */}
                                   {prev ? (
                                     <button
                                       onClick={() => {
                                         handleUpdateSet(exIdx, setIdx, 'weightKg', prev.weightKg);
                                         handleUpdateSet(exIdx, setIdx, 'reps', prev.reps);
                                       }}
-                                      title="Tap to use these numbers"
-                                      className="hidden truncate text-left text-xs text-zinc-500 underline decoration-zinc-300 decoration-dotted underline-offset-4 transition hover:text-[#FF4A00] sm:block"
+                                      title="Tap to use previous numbers"
+                                      className="truncate text-left font-mono text-[10px] sm:text-xs text-zinc-400 hover:text-[#FF4A00] transition active:scale-95"
                                     >
-                                      {prev.weightKg}kg × {prev.reps}
+                                      {prev.weightKg}k×{prev.reps}
                                     </button>
                                   ) : (
-                                    <span className="hidden text-xs text-zinc-300 sm:block">—</span>
+                                    <span className="text-left font-mono text-xs text-zinc-600">—</span>
                                   )}
 
                                   <input
@@ -1264,8 +1267,8 @@ function ActiveWorkoutContent() {
                                         focusField(`reps-${exercise.id}-${setIdx}`);
                                       }
                                     }}
-                                    className="w-full min-w-0 rounded-xl border border-zinc-200 bg-white py-2 sm:py-2.5 px-1 sm:px-2 text-center font-mono text-sm sm:text-base font-bold text-zinc-900 focus:border-zinc-900 focus:outline-none"
-                                    placeholder="0"
+                                    className="w-full min-w-0 rounded-xl border border-zinc-800 bg-[#16161a] py-2 sm:py-2.5 px-1 sm:px-2 text-center font-mono text-sm sm:text-base font-bold text-white placeholder-zinc-600 focus:border-[#FF4A00] focus:outline-none"
+                                    placeholder="—"
                                   />
 
                                   <input
@@ -1288,18 +1291,19 @@ function ActiveWorkoutContent() {
                                         (e.target as HTMLInputElement).blur();
                                       }
                                     }}
-                                    className="w-full min-w-0 rounded-xl border border-zinc-200 bg-white py-2 sm:py-2.5 px-1 sm:px-2 text-center font-mono text-sm sm:text-base font-bold text-zinc-900 focus:border-zinc-900 focus:outline-none"
-                                    placeholder="0"
+                                    className="w-full min-w-0 rounded-xl border border-zinc-800 bg-[#16161a] py-2 sm:py-2.5 px-1 sm:px-2 text-center font-mono text-sm sm:text-base font-bold text-white placeholder-zinc-600 focus:border-[#FF4A00] focus:outline-none"
+                                    placeholder="—"
                                   />
 
                                   <button
                                     onClick={() => handleToggleComplete(exIdx, setIdx)}
                                     aria-label={set.completed ? 'Mark set not done' : 'Mark set done'}
                                     aria-pressed={set.completed}
-                                    className={`grid h-9 w-9 sm:h-11 sm:w-11 place-items-center rounded-full transition active:scale-90 ${set.completed
-                                      ? 'bg-emerald-500 text-white'
-                                      : 'bg-white text-zinc-400 ring-1 ring-zinc-200 hover:text-zinc-900 hover:ring-zinc-400'
-                                      }`}
+                                    className={`grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-xl transition active:scale-90 ${
+                                      set.completed
+                                        ? 'bg-emerald-500 text-white shadow-[0_0_12px_rgba(16,185,129,0.4)]'
+                                        : 'bg-zinc-800/90 text-zinc-400 ring-1 ring-zinc-700/80 hover:text-white hover:ring-zinc-500'
+                                    }`}
                                   >
                                     <Check className="h-4 w-4 sm:h-5 sm:w-5 stroke-[3]" />
                                   </button>
@@ -1308,7 +1312,7 @@ function ActiveWorkoutContent() {
                                     <button
                                       onClick={() => handleDeleteSet(exIdx, setIdx)}
                                       aria-label={`Delete set ${set.setNumber}`}
-                                      className="grid h-5 w-5 sm:h-6 sm:w-6 place-items-center text-zinc-300 transition hover:text-red-500"
+                                      className="grid h-5 w-5 sm:h-6 sm:w-6 place-items-center text-zinc-500 transition hover:text-red-400"
                                     >
                                       <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                                     </button>
@@ -1319,7 +1323,7 @@ function ActiveWorkoutContent() {
 
                                 {/* Quick adjust bar for the row you're editing */}
                                 {isActive && (
-                                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-black/5 px-1 pt-2">
+                                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-zinc-800 px-1 pt-2">
                                     <Stepper
                                       label="kg"
                                       onMinus={() => adjustSet(exIdx, setIdx, 'weightKg', -2.5)}
@@ -1332,18 +1336,6 @@ function ActiveWorkoutContent() {
                                       onPlus={() => adjustSet(exIdx, setIdx, 'reps', 1)}
                                       step="1"
                                     />
-                                    {prev && (
-                                      <button
-                                        onMouseDown={(e) => e.preventDefault()}
-                                        onClick={() => {
-                                          handleUpdateSet(exIdx, setIdx, 'weightKg', prev.weightKg);
-                                          handleUpdateSet(exIdx, setIdx, 'reps', prev.reps);
-                                        }}
-                                        className="text-xs font-bold text-[#FF4A00] sm:hidden"
-                                      >
-                                        Last time: {prev.weightKg}kg × {prev.reps} · Use
-                                      </button>
-                                    )}
                                   </div>
                                 )}
 
@@ -1360,10 +1352,10 @@ function ActiveWorkoutContent() {
 
                         <button
                           onClick={() => handleAddSet(exIdx)}
-                          className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-zinc-200 py-3 text-xs font-bold text-zinc-800 transition hover:border-zinc-900 active:scale-[0.99]"
+                          className="mt-3.5 flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/80 py-2.5 text-xs font-black uppercase tracking-wider text-zinc-300 transition hover:bg-zinc-800 hover:text-white active:scale-[0.99]"
                         >
                           <Plus className="h-4 w-4 text-[#FF4A00]" />
-                          Add set
+                          + Add Set
                         </button>
                       </article>
                     );
@@ -1371,7 +1363,7 @@ function ActiveWorkoutContent() {
 
                   <button
                     onClick={() => setIsAddModalOpen(true)}
-                    className="flex min-h-[120px] items-center justify-center gap-2 rounded-2xl border border-dashed border-zinc-300 text-sm font-bold text-zinc-800 transition hover:border-zinc-900 active:scale-[0.99] lg:min-h-[160px]"
+                    className="flex min-h-[120px] items-center justify-center gap-2 rounded-2xl sm:rounded-3xl border border-dashed border-zinc-800 bg-[#141417] text-sm font-bold text-zinc-300 transition hover:border-zinc-700 hover:text-white active:scale-[0.99] lg:min-h-[160px]"
                   >
                     <Plus className="h-5 w-5 text-[#FF4A00]" />
                     Add exercise
@@ -1388,7 +1380,7 @@ function ActiveWorkoutContent() {
         <div className="pointer-events-none fixed inset-x-0 bottom-24 z-50 flex justify-center px-4">
           <div
             role="status"
-            className="pointer-events-auto flex items-center gap-3 rounded-full bg-[#111] py-2.5 pl-5 pr-2.5 text-sm font-semibold text-white shadow-2xl"
+            className="pointer-events-auto flex items-center gap-3 rounded-full bg-[#18181c] border border-zinc-700 py-2.5 pl-5 pr-2.5 text-sm font-semibold text-white shadow-2xl"
           >
             <span>{toast.message}</span>
             {toast.undo && (
@@ -1414,12 +1406,12 @@ function ActiveWorkoutContent() {
       )}
 
       {/* Bottom action bar */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200/70 bg-white/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-800/80 bg-[#09090b]/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-[1920px] items-center justify-end px-4 py-3 sm:px-8 lg:px-12 2xl:px-16">
           <button
             onClick={() => setIsFinishModalOpen(true)}
             disabled={mode === 'past' && (pastInFuture || exercises.length === 0)}
-            className="w-full sm:w-auto sm:min-w-[280px] rounded-full bg-[#FF4A00] px-8 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-orange-600/25 transition hover:bg-[#e04000] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+            className="w-full sm:w-auto sm:min-w-[280px] rounded-full bg-[#FF4A00] px-8 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-orange-600/30 transition hover:bg-[#e04000] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
           >
             {mode === 'past' ? 'Save workout' : 'Finish workout'}
           </button>
@@ -1481,8 +1473,8 @@ export default function ActiveWorkoutPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen w-full items-center justify-center bg-white">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-200 border-t-[#FF4A00]" />
+        <div className="flex min-h-screen w-full items-center justify-center bg-[#09090b]">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-800 border-t-[#FF4A00]" />
         </div>
       }
     >
@@ -1512,8 +1504,8 @@ function MenuItem({
       onClick={onClick}
       disabled={disabled}
       className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ${danger
-        ? 'text-red-600 hover:bg-red-50'
-        : 'text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900'
+        ? 'text-red-400 hover:bg-red-500/10'
+        : 'text-zinc-300 hover:bg-zinc-800 hover:text-white'
         }`}
     >
       <span className={danger ? '' : 'text-zinc-400'}>{icon}</span>
@@ -1536,12 +1528,12 @@ function Stepper({
 }) {
   return (
     <div className="flex items-center gap-1.5">
-      <span className="w-8 text-xs font-semibold text-zinc-500">{label}</span>
+      <span className="w-8 text-xs font-semibold text-zinc-400">{label}</span>
       <button
         onMouseDown={(e) => e.preventDefault()}
         onClick={onMinus}
         aria-label={`Decrease ${label} by ${step}`}
-        className="grid h-9 min-w-[2.75rem] place-items-center rounded-full bg-white px-2 text-xs font-bold text-zinc-800 ring-1 ring-zinc-200 transition hover:ring-zinc-900 active:scale-90"
+        className="grid h-9 min-w-[2.75rem] place-items-center rounded-full bg-zinc-900 border border-zinc-800 px-2 text-xs font-bold text-zinc-300 transition hover:bg-zinc-800 hover:text-white active:scale-90"
       >
         <span className="flex items-center gap-0.5">
           <Minus className="h-3 w-3" />
@@ -1552,7 +1544,7 @@ function Stepper({
         onMouseDown={(e) => e.preventDefault()}
         onClick={onPlus}
         aria-label={`Increase ${label} by ${step}`}
-        className="grid h-9 min-w-[2.75rem] place-items-center rounded-full bg-white px-2 text-xs font-bold text-zinc-800 ring-1 ring-zinc-200 transition hover:ring-zinc-900 active:scale-90"
+        className="grid h-9 min-w-[2.75rem] place-items-center rounded-full bg-zinc-900 border border-zinc-800 px-2 text-xs font-bold text-zinc-300 transition hover:bg-zinc-800 hover:text-white active:scale-90"
       >
         <span className="flex items-center gap-0.5">
           <Plus className="h-3 w-3" />

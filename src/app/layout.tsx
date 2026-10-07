@@ -32,11 +32,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-[#fafafa] text-zinc-900">
+    <html lang="en" className="dark bg-[#09090b] text-white">
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className="min-h-screen bg-[#fafafa] text-zinc-900 antialiased flex flex-col font-sans selection:bg-[#FF4A00] selection:text-white">
+      <body className="min-h-screen bg-[#09090b] text-white antialiased flex flex-col font-sans selection:bg-[#FF4A00] selection:text-white">
         <SplashScreen />
         <ServiceWorkerRegister />
         {children}

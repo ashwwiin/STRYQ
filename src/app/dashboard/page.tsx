@@ -390,34 +390,35 @@ export default function DashboardPage() {
     )
     : 0;
 
-  const stats = [
-    { label: 'Lifetime tonnage', short: 'Tonnage', value: formatNumber(totalTonnage), unit: 'kg', note: 'Sum of weight × completed reps', icon: Dumbbell, accent: false },
-    { label: 'Active MET burn', short: 'Calories', value: `~${formatNumber(totalCalories)}`, unit: 'kcal', note: 'Metabolic energy expenditure', icon: Flame, accent: true },
-    { label: 'Logged sessions', short: 'Sessions', value: String(totalSessions), unit: totalSessions === 1 ? 'session' : 'sessions', note: 'Recorded in database', icon: Trophy, accent: false },
-    { label: 'Saved splits', short: 'Routines', value: String(templates.length), unit: templates.length === 1 ? 'routine' : 'routines', note: 'Stored in database', icon: BookmarkPlus, accent: false },
-  ];
+  // This week metrics for delta indicators
+  const thisWeekWorkouts = workouts.filter((w) => {
+    if (!w.createdAt) return false;
+    return weekKeyOf(new Date(w.createdAt)) === weekKeyOf(new Date());
+  });
+  const weekVolume = thisWeekWorkouts.reduce((sum, w) => sum + (w.totalVolumeKg || 0), 0);
+  const weekCalories = thisWeekWorkouts.reduce((sum, w) => sum + (w.caloriesBurned || 0), 0);
 
   return (
-    <div className="min-h-screen w-full bg-white text-[#111] flex flex-col selection:bg-[#FF4A00] selection:text-white pb-10 sm:pb-24">
+    <div className="min-h-screen w-full bg-[#09090b] text-white flex flex-col selection:bg-[#FF4A00] selection:text-white pb-10 sm:pb-24">
       <Header
         userWeight={user?.weightKg}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
         userName={user?.name}
       />
 
-      <main className="flex-1 w-full px-3.5 sm:px-8 lg:px-12 2xl:px-16 py-4 sm:py-8 space-y-5 sm:space-y-8 max-w-[1920px] mx-auto">
+      <main className="flex-1 w-full px-3.5 sm:px-8 lg:px-12 2xl:px-16 py-4 sm:py-8 space-y-6 sm:space-y-8 max-w-[1920px] mx-auto">
         {/* ───────── Hero ───────── */}
-        <div className="w-full relative rounded-3xl overflow-hidden shadow-xl min-h-[300px] sm:min-h-[420px] lg:min-h-[500px] flex items-end sm:items-center bg-[#09090b] group">
+        <div className="w-full relative rounded-3xl overflow-hidden shadow-2xl min-h-[300px] sm:min-h-[420px] lg:min-h-[480px] flex items-end sm:items-center bg-[#09090b] border border-zinc-800/80 group">
           <Image
             src="/images/hero.jpg"
             alt="Strength Training"
             fill
             sizes="100vw"
-            className="object-cover object-[55%_10%] sm:object-[center_12%] lg:object-[65%_15%] opacity-75 sm:opacity-80 group-hover:scale-105 transition-transform duration-1000 ease-out"
+            className="object-cover object-[55%_10%] sm:object-[center_12%] lg:object-[65%_15%] opacity-60 sm:opacity-70 group-hover:scale-105 transition-transform duration-1000 ease-out"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 via-40% to-black/25" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/20 sm:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/85 via-45% to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent sm:hidden" />
 
           <div className="relative z-10 w-full p-5 sm:p-8 lg:p-12 sm:max-w-2xl space-y-3 sm:space-y-4 text-white">
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -461,7 +462,7 @@ export default function DashboardPage() {
 
               <Link
                 href="/workout/active?mode=past"
-                className="sm:hidden py-3 px-3 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md text-white font-black text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 border border-white/20 transition-all active:scale-95 text-center"
+                className="sm:hidden py-3 px-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-black text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 border border-white/15 transition-all active:scale-95 text-center"
               >
                 <History className="w-3.5 h-3.5 text-[#FF4A00] shrink-0" />
                 <span className="truncate">Log past</span>
@@ -469,7 +470,7 @@ export default function DashboardPage() {
 
               <Link
                 href="/calendar"
-                className="sm:py-3 py-3 px-3 sm:px-6 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md text-white font-black text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 border border-white/20 transition-all active:scale-95 text-center"
+                className="sm:py-3 py-3 px-3 sm:px-6 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-black text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 border border-white/15 transition-all active:scale-95 text-center"
               >
                 <CalendarIcon className="w-3.5 h-3.5 text-[#FF4A00] shrink-0" />
                 <span className="truncate">Calendar</span>
@@ -480,13 +481,13 @@ export default function DashboardPage() {
 
         {/* ───────── Resume an unfinished workout ───────── */}
         {draft && (
-          <div className="flex items-center gap-3 rounded-2xl border border-orange-200 bg-orange-50 p-3.5 sm:p-4">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#FF4A00] text-white">
+          <div className="flex items-center gap-3 rounded-2xl border border-orange-500/30 bg-[#1e1410] p-3.5 sm:p-4">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#FF4A00] text-white shadow-md">
               <Play className="h-4 w-4 fill-white" />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-black uppercase tracking-tight">Workout in progress</p>
-              <p className="truncate text-xs font-medium text-zinc-600">
+              <p className="truncate text-sm font-black uppercase tracking-tight text-white">Workout in progress</p>
+              <p className="truncate text-xs font-medium text-zinc-400">
                 {draft.title || 'Strength Workout'} &middot; {draft.exercises.length}{' '}
                 {draft.exercises.length === 1 ? 'exercise' : 'exercises'} &middot; {draftDoneSets}{' '}
                 {draftDoneSets === 1 ? 'set' : 'sets'} done
@@ -495,7 +496,7 @@ export default function DashboardPage() {
             <button
               onClick={discardDraft}
               aria-label="Discard unfinished workout"
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-zinc-500 transition hover:bg-white hover:text-red-600"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-zinc-400 transition hover:bg-zinc-800 hover:text-red-400"
             >
               <X className="h-4 w-4" />
             </button>
@@ -508,35 +509,118 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {/* ───────── Top 4 Telemetry Metric Stat Cards (Screenshot 3) ───────── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+          {/* 1. Lifetime Tonnage */}
+          <div className="bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 p-4 sm:p-5 flex flex-col justify-between space-y-2 shadow-sm hover:border-zinc-700/80 transition-all">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-300 grid place-items-center font-black text-sm shadow-inner">
+                <span>H</span>
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-zinc-400 mt-3 block">
+                Lifetime Tonnage
+              </span>
+              <p suppressHydrationWarning className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-white mt-1">
+                {loading ? '—' : formatNumber(totalTonnage)}{' '}
+                <span className="text-xs sm:text-sm font-bold text-zinc-500 font-sans">kg</span>
+              </p>
+            </div>
+            <p className="text-xs font-bold text-emerald-400 flex items-center gap-1 pt-1">
+              <span>&uarr;</span>
+              <span>{formatNumber(weekVolume)} this week</span>
+            </p>
+          </div>
+
+          {/* 2. MET Burn */}
+          <div className="bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 p-4 sm:p-5 flex flex-col justify-between space-y-2 shadow-sm hover:border-zinc-700/80 transition-all">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-orange-500/15 border border-orange-500/20 text-[#FF4A00] grid place-items-center shadow-inner">
+                <Flame className="w-5 h-5 fill-[#FF4A00]" />
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-zinc-400 mt-3 block">
+                Met Burn
+              </span>
+              <p suppressHydrationWarning className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-[#FF4A00] mt-1">
+                {loading ? '—' : `~${formatNumber(totalCalories)}`}{' '}
+                <span className="text-xs sm:text-sm font-bold text-zinc-500 font-sans">kcal</span>
+              </p>
+            </div>
+            <p className="text-xs font-bold text-emerald-400 flex items-center gap-1 pt-1">
+              <span>&uarr;</span>
+              <span>{formatNumber(weekCalories)} this week</span>
+            </p>
+          </div>
+
+          {/* 3. Logged Sessions */}
+          <div className="bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 p-4 sm:p-5 flex flex-col justify-between space-y-2 shadow-sm hover:border-zinc-700/80 transition-all">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-300 grid place-items-center shadow-inner">
+                <Trophy className="w-5 h-5 text-zinc-300" />
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-zinc-400 mt-3 block">
+                Logged Sessions
+              </span>
+              <p suppressHydrationWarning className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-white mt-1">
+                {loading ? '—' : totalSessions}{' '}
+                <span className="text-xs sm:text-sm font-bold text-zinc-500 font-sans">sessions</span>
+              </p>
+            </div>
+            <p className="text-xs font-bold text-emerald-400 flex items-center gap-1 pt-1">
+              <span>{week.sessions} this week</span>
+            </p>
+          </div>
+
+          {/* 4. Saved Splits */}
+          <div className="bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 p-4 sm:p-5 flex flex-col justify-between space-y-2 shadow-sm hover:border-zinc-700/80 transition-all">
+            <div>
+              <div className="w-10 h-10 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-300 grid place-items-center shadow-inner">
+                <BookmarkPlus className="w-5 h-5 text-zinc-300" />
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-zinc-400 mt-3 block">
+                Saved Splits
+              </span>
+              <p suppressHydrationWarning className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-white mt-1">
+                {loading ? '—' : templates.length}{' '}
+                <span className="text-xs sm:text-sm font-bold text-zinc-500 font-sans">routines</span>
+              </p>
+            </div>
+            <p className="text-xs font-bold text-emerald-400 truncate pt-1">
+              {templates.length > 0
+                ? `${templates.slice(0, 2).map((t) => t.category || t.name).join('/')}${templates.length > 2 ? ` + ${templates.length - 2}` : ''}`
+                : 'Ready to build'}
+            </p>
+          </div>
+        </div>
+
         {/* ───────── Up next + weekly goal ───────── */}
         <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-12 lg:gap-5">
           {loading ? (
             <>
-              <div className="h-48 animate-pulse rounded-2xl bg-zinc-100 lg:col-span-7" />
-              <div className="h-48 animate-pulse rounded-2xl bg-zinc-100 lg:col-span-5" />
+              <div className="h-48 animate-pulse rounded-2xl bg-zinc-900 lg:col-span-7" />
+              <div className="h-48 animate-pulse rounded-2xl bg-zinc-900 lg:col-span-5" />
             </>
           ) : (
             <>
               {/* Up next / Launchpad */}
-              <section className="flex flex-col justify-between gap-6 rounded-2xl border border-zinc-200 bg-white p-6 sm:p-7 shadow-sm transition-shadow hover:shadow-md lg:col-span-7">
+              <section className="flex flex-col justify-between gap-6 rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-[#141417] p-6 sm:p-7 shadow-sm transition-shadow hover:border-zinc-700/80 lg:col-span-7">
                 {upNext ? (
                   <>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-3">
-                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[#FF4A00] text-[10px] font-black uppercase tracking-wider">
+                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/15 border border-orange-500/25 text-[#FF4A00] text-[10px] font-black uppercase tracking-wider">
                           <Dumbbell className="w-3 h-3" />
                           {trainedToday ? 'Trained Today · Up Next' : 'Up Next Routine'}
                         </span>
-                        <span className="px-3 py-1 rounded-full bg-zinc-100 text-zinc-600 text-[10px] font-bold uppercase tracking-wider">
+                        <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-[10px] font-bold uppercase tracking-wider">
                           {upNext.tpl.category || 'Routine'}
                         </span>
                       </div>
 
                       <div>
-                        <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight uppercase">
+                        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">
                           {upNext.tpl.name}
                         </h2>
-                        <p className="text-xs text-zinc-500 font-medium mt-1">
+                        <p className="text-xs text-zinc-400 font-medium mt-1">
                           {upNext.tpl.exercises?.length || 0} exercises scheduled &middot;{' '}
                           {upNext.days === null
                             ? 'Not logged yet'
@@ -550,19 +634,19 @@ export default function DashboardPage() {
 
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {(upNext.tpl.exercises || []).slice(0, 4).map((ex: any, i: number) => (
-                          <span key={i} className="rounded-lg bg-zinc-50 border border-zinc-200/70 px-2.5 py-1 text-xs font-semibold text-zinc-700">
+                          <span key={i} className="rounded-lg bg-zinc-900 border border-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-300">
                             {ex.name}
                           </span>
                         ))}
                         {(upNext.tpl.exercises?.length || 0) > 4 && (
-                          <span className="rounded-lg bg-zinc-50 border border-zinc-200/70 px-2.5 py-1 text-xs font-semibold text-zinc-400">
+                          <span className="rounded-lg bg-zinc-900 border border-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-500">
                             +{upNext.tpl.exercises.length - 4} more
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-zinc-100">
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-zinc-800/80">
                       <Link
                         href={`/workout/active?templateId=${upNext.tpl._id}`}
                         className="flex-1 py-3.5 px-6 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-600/25 active:scale-95 transition-all text-center"
@@ -573,7 +657,7 @@ export default function DashboardPage() {
 
                       <Link
                         href="/workout/active"
-                        className="py-3.5 px-6 rounded-full border border-zinc-200 hover:border-zinc-900 text-zinc-800 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
+                        className="py-3.5 px-6 rounded-full border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
                       >
                         <Plus className="h-4 w-4" />
                         <span>Blank Session</span>
@@ -584,20 +668,20 @@ export default function DashboardPage() {
                   <>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between gap-3">
-                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[#FF4A00] text-[10px] font-black uppercase tracking-wider">
+                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/15 border border-orange-500/25 text-[#FF4A00] text-[10px] font-black uppercase tracking-wider">
                           <Sparkles className="w-3 h-3" />
                           Ready To Train
                         </span>
-                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
                           STRYQ Protocol
                         </span>
                       </div>
 
                       <div>
-                        <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight uppercase">
+                        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">
                           Choose Your Session.
                         </h2>
-                        <p className="text-xs sm:text-sm text-zinc-500 font-medium mt-1 leading-relaxed">
+                        <p className="text-xs sm:text-sm text-zinc-400 font-medium mt-1 leading-relaxed">
                           Log exercise sets with live 1RM math and calorie burn, or execute a structured split routine.
                         </p>
                       </div>
@@ -606,34 +690,34 @@ export default function DashboardPage() {
                       <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
                         <a
                           href="#routines"
-                          className="rounded-2xl bg-zinc-50 hover:bg-orange-50/50 border border-zinc-200/70 hover:border-orange-200 p-3 sm:p-3.5 transition-all text-left group"
+                          className="rounded-2xl bg-zinc-900/80 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 p-3 sm:p-3.5 transition-all text-left group"
                         >
                           <span className="text-[10px] font-black text-[#FF4A00] uppercase tracking-wider block">Push</span>
-                          <span className="text-xs font-bold text-zinc-900 block mt-0.5">Chest &amp; Arms</span>
-                          <span className="text-[10px] text-zinc-400 block mt-0.5 font-medium">4 exercises</span>
+                          <span className="text-xs font-bold text-white block mt-0.5">Chest &amp; Arms</span>
+                          <span className="text-[10px] text-zinc-500 block mt-0.5 font-medium">4 exercises</span>
                         </a>
 
                         <a
                           href="#routines"
-                          className="rounded-2xl bg-zinc-50 hover:bg-orange-50/50 border border-zinc-200/70 hover:border-orange-200 p-3 sm:p-3.5 transition-all text-left group"
+                          className="rounded-2xl bg-zinc-900/80 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 p-3 sm:p-3.5 transition-all text-left group"
                         >
                           <span className="text-[10px] font-black text-[#FF4A00] uppercase tracking-wider block">Pull</span>
-                          <span className="text-xs font-bold text-zinc-900 block mt-0.5">Back &amp; Deadlift</span>
-                          <span className="text-[10px] text-zinc-400 block mt-0.5 font-medium">4 exercises</span>
+                          <span className="text-xs font-bold text-white block mt-0.5">Back &amp; Deadlift</span>
+                          <span className="text-[10px] text-zinc-500 block mt-0.5 font-medium">4 exercises</span>
                         </a>
 
                         <a
                           href="#routines"
-                          className="rounded-2xl bg-zinc-50 hover:bg-orange-50/50 border border-zinc-200/70 hover:border-orange-200 p-3 sm:p-3.5 transition-all text-left group"
+                          className="rounded-2xl bg-zinc-900/80 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 p-3 sm:p-3.5 transition-all text-left group"
                         >
                           <span className="text-[10px] font-black text-[#FF4A00] uppercase tracking-wider block">Legs</span>
-                          <span className="text-xs font-bold text-zinc-900 block mt-0.5">Squats &amp; Hams</span>
-                          <span className="text-[10px] text-zinc-400 block mt-0.5 font-medium">4 exercises</span>
+                          <span className="text-xs font-bold text-white block mt-0.5">Squats &amp; Hams</span>
+                          <span className="text-[10px] text-zinc-500 block mt-0.5 font-medium">4 exercises</span>
                         </a>
                       </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-zinc-100">
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-zinc-800/80">
                       <Link
                         href="/workout/active"
                         className="flex-1 py-3.5 px-6 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-600/25 active:scale-95 transition-all text-center"
@@ -644,7 +728,7 @@ export default function DashboardPage() {
 
                       <a
                         href="#routines"
-                        className="py-3.5 px-6 rounded-full border border-zinc-200 hover:border-zinc-900 text-zinc-800 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
+                        className="py-3.5 px-6 rounded-full border border-zinc-800 hover:border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
                       >
                         <Layers className="h-4 w-4 text-zinc-400" />
                         <span>Browse Splits</span>
@@ -655,32 +739,32 @@ export default function DashboardPage() {
               </section>
 
               {/* Weekly goal & Consistency */}
-              <section className="flex flex-col justify-between gap-5 rounded-2xl border border-zinc-200 bg-white p-6 sm:p-7 shadow-sm transition-shadow hover:shadow-md lg:col-span-5">
+              <section className="flex flex-col justify-between gap-5 rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-[#141417] p-6 sm:p-7 shadow-sm transition-shadow hover:border-zinc-700/80 lg:col-span-5">
                 <div className="space-y-4">
                   {/* Top Bar: Title, streak badge, and Goal controls */}
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-base font-black uppercase tracking-tight text-zinc-900">
+                      <h2 className="text-base font-black uppercase tracking-tight text-white">
                         This Week
                       </h2>
-                      <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-50 text-[#FF4A00] border border-orange-100 text-[10px] font-black uppercase tracking-wider">
+                      <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-500/15 text-[#FF4A00] border border-orange-500/25 text-[10px] font-black uppercase tracking-wider">
                         <Flame className="w-3 h-3 fill-[#FF4A00]" />
                         {weekStreak > 0 ? `${weekStreak}w Streak` : 'Consistency'}
                       </span>
                     </div>
 
                     {/* Compact Goal Stepper */}
-                    <div className="flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-1 border border-zinc-200/70">
+                    <div className="flex items-center gap-1 rounded-full bg-zinc-900 px-2 py-1 border border-zinc-800">
                       <button
                         type="button"
                         onClick={() => changeGoal(-1)}
                         disabled={weeklyGoal <= 1}
                         aria-label="Decrease weekly goal"
-                        className="w-5 h-5 rounded-full grid place-items-center text-zinc-600 hover:bg-white hover:text-zinc-900 transition-colors disabled:opacity-30"
+                        className="w-5 h-5 rounded-full grid place-items-center text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors disabled:opacity-30"
                       >
                         <Minus className="h-3 w-3" />
                       </button>
-                      <span className="font-mono text-[11px] font-black text-zinc-900 px-1">
+                      <span className="font-mono text-[11px] font-black text-white px-1">
                         {weeklyGoal}/wk
                       </span>
                       <button
@@ -688,7 +772,7 @@ export default function DashboardPage() {
                         onClick={() => changeGoal(1)}
                         disabled={weeklyGoal >= 7}
                         aria-label="Increase weekly goal"
-                        className="w-5 h-5 rounded-full grid place-items-center text-zinc-600 hover:bg-white hover:text-zinc-900 transition-colors disabled:opacity-30"
+                        className="w-5 h-5 rounded-full grid place-items-center text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors disabled:opacity-30"
                       >
                         <Plus className="h-3 w-3" />
                       </button>
@@ -698,17 +782,17 @@ export default function DashboardPage() {
                   {/* Progress bar and summary */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span suppressHydrationWarning className="font-bold text-zinc-700">
+                      <span suppressHydrationWarning className="font-bold text-zinc-300">
                         {week.sessions} of {weeklyGoal} workouts logged
                       </span>
                       <span suppressHydrationWarning className="font-mono font-black text-[#FF4A00]">
                         {Math.round(goalPct * 100)}%
                       </span>
                     </div>
-                    <div className="w-full h-2.5 bg-zinc-100 rounded-full overflow-hidden border border-zinc-200/60">
+                    <div className="w-full h-2.5 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
                       <div
                         style={{ width: `${Math.min(100, Math.round(goalPct * 100))}%` }}
-                        className="h-full bg-gradient-to-r from-[#e04000] to-[#FF4A00] rounded-full transition-all duration-500"
+                        className="h-full bg-gradient-to-r from-[#e04000] to-[#FF4A00] rounded-full transition-all duration-500 shadow-sm shadow-orange-500/40"
                       />
                     </div>
                   </div>
@@ -718,11 +802,11 @@ export default function DashboardPage() {
                 <Link
                   href="/calendar"
                   aria-label="Open full training calendar"
-                  className="pt-3 border-t border-zinc-100 grid grid-cols-7 gap-1.5"
+                  className="pt-3 border-t border-zinc-800/80 grid grid-cols-7 gap-1.5"
                 >
                   {week.days.map((d, i) => (
                     <div key={i} className="flex flex-col items-center gap-1.5 group">
-                      <span className="text-[10px] font-black uppercase text-zinc-400 group-hover:text-zinc-700 transition-colors">
+                      <span className="text-[10px] font-black uppercase text-zinc-500 group-hover:text-zinc-300 transition-colors">
                         {d.label}
                       </span>
                       <span
@@ -731,8 +815,8 @@ export default function DashboardPage() {
                           d.count > 0
                             ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-600/30'
                             : d.isToday
-                              ? 'bg-[#111] text-white ring-2 ring-[#FF4A00] ring-offset-2'
-                              : 'bg-zinc-100 text-zinc-700 border border-zinc-200/60 group-hover:bg-zinc-200'
+                              ? 'bg-zinc-800 text-white ring-2 ring-[#FF4A00]'
+                              : 'bg-zinc-900 text-zinc-400 border border-zinc-800/80 group-hover:bg-zinc-800'
                         }`}
                       >
                         {d.count > 0 ? <Dumbbell className="h-4 w-4" /> : d.date}
@@ -745,64 +829,19 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* ───────── Stats: 4 individual athletic cards ───────── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
-          {stats.map((s) => {
-            const Icon = s.icon;
-            return (
-              <div
-                key={s.label}
-                className="bg-white rounded-2xl border border-zinc-200 p-4 sm:p-5 space-y-1 sm:space-y-2 shadow-sm hover:shadow-md transition-all"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span
-                    className={`text-[10px] sm:text-xs font-black uppercase tracking-wider truncate ${
-                      s.accent ? 'text-[#FF4A00]' : 'text-zinc-500'
-                    }`}
-                  >
-                    <span className="sm:hidden">{s.short}</span>
-                    <span className="hidden sm:inline">{s.label}</span>
-                  </span>
-                  <span
-                    className={`p-2 rounded-xl shrink-0 ${
-                      s.accent ? 'bg-orange-100 text-[#FF4A00]' : 'bg-zinc-100 text-zinc-700'
-                    }`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 ${s.accent ? 'fill-[#FF4A00]' : ''}`} />
-                  </span>
-                </div>
-                <p
-                  suppressHydrationWarning
-                  className={`text-2xl sm:text-3xl font-black font-mono tracking-tight leading-none ${
-                    s.accent ? 'text-[#FF4A00]' : 'text-zinc-900'
-                  }`}
-                >
-                  {loading ? '—' : s.value}{' '}
-                  <span className="text-xs sm:text-sm font-bold text-zinc-400 font-sans">{s.unit}</span>
-                </p>
-                <p className="hidden lg:block text-[10px] text-zinc-400 font-medium truncate">{s.note}</p>
-              </div>
-            );
-          })}
-        </div>
-
         {/* ───────── Recent workouts + progress ───────── */}
         <section className="space-y-4 sm:space-y-6">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg sm:text-2xl font-black text-zinc-900 tracking-tight uppercase flex items-center gap-2 truncate min-w-0">
-              <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF4A00] shrink-0" />
+            <h2 className="text-lg sm:text-xl font-black text-white tracking-tight uppercase flex items-center gap-2 truncate min-w-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FF4A00] shadow-[0_0_8px_#FF4A00]" />
               <span>Recent Training</span>
             </h2>
 
             <Link
               href="/calendar"
-              className="inline-flex items-center gap-1 px-3 py-1.5 text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#FF4A00] bg-orange-50 hover:bg-orange-100 rounded-full transition-colors shrink-0"
+              className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-white transition-colors shrink-0"
             >
-              <CalendarIcon className="w-3 h-3" />
-              <span>
-                <span className="sm:hidden">Calendar</span>
-                <span className="hidden sm:inline">Full Calendar &rarr;</span>
-              </span>
+              <span>View All &rarr;</span>
             </Link>
           </div>
 
@@ -811,48 +850,73 @@ export default function DashboardPage() {
             <div className="order-first lg:order-none lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:sticky lg:top-24 lg:self-start space-y-4">
               <VolumeChart workouts={workouts} />
 
+              {/* Recent PRs Leaderboard (Screenshot 2) */}
               {prs.length > 0 && (
-                <section className="rounded-2xl border border-zinc-200 bg-white p-4 sm:p-5">
+                <section className="rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-[#141417] p-5 shadow-sm space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="flex items-center gap-2 text-sm font-black uppercase tracking-tight">
+                    <h3 className="flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-wider text-white">
                       <Trophy className="h-4 w-4 text-[#FF4A00]" />
                       Recent PRs
                     </h3>
-                    <span className="text-[11px] font-semibold text-zinc-400">Estimated max</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Est. 1RM</span>
                   </div>
-                  <ul className="mt-3 grid gap-2">
-                    {prs.slice(0, 4).map((pr, i) => (
-                      <li key={i} className="flex items-center gap-3 rounded-xl bg-zinc-50 p-3">
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-bold text-zinc-900">{pr.name}</p>
-                          <p suppressHydrationWarning className="text-xs text-zinc-500">
-                            {pr.weight} kg × {pr.reps} &middot; {daysAgoLabel(pr.date)}
-                          </p>
-                        </div>
-                        <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-black text-emerald-700">
-                          +{pr.gain < 1 ? pr.gain.toFixed(1) : Math.round(pr.gain)}%
-                        </span>
-                      </li>
-                    ))}
+
+                  <ul className="grid gap-2 pt-1">
+                    {prs.slice(0, 4).map((pr, i) => {
+                      const rankBadges = [
+                        'bg-amber-500/20 text-amber-400 border border-amber-500/30',
+                        'bg-zinc-800 text-zinc-300 border border-zinc-700',
+                        'bg-zinc-800 text-zinc-400 border border-zinc-700',
+                        'bg-zinc-900 text-zinc-500 border border-zinc-800',
+                      ];
+
+                      return (
+                        <li key={i} className="flex items-center justify-between gap-3 p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/60">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <span className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg grid place-items-center text-xs font-mono font-bold shrink-0 ${rankBadges[i] || rankBadges[3]}`}>
+                              {i + 1}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-black text-white uppercase">{pr.name}</p>
+                              <p suppressHydrationWarning className="text-xs text-zinc-400 font-medium">
+                                {pr.weight} kg &times; {pr.reps} &middot; {daysAgoLabel(pr.date)}
+                              </p>
+                            </div>
+                          </div>
+                          <span className="shrink-0 rounded-full bg-emerald-500/15 border border-emerald-500/25 px-2.5 py-0.5 font-mono text-xs font-black text-emerald-400">
+                            +{pr.gain < 1 ? pr.gain.toFixed(1) : Math.round(pr.gain)}%
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </section>
               )}
             </div>
 
-            {/* Recent workouts */}
+            {/* Recent workouts list */}
             <div className="lg:col-span-8 lg:col-start-1 lg:row-start-1 space-y-3 sm:space-y-4">
               {loading &&
-                [0, 1, 2].map((i) => <div key={i} className="h-40 animate-pulse rounded-2xl bg-zinc-100" />)}
+                [0, 1, 2].map((i) => <div key={i} className="h-20 animate-pulse rounded-2xl bg-zinc-900" />)}
 
-              {workouts.slice(0, 5).map((workout) => (
-                <WorkoutCard key={workout._id} workout={workout} onDelete={handleDeleteWorkout} />
-              ))}
+              {!loading && workouts.length > 0 && (
+                <div className="bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 divide-y divide-zinc-800/60 overflow-hidden shadow-sm">
+                  {workouts.slice(0, 5).map((workout) => (
+                    <WorkoutCard
+                      key={workout._id}
+                      workout={workout}
+                      onDelete={handleDeleteWorkout}
+                      isListItem
+                    />
+                  ))}
+                </div>
+              )}
 
               {workouts.length > 5 && (
                 <div className="text-center pt-1">
                   <Link
                     href="/calendar"
-                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 py-3 px-5 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-black uppercase tracking-wider transition-colors"
+                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 py-3 px-6 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white text-xs font-black uppercase tracking-wider transition-colors"
                   >
                     <span>View all {workouts.length} workouts</span>
                     <ArrowRight className="w-3.5 h-3.5 text-[#FF4A00]" />
@@ -861,15 +925,15 @@ export default function DashboardPage() {
               )}
 
               {workouts.length === 0 && !loading && (
-                <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-6 sm:p-10 space-y-4 text-center">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange-50 text-[#FF4A00] flex items-center justify-center mx-auto">
+                <div className="rounded-2xl sm:rounded-3xl border border-dashed border-zinc-800 bg-[#141417] p-6 sm:p-10 space-y-4 text-center">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange-500/15 text-[#FF4A00] flex items-center justify-center mx-auto">
                     <Dumbbell className="w-6 h-6 sm:w-8 sm:h-8 stroke-[2.5]" />
                   </div>
                   <div className="space-y-1 max-w-md mx-auto">
-                    <h3 className="text-base sm:text-xl font-black uppercase tracking-tight text-zinc-900">
+                    <h3 className="text-base sm:text-xl font-black uppercase tracking-tight text-white">
                       No Workouts Logged Yet
                     </h3>
-                    <p className="text-xs sm:text-sm text-zinc-500 font-medium">
+                    <p className="text-xs sm:text-sm text-zinc-400 font-medium">
                       Start your first training session or pick a split routine below.
                     </p>
                   </div>
@@ -887,17 +951,17 @@ export default function DashboardPage() {
         </section>
 
         {/* ───────── Splits & routines ───────── */}
-        <section id="routines" className="scroll-mt-24 space-y-4 sm:space-y-5 pt-5 sm:pt-6 border-t border-zinc-100">
+        <section id="routines" className="scroll-mt-24 space-y-4 sm:space-y-5 pt-5 sm:pt-6 border-t border-zinc-800/80">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-orange-50 text-[#FF4A00] shrink-0">
+              <div className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-orange-500/15 text-[#FF4A00] shrink-0">
                 <BookmarkPlus className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
-                <h2 className="text-lg sm:text-2xl font-black text-zinc-900 tracking-tight uppercase truncate">
+                <h2 className="text-lg sm:text-2xl font-black text-white tracking-tight uppercase truncate">
                   Splits &amp; Routines
                 </h2>
-                <p className="text-xs text-zinc-500 font-medium truncate hidden sm:block">
+                <p className="text-xs text-zinc-400 font-medium truncate hidden sm:block">
                   Launch pre-built splits or build your custom routines
                 </p>
               </div>
@@ -905,7 +969,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setIsCreateTemplateOpen(true)}
-              className="py-2 px-3.5 sm:py-2.5 sm:px-5 rounded-full bg-[#111] hover:bg-[#222] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all shrink-0"
+              className="py-2 px-3.5 sm:py-2.5 sm:px-5 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all shrink-0"
             >
               <Plus className="w-3.5 h-3.5 text-[#FF4A00]" />
               <span>New Split</span>
@@ -922,16 +986,16 @@ export default function DashboardPage() {
                 {templates.map((tpl) => (
                   <div
                     key={tpl._id}
-                    className="shrink-0 snap-start w-[84%] sm:w-[60%] md:w-auto bg-white rounded-2xl p-4 sm:p-5 border border-zinc-200 hover:border-zinc-900 flex flex-col justify-between space-y-3 sm:space-y-4 transition-all shadow-sm"
+                    className="shrink-0 snap-start w-[84%] sm:w-[60%] md:w-auto bg-[#141417] rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-zinc-800/80 hover:border-zinc-700 flex flex-col justify-between space-y-3 sm:space-y-4 transition-all shadow-sm"
                   >
                     <div className="space-y-2.5">
                       <div className="flex items-start justify-between gap-2">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-50 text-[#FF4A00] border border-orange-100">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-500/15 text-[#FF4A00] border border-orange-500/20">
                           {tpl.category || 'Custom Split'}
                         </span>
                         <button
                           onClick={() => handleDeleteTemplate(tpl._id)}
-                          className="grid h-8 w-8 -m-1 place-items-center rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                          className="grid h-8 w-8 -m-1 place-items-center rounded-full text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                           aria-label={`Delete ${tpl.name}`}
                           title="Delete Routine"
                         >
@@ -940,29 +1004,29 @@ export default function DashboardPage() {
                       </div>
 
                       <div>
-                        <h3 className="text-sm sm:text-base font-black text-zinc-900 uppercase tracking-tight">
+                        <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-tight">
                           {tpl.name}
                         </h3>
                         {tpl.notes && (
-                          <p className="text-xs text-zinc-500 line-clamp-2 mt-0.5 font-medium">{tpl.notes}</p>
+                          <p className="text-xs text-zinc-400 line-clamp-2 mt-0.5 font-medium">{tpl.notes}</p>
                         )}
                       </div>
 
-                      <div className="space-y-1 pt-2 border-t border-zinc-100">
+                      <div className="space-y-1 pt-2 border-t border-zinc-800/80">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                           {tpl.exercises?.length || 0} Movements
                         </span>
                         <div className="space-y-1">
                           {tpl.exercises?.slice(0, 3).map((ex: any, idx: number) => (
-                            <div key={idx} className="flex items-center justify-between gap-2 text-[11px] text-zinc-700">
+                            <div key={idx} className="flex items-center justify-between gap-2 text-[11px] text-zinc-300">
                               <span className="font-semibold truncate">{ex.name}</span>
-                              <span className="text-zinc-400 font-mono text-[10px] shrink-0">
+                              <span className="text-zinc-500 font-mono text-[10px] shrink-0">
                                 {ex.defaultSets} &times; {ex.defaultWeightKg}kg
                               </span>
                             </div>
                           ))}
                           {tpl.exercises?.length > 3 && (
-                            <p className="text-[10px] text-zinc-400 font-medium">
+                            <p className="text-[10px] text-zinc-500 font-medium">
                               +{tpl.exercises.length - 3} more movements
                             </p>
                           )}
@@ -982,19 +1046,19 @@ export default function DashboardPage() {
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center bg-zinc-50/50 space-y-3">
-              <div className="w-10 h-10 rounded-2xl bg-orange-50 text-[#FF4A00] flex items-center justify-center mx-auto">
+            <div className="rounded-2xl sm:rounded-3xl border border-dashed border-zinc-800 p-8 text-center bg-[#141417] space-y-3">
+              <div className="w-10 h-10 rounded-2xl bg-orange-500/15 text-[#FF4A00] flex items-center justify-center mx-auto">
                 <Layers className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-black text-zinc-900 uppercase">No Saved Routines Yet</h3>
-                <p className="text-xs text-zinc-500 max-w-sm mx-auto mt-0.5 font-medium">
+                <h3 className="text-sm font-black text-white uppercase">No Saved Routines Yet</h3>
+                <p className="text-xs text-zinc-400 max-w-sm mx-auto mt-0.5 font-medium">
                   Create your custom training routines or save workouts directly from the active workout page.
                 </p>
               </div>
               <button
                 onClick={() => setIsCreateTemplateOpen(true)}
-                className="py-2.5 px-5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-wider inline-flex items-center gap-2 active:scale-95 transition-all shadow-sm"
+                className="py-2.5 px-5 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-black text-xs uppercase tracking-wider inline-flex items-center gap-2 active:scale-95 transition-all shadow-sm"
               >
                 <Plus className="w-4 h-4 text-[#FF4A00]" />
                 <span>Create Routine</span>

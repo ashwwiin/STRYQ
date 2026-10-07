@@ -78,19 +78,19 @@ export default function Header({
   const isActive = (href: string) => pathname === href || pathname?.startsWith(href + '/');
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-zinc-200/70">
+    <header className="sticky top-0 z-50 w-full bg-[#09090b]/85 backdrop-blur-xl border-b border-zinc-800/80">
       <div className="mx-auto relative flex h-16 w-full max-w-[1920px] items-center justify-between gap-1.5 sm:gap-4 px-3 sm:px-8 lg:px-12 2xl:px-16">
         {/* Left: logo */}
         <div className="flex items-center gap-1 shrink-0">
           <Link href="/" className="flex items-center" aria-label="STRYQ home">
-            <Logo size="md" variant="dark" />
+            <Logo size="md" variant="light" />
           </Link>
         </div>
 
         {/* Center: segmented pill nav */}
         <nav
           aria-label="Main"
-          className="flex items-center gap-0.5 sm:gap-1 rounded-full bg-zinc-100 p-0.5 sm:p-1 md:absolute md:left-1/2 md:-translate-x-1/2"
+          className="flex items-center gap-0.5 sm:gap-1 rounded-full bg-zinc-900/90 border border-zinc-800/90 p-0.5 sm:p-1 md:absolute md:left-1/2 md:-translate-x-1/2"
         >
           {NAV.map((item) => {
             const active = isActive(item.href);
@@ -101,10 +101,11 @@ export default function Header({
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 aria-label={item.label}
-                className={`flex items-center gap-1.5 sm:gap-2 rounded-full px-2.5 py-1.5 text-xs font-bold transition-all sm:px-5 sm:py-2 sm:text-[13px] ${active
-                    ? 'bg-[#111] text-white shadow-sm'
-                    : 'text-zinc-600 hover:bg-white hover:text-zinc-900'
-                  }`}
+                className={`flex items-center gap-1.5 sm:gap-2 rounded-full px-2.5 py-1.5 text-xs font-bold transition-all sm:px-5 sm:py-2 sm:text-[13px] ${
+                  active
+                    ? 'bg-zinc-800 text-white shadow-sm ring-1 ring-zinc-700'
+                    : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
+                }`}
               >
                 {item.live && !active ? (
                   <span className="relative flex h-2 w-2">
@@ -127,46 +128,47 @@ export default function Header({
               onClick={() => setDropdownOpen((o) => !o)}
               aria-haspopup="menu"
               aria-expanded={dropdownOpen}
-              className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-zinc-200 bg-white p-1 transition hover:border-zinc-400 sm:pr-3"
+              className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-zinc-800 bg-zinc-900/90 p-1 transition hover:border-zinc-700 sm:pr-3"
             >
-              <span className="relative grid h-8 w-8 place-items-center rounded-full bg-[#111] text-xs font-black text-white">
+              <span className="relative grid h-8 w-8 place-items-center rounded-full bg-[#FF4A00] text-xs font-black text-white shadow-sm">
                 {displayName.charAt(0).toUpperCase()}
               </span>
-              <span className="hidden max-w-[110px] truncate text-xs font-bold text-zinc-900 lg:inline">
+              <span className="hidden max-w-[110px] truncate text-xs font-bold text-zinc-200 lg:inline">
                 {displayName}
               </span>
               <ChevronDown
-                className={`hidden h-3.5 w-3.5 text-zinc-500 transition-transform sm:block ${dropdownOpen ? 'rotate-180' : ''
-                  }`}
+                className={`hidden h-3.5 w-3.5 text-zinc-400 transition-transform sm:block ${
+                  dropdownOpen ? 'rotate-180' : ''
+                }`}
               />
             </button>
 
             {dropdownOpen && (
               <div
                 role="menu"
-                className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]"
+                className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-zinc-800 bg-[#121215] p-2 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
               >
                 <Link
                   href="/profile"
                   onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-50 transition-colors"
+                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-zinc-800/60 transition-colors"
                 >
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#111] text-sm font-black text-white">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#FF4A00] text-sm font-black text-white shadow-sm">
                     {displayName.charAt(0).toUpperCase()}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-zinc-900">{displayName}</p>
-                    <p className="text-xs text-zinc-500">View Athlete Profile</p>
+                    <p className="truncate text-sm font-bold text-white">{displayName}</p>
+                    <p className="text-xs text-zinc-400">View Athlete Profile</p>
                   </div>
                 </Link>
 
-                <div className="my-1 h-px bg-zinc-100" />
+                <div className="my-1 h-px bg-zinc-800/80" />
 
                 <Link
                   href="/profile"
                   role="menuitem"
                   onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white"
                 >
                   <User className="h-4 w-4 text-[#FF4A00]" />
                   Athlete Profile
@@ -176,7 +178,7 @@ export default function Header({
                   href="/settings"
                   role="menuitem"
                   onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-300 transition hover:bg-zinc-800/60 hover:text-white"
                 >
                   <Settings className="h-4 w-4 text-zinc-400" />
                   Settings &amp; Preferences
@@ -185,7 +187,7 @@ export default function Header({
                 <button
                   onClick={handleLogout}
                   role="menuitem"
-                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
                 >
                   <LogOut className="h-4 w-4" />
                   Log out

@@ -46,9 +46,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -84,11 +82,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "glutes",
-            "hamstrings",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -112,9 +106,7 @@
         "primary": [
             "quadriceps"
         ],
-        "secondary": [
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -211,7 +203,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -227,12 +218,9 @@
             "hamstrings"
         ],
         "secondary": [
-            "biceps",
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -275,11 +263,8 @@
             "middle back"
         ],
         "secondary": [
-            "abdominals",
             "biceps",
-            "chest",
-            "lats",
-            "triceps"
+            "lats"
         ],
         "level": "expert"
     },
@@ -329,7 +314,6 @@
             "shoulders"
         ],
         "secondary": [
-            "middle back",
             "traps",
             "triceps"
         ],
@@ -387,11 +371,8 @@
             "lower back"
         ],
         "secondary": [
-            "biceps",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "quadriceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -405,16 +386,8 @@
             "lower back"
         ],
         "secondary": [
-            "abdominals",
-            "adductors",
-            "biceps",
-            "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -428,12 +401,8 @@
             "lower back"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -447,7 +416,6 @@
             "shoulders"
         ],
         "secondary": [
-            "middle back",
             "triceps"
         ],
         "level": "beginner"
@@ -463,10 +431,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -491,10 +457,7 @@
         "primary": [
             "calves"
         ],
-        "secondary": [
-            "hamstrings",
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -522,7 +485,6 @@
             "lats"
         ],
         "secondary": [
-            "abdominals",
             "forearms",
             "middle back"
         ],
@@ -580,7 +542,6 @@
             "shoulders"
         ],
         "secondary": [
-            "middle back",
             "traps"
         ],
         "level": "beginner"
@@ -607,8 +568,7 @@
             "abdominals"
         ],
         "secondary": [
-            "lower back",
-            "shoulders"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -622,8 +582,7 @@
             "abdominals"
         ],
         "secondary": [
-            "lower back",
-            "shoulders"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -678,14 +637,8 @@
             "lower back"
         ],
         "secondary": [
-            "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lats",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -701,8 +654,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -716,7 +668,6 @@
             "glutes"
         ],
         "secondary": [
-            "calves",
             "hamstrings"
         ],
         "level": "intermediate"
@@ -747,7 +698,6 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "hamstrings"
         ],
         "level": "intermediate"
@@ -762,7 +712,6 @@
             "glutes"
         ],
         "secondary": [
-            "calves",
             "hamstrings"
         ],
         "level": "intermediate"
@@ -791,9 +740,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "chest"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -821,11 +768,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "biceps",
-            "lats",
-            "middle back"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -837,12 +780,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "glutes",
-            "hamstrings",
-            "lats",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -867,7 +805,6 @@
             "shoulders"
         ],
         "secondary": [
-            "chest",
             "triceps"
         ],
         "level": "intermediate"
@@ -924,8 +861,7 @@
         ],
         "secondary": [
             "calves",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -941,8 +877,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -958,8 +893,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -975,8 +909,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "quadriceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -1005,10 +938,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "chest",
-            "forearms"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -1083,8 +1013,6 @@
         ],
         "secondary": [
             "chest",
-            "forearms",
-            "lats",
             "shoulders"
         ],
         "level": "intermediate"
@@ -1115,7 +1043,6 @@
         ],
         "secondary": [
             "chest",
-            "lats",
             "shoulders"
         ],
         "level": "expert"
@@ -1147,8 +1074,7 @@
         ],
         "secondary": [
             "biceps",
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "beginner"
     },
@@ -1174,8 +1100,6 @@
             "shoulders"
         ],
         "secondary": [
-            "lower back",
-            "middle back",
             "traps"
         ],
         "level": "beginner"
@@ -1223,8 +1147,7 @@
         ],
         "secondary": [
             "biceps",
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "beginner"
     },
@@ -1253,12 +1176,7 @@
             "abdominals"
         ],
         "secondary": [
-            "glutes",
-            "hamstrings",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "triceps"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -1271,12 +1189,7 @@
         "primary": [
             "lats"
         ],
-        "secondary": [
-            "chest",
-            "lats",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -1289,7 +1202,6 @@
             "chest"
         ],
         "secondary": [
-            "lats",
             "shoulders",
             "triceps"
         ],
@@ -1350,8 +1262,6 @@
         ],
         "secondary": [
             "chest",
-            "forearms",
-            "lats",
             "shoulders"
         ],
         "level": "intermediate"
@@ -1377,10 +1287,7 @@
         "primary": [
             "triceps"
         ],
-        "secondary": [
-            "abdominals",
-            "forearms"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -1393,7 +1300,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -1479,8 +1385,7 @@
             "forearms"
         ],
         "secondary": [
-            "biceps",
-            "shoulders"
+            "biceps"
         ],
         "level": "intermediate"
     },
@@ -1494,11 +1399,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -1512,11 +1414,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -1533,8 +1432,7 @@
             "adductors",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -1552,8 +1450,7 @@
             "adductors",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -1571,8 +1468,7 @@
             "adductors",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -1691,10 +1587,8 @@
             "quadriceps"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -1865,10 +1759,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "biceps",
-            "middle back"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -1905,7 +1796,6 @@
             "shoulders"
         ],
         "secondary": [
-            "middle back",
             "traps"
         ],
         "level": "beginner"
@@ -2054,11 +1944,8 @@
             "quadriceps"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -2071,9 +1958,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "forearms"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -2086,11 +1971,7 @@
             "adductors"
         ],
         "secondary": [
-            "abdominals",
-            "abductors",
-            "calves",
             "glutes",
-            "hamstrings",
             "quadriceps"
         ],
         "level": "beginner"
@@ -2104,10 +1985,7 @@
         "primary": [
             "lower back"
         ],
-        "secondary": [
-            "middle back",
-            "traps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -2119,11 +1997,7 @@
         "primary": [
             "lats"
         ],
-        "secondary": [
-            "abdominals",
-            "chest",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -2162,9 +2036,7 @@
         "primary": [
             "hamstrings"
         ],
-        "secondary": [
-            "adductors"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -2176,9 +2048,7 @@
         "primary": [
             "lats"
         ],
-        "secondary": [
-            "lower back"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -2206,10 +2076,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "biceps",
-            "chest"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -2236,7 +2103,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -2252,7 +2118,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -2268,7 +2133,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -2284,7 +2148,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -2312,8 +2175,7 @@
             "lower back"
         ],
         "secondary": [
-            "glutes",
-            "middle back"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -2357,10 +2219,6 @@
             "shoulders"
         ],
         "secondary": [
-            "forearms",
-            "glutes",
-            "hamstrings",
-            "lower back",
             "traps",
             "triceps"
         ],
@@ -2377,12 +2235,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -2396,11 +2250,6 @@
             "shoulders"
         ],
         "secondary": [
-            "abdominals",
-            "glutes",
-            "hamstrings",
-            "lower back",
-            "quadriceps",
             "traps",
             "triceps"
         ],
@@ -2416,14 +2265,6 @@
             "shoulders"
         ],
         "secondary": [
-            "abdominals",
-            "calves",
-            "glutes",
-            "hamstrings",
-            "lower back",
-            "middle back",
-            "quadriceps",
-            "shoulders",
             "traps",
             "triceps"
         ],
@@ -2439,12 +2280,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "lower back",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "beginner"
     },
@@ -2460,9 +2297,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -2476,11 +2311,8 @@
             "quadriceps"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -2598,8 +2430,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "beginner"
     },
@@ -2613,7 +2444,6 @@
             "triceps"
         ],
         "secondary": [
-            "abdominals",
             "chest",
             "shoulders"
         ],
@@ -2655,13 +2485,7 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
-            "biceps",
-            "calves",
-            "forearms",
-            "lower back",
-            "shoulders",
-            "traps"
+            "calves"
         ],
         "level": "intermediate"
     },
@@ -2703,7 +2527,6 @@
             "chest"
         ],
         "secondary": [
-            "biceps",
             "shoulders"
         ],
         "level": "beginner"
@@ -2730,11 +2553,8 @@
             "lower back"
         ],
         "secondary": [
-            "abdominals",
-            "abductors",
             "glutes",
-            "hamstrings",
-            "quadriceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -2747,9 +2567,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "forearms"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -2812,7 +2630,6 @@
             "lower back"
         ],
         "secondary": [
-            "abductors",
             "glutes"
         ],
         "level": "beginner"
@@ -2839,12 +2656,8 @@
             "lower back"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -2858,12 +2671,8 @@
             "lower back"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -3024,12 +2833,8 @@
             "lower back"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -3118,13 +2923,9 @@
             "hamstrings"
         ],
         "secondary": [
-            "biceps",
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -3138,8 +2939,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -3154,8 +2953,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -3169,11 +2966,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "glutes",
-            "hamstrings",
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -3185,12 +2978,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "glutes",
-            "hamstrings",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -3221,7 +3009,6 @@
             "glutes"
         ],
         "secondary": [
-            "abdominals",
             "hamstrings"
         ],
         "level": "intermediate"
@@ -3324,12 +3111,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -3372,8 +3155,7 @@
         "secondary": [
             "biceps",
             "forearms",
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "beginner"
     },
@@ -3416,9 +3198,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "middle back"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -3493,7 +3273,6 @@
             "shoulders"
         ],
         "secondary": [
-            "biceps",
             "traps"
         ],
         "level": "intermediate"
@@ -3519,9 +3298,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "biceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -3632,8 +3409,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -3649,8 +3425,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -3703,9 +3478,7 @@
         "primary": [
             "chest"
         ],
-        "secondary": [
-            "middle back"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -3890,9 +3663,7 @@
         "primary": [
             "triceps"
         ],
-        "secondary": [
-            "forearms"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -3904,9 +3675,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "middle back"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -3918,14 +3687,7 @@
         "primary": [
             "forearms"
         ],
-        "secondary": [
-            "abdominals",
-            "glutes",
-            "hamstrings",
-            "lower back",
-            "quadriceps",
-            "traps"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -4087,10 +3849,6 @@
             "chest"
         ],
         "secondary": [
-            "calves",
-            "glutes",
-            "hamstrings",
-            "quadriceps",
             "shoulders",
             "triceps"
         ],
@@ -4106,7 +3864,6 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "calves",
             "glutes",
             "hamstrings"
@@ -4199,11 +3956,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -4295,7 +4049,6 @@
             "chest"
         ],
         "secondary": [
-            "lats",
             "shoulders",
             "triceps"
         ],
@@ -4311,7 +4064,6 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "glutes",
             "hamstrings"
         ],
@@ -4355,8 +4107,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "intermediate"
     },
@@ -4416,8 +4167,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -4431,7 +4181,6 @@
             "hamstrings"
         ],
         "secondary": [
-            "abdominals",
             "glutes",
             "lower back"
         ],
@@ -4447,7 +4196,6 @@
             "hamstrings"
         ],
         "secondary": [
-            "abdominals",
             "glutes",
             "lower back"
         ],
@@ -4462,10 +4210,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "biceps",
-            "lats"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -4584,12 +4329,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -4604,12 +4345,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -4623,14 +4360,9 @@
             "hamstrings"
         ],
         "secondary": [
-            "abdominals",
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -4644,14 +4376,9 @@
             "hamstrings"
         ],
         "secondary": [
-            "abdominals",
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -4665,7 +4392,6 @@
             "hamstrings"
         ],
         "secondary": [
-            "abdominals",
             "glutes",
             "lower back"
         ],
@@ -4705,12 +4431,8 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "shoulders",
-            "triceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -4724,7 +4446,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -4751,9 +4472,7 @@
         "primary": [
             "abductors"
         ],
-        "secondary": [
-            "adductors"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -4792,7 +4511,6 @@
             "glutes"
         ],
         "secondary": [
-            "calves",
             "hamstrings"
         ],
         "level": "beginner"
@@ -4807,7 +4525,6 @@
             "lower back"
         ],
         "secondary": [
-            "calves",
             "glutes"
         ],
         "level": "beginner"
@@ -4836,11 +4553,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
             "calves",
-            "glutes",
-            "hamstrings"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -4907,9 +4621,7 @@
         "primary": [
             "triceps"
         ],
-        "secondary": [
-            "forearms"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -4922,8 +4634,7 @@
             "middle back"
         ],
         "secondary": [
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "beginner"
     },
@@ -5105,7 +4816,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -5121,7 +4831,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -5137,7 +4846,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -5218,11 +4926,6 @@
             "shoulders"
         ],
         "secondary": [
-            "chest",
-            "glutes",
-            "hamstrings",
-            "lower back",
-            "quadriceps",
             "traps"
         ],
         "level": "intermediate"
@@ -5288,7 +4991,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -5342,9 +5044,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -5358,9 +5058,6 @@
             "shoulders"
         ],
         "secondary": [
-            "glutes",
-            "hamstrings",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -5375,7 +5072,6 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "calves"
         ],
         "level": "intermediate"
@@ -5420,16 +5116,8 @@
             "lower back"
         ],
         "secondary": [
-            "abdominals",
-            "biceps",
-            "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "middle back",
-            "quadriceps",
-            "shoulders",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -5459,9 +5147,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -5474,10 +5160,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "hamstrings",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -5491,8 +5174,6 @@
         ],
         "secondary": [
             "traps",
-            "middle back",
-            "abdominals",
             "triceps"
         ],
         "level": "beginner"
@@ -5508,9 +5189,7 @@
             "triceps"
         ],
         "secondary": [
-            "traps",
-            "middle back",
-            "abdominals"
+            "traps"
         ],
         "level": "intermediate"
     },
@@ -5526,9 +5205,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "lower back",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -5557,8 +5234,7 @@
             "triceps"
         ],
         "secondary": [
-            "shoulders",
-            "abdominals"
+            "shoulders"
         ],
         "level": "beginner"
     },
@@ -5571,11 +5247,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "glutes",
-            "hamstrings",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -5587,9 +5259,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "abdominals"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -5604,8 +5274,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -5647,10 +5316,6 @@
             "traps"
         ],
         "secondary": [
-            "adductors",
-            "glutes",
-            "hamstrings",
-            "quadriceps",
             "shoulders"
         ],
         "level": "intermediate"
@@ -5665,7 +5330,6 @@
             "shoulders"
         ],
         "secondary": [
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -5680,9 +5344,6 @@
             "shoulders"
         ],
         "secondary": [
-            "abdominals",
-            "hamstrings",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -5697,10 +5358,6 @@
             "shoulders"
         ],
         "secondary": [
-            "abdominals",
-            "calves",
-            "hamstrings",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -5714,12 +5371,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "glutes",
-            "hamstrings",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -5732,13 +5384,10 @@
             "lats"
         ],
         "secondary": [
-            "abdominals",
             "biceps",
             "forearms",
             "middle back",
-            "shoulders",
-            "traps",
-            "triceps"
+            "traps"
         ],
         "level": "intermediate"
     },
@@ -5752,7 +5401,6 @@
             "glutes"
         ],
         "secondary": [
-            "abductors",
             "lower back"
         ],
         "level": "beginner"
@@ -5766,10 +5414,7 @@
         "primary": [
             "calves"
         ],
-        "secondary": [
-            "hamstrings",
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -5782,11 +5427,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -5811,9 +5453,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "abdominals"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -5876,9 +5516,7 @@
         "primary": [
             "quadriceps"
         ],
-        "secondary": [
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -5891,7 +5529,6 @@
             "glutes"
         ],
         "secondary": [
-            "calves",
             "hamstrings",
             "quadriceps"
         ],
@@ -5922,7 +5559,6 @@
             "glutes"
         ],
         "secondary": [
-            "abdominals",
             "hamstrings",
             "lower back"
         ],
@@ -5938,9 +5574,7 @@
             "abdominals"
         ],
         "secondary": [
-            "glutes",
-            "lower back",
-            "shoulders"
+            "lower back"
         ],
         "level": "beginner"
     },
@@ -5954,11 +5588,6 @@
             "shoulders"
         ],
         "secondary": [
-            "abdominals",
-            "calves",
-            "chest",
-            "hamstrings",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -5973,10 +5602,7 @@
             "adductors"
         ],
         "secondary": [
-            "abductors",
-            "calves",
             "glutes",
-            "hamstrings",
             "quadriceps"
         ],
         "level": "beginner"
@@ -5991,10 +5617,7 @@
             "adductors"
         ],
         "secondary": [
-            "abductors",
-            "calves",
             "glutes",
-            "hamstrings",
             "quadriceps"
         ],
         "level": "beginner"
@@ -6009,10 +5632,7 @@
             "adductors"
         ],
         "secondary": [
-            "abductors",
-            "calves",
             "glutes",
-            "hamstrings",
             "quadriceps"
         ],
         "level": "beginner"
@@ -6249,8 +5869,7 @@
             "hamstrings"
         ],
         "secondary": [
-            "calves",
-            "quadriceps"
+            "calves"
         ],
         "level": "beginner"
     },
@@ -6265,8 +5884,7 @@
         ],
         "secondary": [
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -6296,13 +5914,6 @@
             "shoulders"
         ],
         "secondary": [
-            "abdominals",
-            "chest",
-            "glutes",
-            "hamstrings",
-            "lower back",
-            "middle back",
-            "quadriceps",
             "traps",
             "triceps"
         ],
@@ -6372,8 +5983,6 @@
             "shoulders"
         ],
         "secondary": [
-            "biceps",
-            "middle back",
             "traps"
         ],
         "level": "beginner"
@@ -6413,8 +6022,7 @@
         ],
         "secondary": [
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "intermediate"
     },
@@ -6570,9 +6178,7 @@
         "primary": [
             "glutes"
         ],
-        "secondary": [
-            "abductors"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -6793,9 +6399,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -6807,11 +6411,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "abdominals",
-            "hamstrings",
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -6836,7 +6436,6 @@
             "middle back"
         ],
         "secondary": [
-            "abdominals",
             "lats",
             "lower back"
         ],
@@ -6879,9 +6478,7 @@
             "quadriceps"
         ],
         "secondary": [
-            "chest",
-            "hamstrings",
-            "shoulders"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -6895,8 +6492,7 @@
             "hamstrings"
         ],
         "secondary": [
-            "calves",
-            "quadriceps"
+            "calves"
         ],
         "level": "beginner"
     },
@@ -6911,10 +6507,7 @@
         ],
         "secondary": [
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "triceps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -6928,13 +6521,10 @@
             "lats"
         ],
         "secondary": [
-            "abdominals",
             "biceps",
             "forearms",
             "middle back",
-            "shoulders",
-            "traps",
-            "triceps"
+            "traps"
         ],
         "level": "intermediate"
     },
@@ -6982,8 +6572,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -7212,11 +6801,7 @@
         "primary": [
             "quadriceps"
         ],
-        "secondary": [
-            "abdominals",
-            "biceps",
-            "chest"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -7275,8 +6860,7 @@
         ],
         "secondary": [
             "biceps",
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "beginner"
     },
@@ -7327,9 +6911,7 @@
         ],
         "secondary": [
             "glutes",
-            "lower back",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -7369,8 +6951,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -7413,8 +6993,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -7444,10 +7022,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "glutes",
-            "hamstrings",
-            "lower back",
             "traps",
             "triceps"
         ],
@@ -7463,9 +7037,6 @@
             "shoulders"
         ],
         "secondary": [
-            "glutes",
-            "hamstrings",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -7479,10 +7050,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "hamstrings",
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -7497,8 +7065,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "lower back",
-            "shoulders"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -7526,10 +7093,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "lats",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -7542,11 +7106,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -7562,8 +7123,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -7577,12 +7137,9 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "traps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -7623,9 +7180,7 @@
         ],
         "secondary": [
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -7638,11 +7193,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -7666,9 +7217,7 @@
         "primary": [
             "lats"
         ],
-        "secondary": [
-            "triceps"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -7693,13 +7242,9 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "triceps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -7712,12 +7257,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "forearms",
-            "lats",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -7729,9 +7269,7 @@
         "primary": [
             "triceps"
         ],
-        "secondary": [
-            "lats"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -7743,11 +7281,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -7759,11 +7293,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -7890,9 +7420,6 @@
         ],
         "secondary": [
             "chest",
-            "forearms",
-            "lats",
-            "middle back",
             "shoulders"
         ],
         "level": "intermediate"
@@ -7969,7 +7496,6 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "calves",
             "glutes",
             "hamstrings"
@@ -8029,14 +7555,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "middle back",
-            "quadriceps",
-            "shoulders",
-            "traps",
-            "triceps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -8049,9 +7569,7 @@
         "primary": [
             "hamstrings"
         ],
-        "secondary": [
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -8064,12 +7582,9 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders",
-            "triceps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -8097,11 +7612,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps",
-            "triceps"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -8116,13 +7627,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "traps",
-            "triceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -8136,13 +7642,9 @@
             "hamstrings"
         ],
         "secondary": [
-            "adductors",
             "calves",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -8181,11 +7683,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -8211,10 +7709,7 @@
         ],
         "secondary": [
             "calves",
-            "chest",
-            "glutes",
-            "quadriceps",
-            "shoulders"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -8258,7 +7753,6 @@
             "shoulders"
         ],
         "secondary": [
-            "quadriceps",
             "triceps"
         ],
         "level": "expert"
@@ -8273,8 +7767,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -8289,7 +7781,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -8305,7 +7796,6 @@
             "chest"
         ],
         "secondary": [
-            "abdominals",
             "shoulders",
             "triceps"
         ],
@@ -8395,9 +7885,7 @@
         "primary": [
             "lower back"
         ],
-        "secondary": [
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -8449,7 +7937,6 @@
             "shoulders"
         ],
         "secondary": [
-            "forearms",
             "traps"
         ],
         "level": "intermediate"
@@ -8464,11 +7951,8 @@
             "lower back"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "quadriceps",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -8482,10 +7966,8 @@
             "lower back"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -8527,7 +8009,6 @@
             "shoulders"
         ],
         "secondary": [
-            "chest",
             "triceps"
         ],
         "level": "beginner"
@@ -8543,9 +8024,6 @@
         ],
         "secondary": [
             "chest",
-            "forearms",
-            "lats",
-            "middle back",
             "shoulders"
         ],
         "level": "intermediate"
@@ -8563,10 +8041,8 @@
             "abductors",
             "adductors",
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -8580,12 +8056,8 @@
             "lower back"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
-            "calves",
             "glutes",
-            "hamstrings",
-            "quadriceps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -8602,8 +8074,7 @@
             "adductors",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -8617,14 +8088,9 @@
             "hamstrings"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
             "calves",
-            "forearms",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -8717,8 +8183,7 @@
         ],
         "secondary": [
             "biceps",
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "intermediate"
     },
@@ -8813,15 +8278,7 @@
         "primary": [
             "forearms"
         ],
-        "secondary": [
-            "abdominals",
-            "calves",
-            "glutes",
-            "hamstrings",
-            "lower back",
-            "quadriceps",
-            "traps"
-        ],
+        "secondary": [],
         "level": "intermediate"
     },
     {
@@ -8834,11 +8291,8 @@
             "quadriceps"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -8895,8 +8349,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "intermediate"
     },
@@ -8926,10 +8379,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "lower back",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -8945,8 +8396,7 @@
         "secondary": [
             "biceps",
             "forearms",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "intermediate"
     },
@@ -8998,10 +8448,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "biceps",
-            "chest"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -9014,12 +8461,9 @@
             "quadriceps"
         ],
         "secondary": [
-            "biceps",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "middle back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -9077,16 +8521,9 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
-            "biceps",
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "middle back",
-            "shoulders",
-            "traps"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -9100,7 +8537,6 @@
             "traps"
         ],
         "secondary": [
-            "lats",
             "middle back"
         ],
         "level": "beginner"
@@ -9215,10 +8651,7 @@
         "primary": [
             "biceps"
         ],
-        "secondary": [
-            "chest",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -9232,8 +8665,7 @@
         ],
         "secondary": [
             "biceps",
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "beginner"
     },
@@ -9272,10 +8704,7 @@
         "primary": [
             "calves"
         ],
-        "secondary": [
-            "hamstrings",
-            "lower back"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -9387,9 +8816,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "chest"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -9401,9 +8828,7 @@
         "primary": [
             "glutes"
         ],
-        "secondary": [
-            "adductors"
-        ],
+        "secondary": [],
         "level": "expert"
     },
     {
@@ -9606,7 +9031,6 @@
             "shoulders"
         ],
         "secondary": [
-            "abdominals",
             "triceps"
         ],
         "level": "intermediate"
@@ -9663,9 +9087,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "lats"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -9689,9 +9111,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -9770,9 +9190,7 @@
         "primary": [
             "adductors"
         ],
-        "secondary": [
-            "hamstrings"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -9832,8 +9250,7 @@
         "secondary": [
             "biceps",
             "forearms",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "intermediate"
     },
@@ -9846,10 +9263,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "forearms",
-            "lats"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -9874,7 +9288,6 @@
             "shoulders"
         ],
         "secondary": [
-            "forearms",
             "traps"
         ],
         "level": "beginner"
@@ -9945,7 +9358,6 @@
             "shoulders"
         ],
         "secondary": [
-            "chest",
             "triceps"
         ],
         "level": "intermediate"
@@ -10130,11 +9542,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "calves",
-            "middle back",
-            "quadriceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -10160,10 +9568,8 @@
         ],
         "secondary": [
             "calves",
-            "chest",
             "glutes",
-            "hamstrings",
-            "triceps"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -10203,13 +9609,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "calves",
-            "forearms",
-            "lats",
-            "middle back",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -10221,9 +9621,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "chest"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -10266,8 +9664,7 @@
         ],
         "secondary": [
             "biceps",
-            "lats",
-            "shoulders"
+            "lats"
         ],
         "level": "beginner"
     },
@@ -10324,10 +9721,7 @@
         ],
         "secondary": [
             "glutes",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -10384,7 +9778,6 @@
             "shoulders"
         ],
         "secondary": [
-            "biceps",
             "traps"
         ],
         "level": "beginner"
@@ -10443,8 +9836,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -10473,7 +9865,6 @@
             "traps"
         ],
         "secondary": [
-            "biceps",
             "middle back",
             "shoulders"
         ],
@@ -10505,13 +9896,8 @@
             "quadriceps"
         ],
         "secondary": [
-            "biceps",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "traps",
-            "triceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -10527,9 +9913,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders",
-            "triceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -10543,12 +9927,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -10563,13 +9943,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "traps",
-            "triceps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -10585,9 +9960,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "lower back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -10646,8 +10019,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -10660,10 +10032,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "glutes",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -10675,11 +10044,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "shoulders",
-            "triceps"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -10706,7 +10071,6 @@
         "secondary": [
             "lats",
             "lower back",
-            "neck",
             "traps"
         ],
         "level": "beginner"
@@ -10722,12 +10086,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "traps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -10742,9 +10102,7 @@
         ],
         "secondary": [
             "glutes",
-            "hamstrings",
-            "shoulders",
-            "triceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -10775,14 +10133,8 @@
         ],
         "secondary": [
             "calves",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "quadriceps",
-            "shoulders",
-            "traps",
-            "triceps"
+            "lower back"
         ],
         "level": "expert"
     },
@@ -10812,8 +10164,7 @@
         ],
         "secondary": [
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "intermediate"
     },
@@ -10829,9 +10180,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders",
-            "triceps"
+            "hamstrings"
         ],
         "level": "expert"
     },
@@ -10848,8 +10197,7 @@
             "adductors",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -10866,8 +10214,7 @@
             "adductors",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -10901,8 +10248,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -11009,10 +10355,7 @@
         "primary": [
             "biceps"
         ],
-        "secondary": [
-            "chest",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11053,9 +10396,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11067,9 +10408,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11172,7 +10511,6 @@
             "traps"
         ],
         "secondary": [
-            "biceps",
             "shoulders"
         ],
         "level": "beginner"
@@ -11210,9 +10548,7 @@
         "primary": [
             "calves"
         ],
-        "secondary": [
-            "hamstrings"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11236,9 +10572,7 @@
         "primary": [
             "abductors"
         ],
-        "secondary": [
-            "adductors"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11314,9 +10648,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "forearms"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11528,10 +10860,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "chest",
-            "lats"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11546,8 +10875,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "shoulders"
+            "hamstrings"
         ],
         "level": "beginner"
     },
@@ -11678,7 +11006,6 @@
             "chest"
         ],
         "secondary": [
-            "lats",
             "shoulders",
             "triceps"
         ],
@@ -11723,13 +11050,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "adductors",
-            "forearms",
             "glutes",
-            "lower back",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -11743,13 +11065,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "adductors",
-            "forearms",
             "glutes",
-            "lower back",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -11763,14 +11080,8 @@
             "hamstrings"
         ],
         "secondary": [
-            "abductors",
-            "adductors",
-            "forearms",
             "glutes",
-            "lower back",
-            "middle back",
-            "quadriceps",
-            "traps"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -11813,11 +11124,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "lats",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11829,11 +11136,7 @@
         "primary": [
             "abdominals"
         ],
-        "secondary": [
-            "chest",
-            "lats",
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -11846,9 +11149,7 @@
             "abdominals"
         ],
         "secondary": [
-            "chest",
-            "lower back",
-            "shoulders"
+            "lower back"
         ],
         "level": "intermediate"
     },
@@ -11922,7 +11223,6 @@
             "chest"
         ],
         "secondary": [
-            "forearms",
             "shoulders",
             "triceps"
         ],
@@ -11968,7 +11268,6 @@
             "hamstrings"
         ],
         "secondary": [
-            "adductors",
             "calves"
         ],
         "level": "beginner"
@@ -11997,8 +11296,7 @@
             "adductors"
         ],
         "secondary": [
-            "glutes",
-            "hamstrings"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -12013,14 +11311,8 @@
         ],
         "secondary": [
             "calves",
-            "chest",
-            "forearms",
             "glutes",
-            "hamstrings",
-            "lower back",
-            "shoulders",
-            "traps",
-            "triceps"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -12162,9 +11454,7 @@
         "primary": [
             "triceps"
         ],
-        "secondary": [
-            "lats"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -12201,10 +11491,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "glutes",
-            "hamstrings",
-            "lower back",
             "traps"
         ],
         "level": "intermediate"
@@ -12219,8 +11505,6 @@
             "shoulders"
         ],
         "secondary": [
-            "calves",
-            "quadriceps",
             "triceps"
         ],
         "level": "intermediate"
@@ -12265,8 +11549,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "beginner"
     },
@@ -12279,9 +11562,7 @@
         "primary": [
             "middle back"
         ],
-        "secondary": [
-            "middle back"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -12294,8 +11575,7 @@
             "hamstrings"
         ],
         "secondary": [
-            "lower back",
-            "middle back"
+            "lower back"
         ],
         "level": "beginner"
     },
@@ -12350,10 +11630,7 @@
         "primary": [
             "shoulders"
         ],
-        "secondary": [
-            "chest",
-            "lats"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -12367,8 +11644,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "intermediate"
     },
@@ -12383,8 +11659,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "beginner"
     },
@@ -12398,9 +11673,7 @@
             "hamstrings"
         ],
         "secondary": [
-            "glutes",
-            "quadriceps",
-            "shoulders"
+            "glutes"
         ],
         "level": "beginner"
     },
@@ -12431,8 +11704,7 @@
         ],
         "secondary": [
             "glutes",
-            "hamstrings",
-            "middle back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -12487,8 +11759,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -12563,8 +11834,7 @@
         "secondary": [
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },
@@ -12578,7 +11848,6 @@
             "hamstrings"
         ],
         "secondary": [
-            "adductors",
             "glutes",
             "lower back"
         ],
@@ -12640,8 +11909,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "beginner"
     },
@@ -12656,8 +11924,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "intermediate"
     },
@@ -12672,8 +11939,7 @@
         ],
         "secondary": [
             "biceps",
-            "middle back",
-            "shoulders"
+            "middle back"
         ],
         "level": "intermediate"
     },
@@ -12711,9 +11977,7 @@
             "abductors"
         ],
         "secondary": [
-            "glutes",
-            "hamstrings",
-            "lower back"
+            "glutes"
         ],
         "level": "intermediate"
     },
@@ -12728,8 +11992,7 @@
         ],
         "secondary": [
             "calves",
-            "glutes",
-            "quadriceps"
+            "glutes"
         ],
         "level": "intermediate"
     },
@@ -12754,9 +12017,7 @@
         "primary": [
             "forearms"
         ],
-        "secondary": [
-            "shoulders"
-        ],
+        "secondary": [],
         "level": "beginner"
     },
     {
@@ -12781,13 +12042,11 @@
             "quadriceps"
         ],
         "secondary": [
-            "abdominals",
             "abductors",
             "adductors",
             "calves",
             "glutes",
-            "hamstrings",
-            "lower back"
+            "hamstrings"
         ],
         "level": "intermediate"
     },

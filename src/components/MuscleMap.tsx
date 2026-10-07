@@ -38,7 +38,7 @@ export const MUSCLE_LABELS: Record<MuscleId, string> = {
 
 /* ───────────────────────── Exercise → muscle rules ─────────────────────────
    Matched top to bottom against the lower-cased exercise name; the first match
-   wins, so specific names (e.g. "leg curl") come before general ones ("curl"). */
+   wins, so specific names come before general ones. */
 
 interface Rule {
     re: RegExp;
@@ -46,41 +46,60 @@ interface Rule {
     secondary?: MuscleId[];
 }
 
+const VALID_SECONDARIES: Record<MuscleId, MuscleId[]> = {
+    chest: ['shoulders', 'triceps'],
+    shoulders: ['triceps', 'traps'],
+    biceps: ['forearms'],
+    triceps: ['chest', 'shoulders'],
+    forearms: ['biceps'],
+    abs: ['lowerBack'],
+    traps: ['lats', 'shoulders', 'forearms'],
+    lats: ['biceps', 'forearms', 'traps'],
+    lowerBack: ['glutes', 'hamstrings'],
+    glutes: ['hamstrings', 'quads', 'lowerBack'],
+    quads: ['glutes', 'hamstrings', 'calves'],
+    hamstrings: ['glutes', 'calves', 'lowerBack'],
+    calves: [],
+};
+
 const RULES: Rule[] = [
+    // Core & Abs
+    { re: /\babs\b|\bab\b|crunch|plank|sit[- ]?up|leg raise|knee raise|hanging|woodchop|oblique|russian twist|ab wheel|rollout|hollow body/, primary: ['abs'] },
+
     // Triceps
-    { re: /overhead.*extension|skull|french|push ?down|press ?down|tricep|close[- ]grip/, primary: ['triceps'], secondary: ['chest', 'shoulders'] },
-    { re: /wrist/, primary: ['forearms'] },
+    { re: /overhead.*extension|skullcrusher|french press|push ?down|press ?down|tricep|close[- ]grip|dips?/, primary: ['triceps'], secondary: ['chest', 'shoulders'] },
+    { re: /wrist curl|wrist roller/, primary: ['forearms'] },
 
-    // Legs and glutes
-    { re: /leg curl|hamstring curl|nordic/, primary: ['hamstrings'], secondary: ['calves'] },
+    // Hamstrings & Glutes
+    { re: /leg curl|hamstring curl|nordic curl/, primary: ['hamstrings'], secondary: ['calves'] },
     { re: /romanian|\brdl\b|stiff[- ]leg|good morning/, primary: ['hamstrings', 'glutes'], secondary: ['lowerBack'] },
-    { re: /deadlift|rack pull/, primary: ['hamstrings', 'glutes', 'lowerBack'], secondary: ['lats', 'traps', 'forearms', 'quads'] },
-    { re: /abduct|hip thrust|glute|kickback/, primary: ['glutes'], secondary: ['hamstrings'] },
+    { re: /deadlift|rack pull/, primary: ['hamstrings', 'glutes', 'lowerBack'], secondary: ['traps', 'forearms', 'lats'] },
+    { re: /hip thrust|glute bridge|glute kickback|cable kickback|abductor/, primary: ['glutes'], secondary: ['hamstrings'] },
     { re: /back extension|hyperextension|reverse hyper/, primary: ['lowerBack'], secondary: ['glutes', 'hamstrings'] },
-    { re: /leg extension|sissy/, primary: ['quads'] },
-    { re: /squat|leg press|hack|lunge|bulgarian|step[- ]?up|goblet/, primary: ['quads', 'glutes'], secondary: ['hamstrings', 'calves'] },
-    { re: /calf|calves|donkey/, primary: ['calves'] },
 
-    // Core
-    { re: /oblique|russian|twist|side bend|woodchop|leg raise|knee raise|hanging|crunch|sit[- ]?up|plank|\bcore\b|\babs?\b|wheel|rollout/, primary: ['abs'] },
-    { re: /farmer|carry|grip/, primary: ['forearms'], secondary: ['traps', 'abs'] },
+    // Quads & Legs
+    { re: /leg extension|sissy squat/, primary: ['quads'] },
+    { re: /squat|leg press|hack squat|lunge|bulgarian|step[- ]?up|goblet/, primary: ['quads', 'glutes'], secondary: ['hamstrings', 'calves'] },
+    { re: /calf|calves|donkey calf/, primary: ['calves'] },
+    { re: /adductor/, primary: ['quads'], secondary: ['glutes'] },
 
-    // Back, traps and rear delts
-    { re: /face pull|rear delt|reverse fly|reverse flye|reverse pec|rear raise|bent[- ]over (lateral )?raise/, primary: ['shoulders'], secondary: ['traps', 'lats'] },
-    { re: /pull[- ]?up|chin[- ]?up|pulldown|pull[- ]down|\blat\b/, primary: ['lats'], secondary: ['biceps', 'forearms', 'traps'] },
+    // Back & Lats
+    { re: /pull[- ]?up|chin[- ]?up|lat pulldown|pull[- ]down|\blat\b/, primary: ['lats'], secondary: ['biceps', 'forearms', 'traps'] },
+    { re: /t[- ]?bar row|pendlay row|barbell row|dumbbell row|cable row|chest supported row|\brow\b|\brows\b/, primary: ['lats'], secondary: ['traps', 'biceps', 'lowerBack'] },
     { re: /shrug/, primary: ['traps'], secondary: ['forearms'] },
-    { re: /upright row/, primary: ['shoulders', 'traps'], secondary: ['biceps'] },
-    { re: /t[- ]?bar|pendlay|\brow\b|\brows\b/, primary: ['lats'], secondary: ['traps', 'biceps', 'lowerBack'] },
-
-    // Biceps
-    { re: /bicep|preacher|hammer|concentration|spider|curl/, primary: ['biceps'], secondary: ['forearms'] },
+    { re: /farmer|carry|grip/, primary: ['forearms'], secondary: ['traps'] },
 
     // Shoulders
-    { re: /overhead press|shoulder press|military|arnold|push press|\bohp\b|raise/, primary: ['shoulders'], secondary: ['triceps', 'traps'] },
+    { re: /face pull|rear delt|reverse fly|reverse flye|reverse pec|rear raise|bent[- ]over lateral raise/, primary: ['shoulders'], secondary: ['traps'] },
+    { re: /lateral raise|front raise|upright row/, primary: ['shoulders'], secondary: ['traps'] },
+    { re: /overhead press|shoulder press|military press|arnold press|push press|\bohp\b/, primary: ['shoulders'], secondary: ['triceps', 'traps'] },
+
+    // Biceps
+    { re: /bicep|preacher|hammer curl|concentration curl|spider curl|incline curl|\bcurl\b|\bcurls\b/, primary: ['biceps'], secondary: ['forearms'] },
 
     // Chest
-    { re: /\bdips?\b/, primary: ['triceps', 'chest'], secondary: ['shoulders'] },
-    { re: /incline|decline|bench|chest|push[- ]?up|\bfly\b|\bflye\b|\bflyes\b|pec|crossover/, primary: ['chest'], secondary: ['shoulders', 'triceps'] },
+    { re: /\bfly\b|\bflye\b|\bflyes\b|pec deck|cable crossover|cable fly/, primary: ['chest'], secondary: ['shoulders'] },
+    { re: /incline.*bench|decline.*bench|flat.*bench|bench press|push[- ]?up|chest press|dumbbell press|incline press|decline press|\bbench\b|\bchest\b/, primary: ['chest'], secondary: ['shoulders', 'triceps'] },
     { re: /press/, primary: ['chest'], secondary: ['triceps', 'shoulders'] },
 ];
 
@@ -139,7 +158,17 @@ function ruleFromDatabase(ex: MapExercise): Rule | null {
         );
     const primary = map(ex.primaryMuscles);
     if (primary.length === 0) return null;
-    return { re: /^$/, primary, secondary: map(ex.secondaryMuscles).filter((m) => !primary.includes(m)) };
+
+    // Filter secondaries to only anatomically valid secondary muscles for the given primaries
+    const allowed = new Set<MuscleId>();
+    primary.forEach((p) => {
+        (VALID_SECONDARIES[p] || []).forEach((s) => allowed.add(s));
+    });
+
+    const rawSecondary = map(ex.secondaryMuscles);
+    const validSecondary = rawSecondary.filter((m) => allowed.has(m) && !primary.includes(m));
+
+    return { re: /^$/, primary, secondary: validSecondary };
 }
 
 /* Main muscle = 1 per completed set, helper muscle = 0.5. Warm-up sets are ignored. */
@@ -235,7 +264,7 @@ const FLIP = 'translate(260 0) scale(-1 1)';
  * Calculates a dynamic heat color from soft light orange (low sets) -> vibrant flame orange -> deep reddish (high sets).
  */
 export function getHeatColor(score: number): string {
-    if (!score || score <= 0) return '#E4E4E7';
+    if (!score || score <= 0) return '#27272a';
     // t ranges from 0 (1 set or less) to 1 (FULL_AT sets or more)
     const t = Math.min(1, Math.max(0, (score - 1) / (FULL_AT - 1)));
 
@@ -294,8 +323,8 @@ function Figure({
                 key={s.key}
                 d={s.d}
                 transform={s.flip ? FLIP : undefined}
-                fill={worked ? getHeatColor(score) : selected ? '#D4D4D8' : '#E4E4E7'}
-                stroke={selected ? '#111111' : worked ? 'rgba(0,0,0,0.06)' : 'none'}
+                fill={worked ? getHeatColor(score) : selected ? '#52525b' : '#27272a'}
+                stroke={selected ? '#FFFFFF' : worked ? 'rgba(0,0,0,0.3)' : 'none'}
                 strokeWidth={selected ? 1.4 : 0.5}
                 strokeLinejoin="round"
                 className="cursor-pointer transition-[fill,stroke] duration-150"
@@ -321,16 +350,16 @@ function Figure({
             >
                 <defs>
                     <filter id={`${uid}-glow`} x="-20%" y="-20%" width="140%" height="140%">
-                        <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#FF4A00" floodOpacity="0.25" />
+                        <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#FF4A00" floodOpacity="0.4" />
                     </filter>
                 </defs>
 
-                <path d={outline} fill="#FFFFFF" stroke="#D4D4D8" strokeWidth={2.2} strokeLinejoin="round" />
+                <path d={outline} fill="#18181c" stroke="#27272a" strokeWidth={2.2} strokeLinejoin="round" />
 
                 {items.filter((s) => !(scores[s.m] || 0)).map(renderShape)}
                 <g filter={`url(#${uid}-glow)`}>{items.filter((s) => (scores[s.m] || 0) > 0).map(renderShape)}</g>
             </svg>
-            <figcaption className="mt-1 text-[11px] font-semibold text-zinc-500">
+            <figcaption className="mt-1 text-[11px] font-semibold text-zinc-400">
                 {view === 'front' ? 'Front' : 'Back'}
             </figcaption>
         </figure>
@@ -386,7 +415,7 @@ export default function MuscleMap({
     const locked = !collapsible;
 
     return (
-        <section className={`rounded-2xl border border-zinc-200 bg-white ${className}`} aria-label="Muscles worked">
+        <section className={`rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-[#141417] text-white shadow-sm ${className}`} aria-label="Muscles worked">
             <button
                 type="button"
                 onClick={() => !locked && setOpen((o) => !o)}
@@ -395,32 +424,32 @@ export default function MuscleMap({
                     } ${alwaysOpenOnDesktop ? 'xl:pointer-events-none' : ''}`}
             >
                 <div className="flex min-w-0 items-center gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-50 text-[#FF4A00]">
-                        <Flame className="h-5 w-5" />
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-orange-500/15 text-[#FF4A00] border border-orange-500/20 shadow-inner">
+                        <Flame className="h-5 w-5 fill-[#FF4A00]" />
                     </span>
                     <div className="min-w-0">
-                        <h3 className="text-sm font-black uppercase tracking-tight">{title}</h3>
-                        <p className="truncate text-xs text-zinc-500">{subtitle || summary}</p>
+                        <h3 className="text-sm font-black uppercase tracking-tight text-white">{title}</h3>
+                        <p className="truncate text-xs text-zinc-400 font-medium">{subtitle || summary}</p>
                     </div>
                 </div>
 
                 {!locked && (
                     <ChevronDown
-                        className={`h-4 w-4 shrink-0 text-zinc-500 transition-transform ${open ? 'rotate-180' : ''} ${alwaysOpenOnDesktop ? 'xl:hidden' : ''
+                        className={`h-4 w-4 shrink-0 text-zinc-400 transition-transform ${open ? 'rotate-180' : ''} ${alwaysOpenOnDesktop ? 'xl:hidden' : ''
                             }`}
                     />
                 )}
             </button>
 
             <div className={`${contentClass} px-3 pb-4 sm:px-5 sm:pb-5`}>
-                <div className="flex gap-2 rounded-2xl bg-zinc-50 px-2 py-4 sm:gap-4 sm:px-5 sm:py-5 min-w-0">
+                <div className="flex gap-2 rounded-2xl bg-[#09090b] border border-zinc-800/60 px-2 py-4 sm:gap-4 sm:px-5 sm:py-5 min-w-0">
                     <Figure view="front" scores={scores} active={active} onHover={setActive} onSelect={toggle} />
                     <Figure view="back" scores={scores} active={active} onHover={setActive} onSelect={toggle} />
                 </div>
 
                 {/* Selected muscle */}
                 {active && (
-                    <div className="mt-3 rounded-xl border border-zinc-200 px-3 py-2.5 sm:px-3.5 sm:py-3">
+                    <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900/80 px-3 py-2.5 sm:px-3.5 sm:py-3 text-white">
                         <div className="flex items-center justify-between">
                             <span className="text-xs sm:text-sm font-black uppercase tracking-tight">{MUSCLE_LABELS[active]}</span>
                             <span className="font-mono text-xs font-black text-[#FF4A00]">
@@ -428,7 +457,7 @@ export default function MuscleMap({
                             </span>
                         </div>
                         {sources[active] && sources[active]!.length > 0 && (
-                            <p className="mt-1 text-xs text-zinc-500">
+                            <p className="mt-1 text-xs text-zinc-400">
                                 {sources[active]!.map((c) => `${c.exerciseName}${c.isPrimary ? '' : ' (helper)'}`).join(', ')}
                             </p>
                         )}
@@ -446,16 +475,16 @@ export default function MuscleMap({
                                         <button
                                             type="button"
                                             onClick={() => toggle(m)}
-                                            className="flex w-full items-center gap-2 sm:gap-3 text-left text-xs"
+                                            className="flex w-full items-center gap-2 sm:gap-3 text-left text-xs group"
                                         >
-                                            <span className="w-16 sm:w-20 shrink-0 truncate font-semibold text-zinc-800">{MUSCLE_LABELS[m]}</span>
-                                            <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-100">
+                                            <span className="w-16 sm:w-20 shrink-0 truncate font-semibold text-zinc-300 group-hover:text-white transition-colors">{MUSCLE_LABELS[m]}</span>
+                                            <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-800">
                                                 <span
                                                     className="block h-full rounded-full transition-all duration-300"
                                                     style={{ width: `${Math.max(8, (v / top) * 100)}%`, backgroundColor: getHeatColor(v) }}
                                                 />
                                             </span>
-                                            <span className="w-12 sm:w-14 shrink-0 text-right font-mono font-bold text-zinc-900 text-[11px] sm:text-xs">
+                                            <span className="w-12 sm:w-14 shrink-0 text-right font-mono font-bold text-white text-[11px] sm:text-xs">
                                                 {fmt(v)} {v === 1 ? 'set' : 'sets'}
                                             </span>
                                         </button>
@@ -476,12 +505,12 @@ export default function MuscleMap({
                     </div>
                 )}
 
-                <p className="mt-4 text-[11px] leading-relaxed text-zinc-400">
+                <p className="mt-4 text-[11px] leading-relaxed text-zinc-500">
                     Main muscles count a full set, helper muscles half. Warm-ups aren&apos;t counted.
                 </p>
 
                 {unmapped.length > 0 && (
-                    <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">
+                    <p className="mt-1 text-[11px] leading-relaxed text-zinc-500">
                         Not tracked yet: {Array.from(new Set(unmapped)).join(', ')}
                     </p>
                 )}

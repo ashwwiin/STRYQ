@@ -74,11 +74,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white text-[#111111] flex flex-col justify-between selection:bg-[#FF4A00] selection:text-white">
+    <div className="min-h-screen w-full bg-[#09090b] text-white flex flex-col justify-between selection:bg-[#FF4A00] selection:text-white">
       {/* Top Navbar */}
-      <header className="w-full px-6 sm:px-12 lg:px-20 h-20 bg-white border-b border-zinc-100 flex items-center justify-between">
+      <header className="w-full px-6 sm:px-12 lg:px-20 h-20 bg-[#09090b] border-b border-zinc-800/80 flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <Logo size="md" variant="dark" />
+          <Logo size="md" variant="white" />
         </Link>
       </header>
 
@@ -86,7 +86,7 @@ export default function LoginPage() {
       <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-10 flex items-center justify-center">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Athletic Editorial Image */}
-          <div className="hidden lg:block lg:col-span-7 relative h-[620px] rounded-3xl overflow-hidden shadow-xl">
+          <div className="hidden lg:block lg:col-span-7 relative h-[620px] rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl">
             <Image
               src="/images/hero.jpg"
               alt="Strength training"
@@ -94,7 +94,7 @@ export default function LoginPage() {
               className="object-cover object-center"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-10 text-white">
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-10 text-white">
               <span className="text-xs font-black uppercase tracking-widest text-[#FF4A00] mb-2">
                 STRYQ Training Club
               </span>
@@ -111,10 +111,10 @@ export default function LoginPage() {
           {/* Right Column: Clean Auth */}
           <div className="lg:col-span-5 w-full max-w-md mx-auto space-y-6">
             <div className="space-y-2">
-              <h1 className="text-3xl font-black text-zinc-900 tracking-tight uppercase">
+              <h1 className="text-3xl font-black text-white tracking-tight uppercase">
                 {tab === 'login' ? 'Welcome Back.' : 'Join the Club.'}
               </h1>
-              <p className="text-sm text-zinc-500 font-medium">
+              <p className="text-sm text-zinc-400 font-medium">
                 {tab === 'login'
                   ? 'Sign in to access your workout calendar, history, and routines.'
                   : 'Start logging workouts with full set-by-set detail.'}
@@ -122,17 +122,18 @@ export default function LoginPage() {
             </div>
 
             {/* Tab Pill Switcher */}
-            <div className="grid grid-cols-2 p-1.5 bg-zinc-100 rounded-full">
+            <div className="grid grid-cols-2 p-1.5 bg-zinc-900 border border-zinc-800 rounded-full">
               <button
                 type="button"
                 onClick={() => {
                   setTab('login');
                   setError(null);
                 }}
-                className={`py-2 text-xs font-black uppercase tracking-wider rounded-full transition-all ${tab === 'login'
-                    ? 'bg-white text-zinc-900 shadow-sm'
-                    : 'text-zinc-500 hover:text-zinc-900'
-                  }`}
+                className={`py-2 text-xs font-black uppercase tracking-wider rounded-full transition-all ${
+                  tab === 'login'
+                    ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-950/50'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
               >
                 Sign In
               </button>
@@ -142,17 +143,18 @@ export default function LoginPage() {
                   setTab('register');
                   setError(null);
                 }}
-                className={`py-2 text-xs font-black uppercase tracking-wider rounded-full transition-all ${tab === 'register'
-                    ? 'bg-white text-zinc-900 shadow-sm'
-                    : 'text-zinc-500 hover:text-zinc-900'
-                  }`}
+                className={`py-2 text-xs font-black uppercase tracking-wider rounded-full transition-all ${
+                  tab === 'register'
+                    ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-950/50'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
               >
                 Register
               </button>
             </div>
 
             {error && (
-              <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold text-center">
+              <div className="p-3.5 rounded-2xl bg-red-950/40 border border-red-500/30 text-red-400 text-xs font-bold text-center">
                 {error}
               </div>
             )}
@@ -162,7 +164,7 @@ export default function LoginPage() {
               {tab === 'register' && (
                 <>
                   <div>
-                    <label className="text-xs font-black uppercase tracking-wider text-zinc-700 block mb-1.5">
+                    <label className="text-xs font-black uppercase tracking-wider text-zinc-400 block mb-1.5">
                       Your Name
                     </label>
                     <input
@@ -171,12 +173,12 @@ export default function LoginPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-medium"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF4A00] focus:bg-black transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs font-black uppercase tracking-wider text-zinc-700 block mb-1.5">
+                    <label className="text-xs font-black uppercase tracking-wider text-zinc-400 block mb-1.5">
                       Body Weight (kg)
                     </label>
                     <input
@@ -188,14 +190,14 @@ export default function LoginPage() {
                       value={weightKg}
                       onChange={(e) => setWeightKg(parseFloat(e.target.value) || 75)}
                       required
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-medium"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-sm text-[#FF4A00] placeholder-zinc-500 focus:outline-none focus:border-[#FF4A00] focus:bg-black transition-all font-black"
                     />
                   </div>
                 </>
               )}
 
               <div>
-                <label className="text-xs font-black uppercase tracking-wider text-zinc-700 block mb-1.5">
+                <label className="text-xs font-black uppercase tracking-wider text-zinc-400 block mb-1.5">
                   Email Address
                 </label>
                 <input
@@ -204,12 +206,12 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-medium"
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF4A00] focus:bg-black transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-black uppercase tracking-wider text-zinc-700 block mb-1.5">
+                <label className="text-xs font-black uppercase tracking-wider text-zinc-400 block mb-1.5">
                   Password
                 </label>
                 <input
@@ -218,14 +220,14 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-zinc-900 focus:bg-white transition-all font-medium"
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#FF4A00] focus:bg-black transition-all font-medium"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 px-6 rounded-full bg-[#111111] hover:bg-[#222222] text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all disabled:opacity-50 uppercase tracking-wider mt-4"
+                className="w-full py-4 px-6 rounded-full bg-[#FF4A00] hover:bg-[#E04200] text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-orange-950/50 active:scale-[0.98] transition-all disabled:opacity-50 uppercase tracking-wider mt-4"
               >
                 <span>{loading ? 'Authenticating...' : tab === 'login' ? 'Sign In' : 'Create Free Account'}</span>
                 <ArrowRight className="w-4 h-4 stroke-[3]" />
@@ -236,7 +238,7 @@ export default function LoginPage() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full px-6 sm:px-12 py-6 border-t border-zinc-100 text-center text-xs text-zinc-400 font-bold uppercase tracking-wider">
+      <footer className="w-full px-6 sm:px-12 py-6 border-t border-zinc-800/80 text-center text-xs text-zinc-500 font-bold uppercase tracking-wider">
         STRYQ. &bull; Engineered for Strength Athletes &bull; Workout Calendar &amp; Progression
       </footer>
     </div>

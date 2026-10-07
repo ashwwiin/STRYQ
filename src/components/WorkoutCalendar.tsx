@@ -123,15 +123,15 @@ export default function WorkoutCalendar({
   const monthCalories = monthWorkouts.reduce((sum, w) => sum + (w.caloriesBurned || 0), 0);
 
   return (
-    <div className={`bg-white rounded-2xl sm:rounded-3xl border border-zinc-200/80 shadow-sm p-4 sm:p-6 lg:p-7 ${className}`}>
+    <div className={`bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 shadow-sm p-4 sm:p-6 lg:p-7 ${className}`}>
       {/* Calendar Top Navigation Bar */}
-      <div className="flex items-center justify-between gap-2 pb-4 border-b border-zinc-100">
+      <div className="flex items-center justify-between gap-2 pb-4 border-b border-zinc-800/80">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-[#FF4A00]/10 text-[#FF4A00] shrink-0">
+          <div className="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-orange-500/15 text-[#FF4A00] border border-orange-500/20 shrink-0">
             <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div className="min-w-0">
-            <h3 className="text-lg sm:text-xl font-black text-zinc-900 uppercase tracking-tight truncate">
+            <h3 className="text-lg sm:text-xl font-black text-white uppercase tracking-tight truncate">
               {monthLabel}
             </h3>
             <p className="hidden sm:block text-xs text-zinc-400 font-medium">
@@ -144,22 +144,22 @@ export default function WorkoutCalendar({
         <div className="flex items-center gap-1.5 shrink-0">
           <button
             onClick={handleGoToday}
-            className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider bg-zinc-100 hover:bg-zinc-200 text-zinc-800 transition-colors active:scale-95"
+            className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white transition-colors active:scale-95"
           >
             Today
           </button>
-          <div className="flex items-center gap-0.5 bg-zinc-100 p-0.5 sm:p-1 rounded-full">
+          <div className="flex items-center gap-0.5 bg-zinc-900 p-0.5 sm:p-1 rounded-full border border-zinc-800">
             <button
               onClick={handlePrevMonth}
               aria-label="Previous Month"
-              className="p-1 sm:p-1.5 rounded-full hover:bg-white text-zinc-700 hover:text-zinc-900 transition-colors shadow-none hover:shadow-sm"
+              className="p-1 sm:p-1.5 rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={handleNextMonth}
               aria-label="Next Month"
-              className="p-1 sm:p-1.5 rounded-full hover:bg-white text-zinc-700 hover:text-zinc-900 transition-colors shadow-none hover:shadow-sm"
+              className="p-1 sm:p-1.5 rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -168,17 +168,17 @@ export default function WorkoutCalendar({
       </div>
 
       {/* Month Telemetry Quick Banner */}
-      <div className="grid grid-cols-3 gap-1.5 sm:gap-3 my-3 sm:my-4 p-2.5 sm:p-3.5 bg-zinc-50 rounded-xl sm:rounded-2xl border border-zinc-100 text-center">
+      <div className="grid grid-cols-3 gap-1.5 sm:gap-3 my-3 sm:my-4 p-2.5 sm:p-3.5 bg-zinc-900/60 rounded-xl sm:rounded-2xl border border-zinc-800/80 text-center">
         <div className="px-1">
           <span className="text-[9px] sm:text-[10px] font-bold text-zinc-400 uppercase tracking-wider block truncate">
             Sessions
           </span>
-          <p className="text-sm sm:text-lg font-black text-zinc-900 font-mono">
+          <p className="text-sm sm:text-lg font-black text-white font-mono">
             {monthWorkouts.length} <span className="text-[10px] sm:text-xs font-semibold text-zinc-500 font-sans hidden sm:inline">done</span>
           </p>
         </div>
 
-        <div className="px-1 border-x border-zinc-200/60">
+        <div className="px-1 border-x border-zinc-800">
           <span className="text-[9px] sm:text-[10px] font-bold text-[#FF4A00] uppercase tracking-wider block truncate">
             Tonnage
           </span>
@@ -191,7 +191,7 @@ export default function WorkoutCalendar({
           <span className="text-[9px] sm:text-[10px] font-bold text-zinc-400 uppercase tracking-wider block truncate">
             MET Calories
           </span>
-          <p className="text-sm sm:text-lg font-black text-zinc-900 font-mono">
+          <p className="text-sm sm:text-lg font-black text-white font-mono">
             ~{formatNumber(monthCalories)} <span className="text-[10px] sm:text-xs font-semibold text-zinc-500 font-sans hidden sm:inline">kcal</span>
           </p>
         </div>
@@ -203,7 +203,7 @@ export default function WorkoutCalendar({
           <div
             key={idx}
             className={`py-1 text-[11px] font-black uppercase tracking-wider ${
-              idx === 0 || idx === 6 ? 'text-zinc-400' : 'text-zinc-600'
+              idx === 0 || idx === 6 ? 'text-zinc-500' : 'text-zinc-400'
             }`}
           >
             <span className="sm:hidden">{DAYS_SHORT[idx]}</span>
@@ -234,12 +234,12 @@ export default function WorkoutCalendar({
               }}
               className={`group relative flex flex-col items-center justify-between p-1.5 sm:p-2 rounded-xl sm:rounded-2xl aspect-square min-h-[46px] sm:min-h-[54px] border transition-all text-center ${
                 isSelected
-                  ? 'bg-zinc-900 text-white border-zinc-900 shadow-md ring-2 ring-[#FF4A00]'
+                  ? 'bg-zinc-800 text-white border-zinc-700 shadow-md ring-2 ring-[#FF4A00]'
                   : hasWorkouts
-                  ? 'bg-orange-50 hover:bg-orange-100/80 border-orange-200/80 text-zinc-900 font-bold'
+                  ? 'bg-orange-500/10 hover:bg-orange-500/20 border-orange-500/30 text-white font-bold'
                   : isCurrentMonth
-                  ? 'bg-white hover:bg-zinc-50 border-zinc-200/70 text-zinc-800'
-                  : 'bg-zinc-50/40 hover:bg-zinc-100/40 border-transparent text-zinc-300'
+                  ? 'bg-zinc-900/60 hover:bg-zinc-800/80 border-zinc-800/60 text-zinc-300'
+                  : 'bg-zinc-950/40 hover:bg-zinc-900/30 border-transparent text-zinc-600'
               }`}
             >
               {/* Day Number */}
@@ -247,12 +247,12 @@ export default function WorkoutCalendar({
                 <span
                   className={`inline-grid place-items-center h-6 w-6 sm:h-7 sm:w-7 rounded-full text-xs sm:text-sm font-black font-mono transition-colors ${
                     isSelected
-                      ? 'text-white'
+                      ? 'text-white font-black'
                       : isToday
-                      ? 'bg-[#FF4A00] text-white shadow-sm'
+                      ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-600/30'
                       : isCurrentMonth
-                      ? 'text-zinc-800 group-hover:text-zinc-900'
-                      : 'text-zinc-300'
+                      ? 'text-zinc-300 group-hover:text-white'
+                      : 'text-zinc-600'
                   }`}
                 >
                   {dayNumber}
@@ -266,9 +266,7 @@ export default function WorkoutCalendar({
                     {dayWorkouts.slice(0, 3).map((_, i) => (
                       <span
                         key={i}
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          isSelected ? 'bg-[#FF4A00]' : 'bg-[#FF4A00]'
-                        }`}
+                        className="w-1.5 h-1.5 rounded-full bg-[#FF4A00] shadow-[0_0_6px_#FF4A00]"
                       />
                     ))}
                   </div>

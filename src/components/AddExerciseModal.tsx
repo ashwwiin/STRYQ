@@ -250,24 +250,24 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label="Add exercise">
-      <button aria-label="Close" onClick={onClose} className="absolute inset-0 cursor-default bg-black/50 backdrop-blur-sm" />
+      <button aria-label="Close" onClick={onClose} className="absolute inset-0 cursor-default bg-black/75 backdrop-blur-sm" />
 
-      <div className="relative flex h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:h-[80vh] sm:max-w-2xl sm:rounded-3xl">
+      <div className="relative flex h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-[#141417] text-white border border-zinc-800 shadow-2xl sm:h-[80vh] sm:max-w-2xl sm:rounded-3xl">
         {/* Header + search */}
-        <div className="space-y-3 border-b border-zinc-200 p-4 sm:p-5">
+        <div className="space-y-3 border-b border-zinc-800/80 p-4 sm:p-5 bg-[#141417]">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-lg font-black uppercase tracking-tight sm:text-xl">Add exercise</h2>
+            <h2 className="text-lg font-black uppercase tracking-tight text-white sm:text-xl">Add Exercise</h2>
             <button
               onClick={onClose}
               aria-label="Close"
-              className="grid h-9 w-9 place-items-center rounded-full text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
+              className="grid h-9 w-9 place-items-center rounded-full text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
 
           <div className="relative">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
             <input
               ref={inputRef}
               type="search"
@@ -279,8 +279,8 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
                   pickRecord(results[0].e);
                 }
               }}
-              placeholder={all ? `Search ${all.length} exercises` : 'Search exercises'}
-              className="w-full rounded-full bg-zinc-100 py-3 pl-11 pr-10 text-base font-medium text-zinc-900 placeholder-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF4A00]"
+              placeholder={all ? `Search ${all.length} exercises...` : 'Search exercises...'}
+              className="w-full rounded-full bg-zinc-900/90 border border-zinc-800 py-3 pl-11 pr-10 text-base font-medium text-white placeholder-zinc-500 focus:border-[#FF4A00] focus:bg-black focus:outline-none focus:ring-1 focus:ring-[#FF4A00]"
               aria-label="Search exercises"
             />
             {query && (
@@ -290,7 +290,7 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
                   inputRef.current?.focus();
                 }}
                 aria-label="Clear search"
-                className="absolute right-3 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-zinc-400 hover:text-zinc-900"
+                className="absolute right-3 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-zinc-400 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -310,14 +310,14 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
         </div>
 
         {/* List */}
-        <div ref={listRef} onScroll={onScroll} className="flex-1 overflow-y-auto overscroll-contain">
+        <div ref={listRef} onScroll={onScroll} className="flex-1 overflow-y-auto overscroll-contain bg-[#141417]">
           {error && (
             <div className="flex flex-col items-center gap-3 px-6 py-16 text-center">
-              <AlertCircle className="h-8 w-8 text-zinc-400" />
-              <p className="text-sm font-medium text-zinc-600">Couldn&apos;t load the exercise list.</p>
+              <AlertCircle className="h-8 w-8 text-zinc-500" />
+              <p className="text-sm font-medium text-zinc-400">Couldn&apos;t load the exercise list.</p>
               <button
                 onClick={load}
-                className="rounded-full bg-[#111] px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white"
+                className="rounded-full bg-[#FF4A00] px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white hover:bg-[#E04200]"
               >
                 Try again
               </button>
@@ -327,7 +327,7 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
           {!error && !all && (
             <div className="space-y-2 p-4 sm:p-5">
               {[0, 1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="h-16 animate-pulse rounded-2xl bg-zinc-100" />
+                <div key={i} className="h-16 animate-pulse rounded-2xl bg-zinc-900/60 border border-zinc-800/40" />
               ))}
             </div>
           )}
@@ -337,8 +337,8 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
               {/* Recent */}
               {!filtering && recent.length > 0 && (
                 <section className="px-4 pt-4 sm:px-5">
-                  <h3 className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500">
-                    <Clock className="h-3.5 w-3.5" /> Recent
+                  <h3 className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    <Clock className="h-3.5 w-3.5 text-[#FF4A00]" /> Recent
                   </h3>
                   <ul className="space-y-1">
                     {recent.map((r) => (
@@ -352,7 +352,7 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
                       </li>
                     ))}
                   </ul>
-                  <h3 className="mb-2 mt-5 text-xs font-bold uppercase tracking-wider text-zinc-500">
+                  <h3 className="mb-2 mt-5 text-xs font-bold uppercase tracking-wider text-zinc-400">
                     All exercises
                   </h3>
                 </section>
@@ -377,7 +377,7 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
                   <li>
                     <button
                       onClick={() => setLimit((l) => l + PAGE)}
-                      className="w-full rounded-2xl py-3 text-xs font-bold text-[#FF4A00] hover:bg-orange-50"
+                      className="w-full rounded-2xl py-3 text-xs font-bold text-[#FF4A00] hover:bg-[#FF4A00]/10 transition"
                     >
                       Show more ({results.length - shown.length} left)
                     </button>
@@ -395,16 +395,16 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
                   <li className="pt-2">
                     <button
                       onClick={pickCustom}
-                      className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-zinc-300 p-3.5 text-left transition hover:border-zinc-900"
+                      className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/50 p-3.5 text-left transition hover:border-[#FF4A00] hover:bg-zinc-900"
                     >
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-50 text-[#FF4A00]">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-500/10 border border-[#FF4A00]/20 text-[#FF4A00]">
                         <Plus className="h-5 w-5" />
                       </span>
                       <span className="min-w-0">
-                        <span className="block truncate text-sm font-bold text-zinc-900">
+                        <span className="block truncate text-sm font-bold text-white">
                           Add “{query.trim()}” as a custom exercise
                         </span>
-                        <span className="block text-xs text-zinc-500">Not in the list? Create your own.</span>
+                        <span className="block text-xs text-zinc-400">Not in the list? Create your own.</span>
                       </span>
                     </button>
                   </li>
@@ -415,7 +415,7 @@ export default function AddExerciseModal({ isOpen, onClose, onSelectExercise }: 
         </div>
 
         {all && (
-          <div className="border-t border-zinc-200 px-4 py-2.5 text-center text-[11px] font-medium text-zinc-400 sm:px-5">
+          <div className="border-t border-zinc-800 bg-[#141417] px-4 py-2.5 text-center text-[11px] font-medium text-zinc-500 sm:px-5">
             {results.length} of {all.length} exercises
           </div>
         )}
@@ -440,18 +440,21 @@ function Row({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center gap-3 rounded-2xl p-3 text-left transition hover:bg-zinc-50 active:scale-[0.99]"
+      className="flex w-full items-center gap-3 rounded-2xl p-3 text-left transition hover:bg-zinc-800/60 active:scale-[0.99] group border border-transparent hover:border-zinc-800/60"
     >
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-50 text-[#FF4A00]">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-500/10 border border-[#FF4A00]/20 text-[#FF4A00] group-hover:bg-[#FF4A00] group-hover:text-white transition">
         <Dumbbell className="h-5 w-5" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-bold text-zinc-900">{name}</span>
-        {sub && <span className="block truncate text-xs text-zinc-500">{sub}</span>}
+        <span className="block truncate text-sm font-bold text-zinc-100">{name}</span>
+        {sub && <span className="block truncate text-xs text-zinc-400">{sub}</span>}
       </span>
       <span
-        className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider ${compound ? 'bg-zinc-900 text-white' : 'bg-zinc-100 text-zinc-600'
-          }`}
+        className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider border ${
+          compound 
+            ? 'bg-zinc-800/90 text-zinc-200 border-zinc-700/60' 
+            : 'bg-zinc-900/60 text-zinc-500 border-zinc-800/60'
+        }`}
       >
         {compound ? 'Compound' : 'Isolation'}
       </span>
@@ -472,7 +475,7 @@ function ChipRow({
 }) {
   return (
     <div className="flex items-center gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="group" aria-label={`${label} filter`}>
-      <span className="w-[72px] shrink-0 text-[11px] font-bold uppercase tracking-wider text-zinc-400">{label}</span>
+      <span className="w-[72px] shrink-0 text-[11px] font-bold uppercase tracking-wider text-zinc-500">{label}</span>
       <Chip active={value === null} onClick={() => onChange(null)}>
         All
       </Chip>
@@ -490,8 +493,11 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition ${active ? 'bg-[#111] text-white' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
-        }`}
+      className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition ${
+        active 
+          ? 'bg-[#FF4A00] text-white shadow-sm shadow-orange-950' 
+          : 'bg-zinc-900 border border-zinc-800/80 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
+      }`}
     >
       {children}
     </button>

@@ -79,32 +79,32 @@ export default function RestTimerModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-white border border-zinc-200 rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-6 text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="bg-[#141417] border border-zinc-800 rounded-3xl w-full max-w-sm p-6 shadow-2xl space-y-6 text-center text-white">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2.5 rounded-2xl bg-orange-50 text-[#FF4A00]">
+            <div className="p-2.5 rounded-2xl bg-orange-500/10 border border-[#FF4A00]/20 text-[#FF4A00]">
               <BellRing className="w-5 h-5 animate-pulse" />
             </div>
             <div className="text-left">
-              <h3 className="font-black text-lg text-zinc-900">Rest Stopwatch</h3>
-              <p className="text-xs text-zinc-500">Audio & haptic alerts on zero</p>
+              <h3 className="font-black text-lg text-white">Rest Stopwatch</h3>
+              <p className="text-xs text-zinc-400">Audio & haptic alerts on zero</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
             <button
               onClick={toggleSound}
               className={`p-2 rounded-xl text-xs font-bold transition-all ${
-                soundActive ? 'text-zinc-700 hover:bg-zinc-100' : 'text-zinc-400 bg-zinc-100'
+                soundActive ? 'text-[#FF4A00] bg-orange-500/10' : 'text-zinc-500 bg-zinc-900 border border-zinc-800'
               }`}
               title={soundActive ? 'Mute sound' : 'Unmute sound'}
             >
-              {soundActive ? <Volume2 className="w-4 h-4 text-[#FF4A00]" /> : <VolumeX className="w-4 h-4" />}
+              {soundActive ? <Volume2 className="w-4 h-4 text-[#FF4A00]" /> : <VolumeX className="w-4 h-4 text-zinc-500" />}
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700"
+              className="p-1.5 rounded-full hover:bg-zinc-800 text-zinc-400 hover:text-white transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -118,7 +118,7 @@ export default function RestTimerModal({
               cx="50"
               cy="50"
               r="44"
-              stroke="#f3f4f6"
+              stroke="#27272a"
               strokeWidth="6"
               fill="transparent"
             />
@@ -137,7 +137,7 @@ export default function RestTimerModal({
           </svg>
 
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-5xl font-black font-mono tracking-tighter text-zinc-900">
+            <span className="text-5xl font-black font-mono tracking-tighter text-white">
               {timeFormatted}
             </span>
             <span className="text-xs font-bold uppercase tracking-wider text-[#FF4A00] mt-1">
@@ -152,10 +152,10 @@ export default function RestTimerModal({
             <button
               key={sec}
               onClick={() => setPreset(sec)}
-              className={`py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 ${
+              className={`py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 border ${
                 targetSeconds === sec
-                  ? 'bg-[#FF4A00] text-white shadow-md'
-                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                  ? 'bg-[#FF4A00] border-[#FF4A00] text-white shadow-lg shadow-orange-950/50'
+                  : 'bg-zinc-900 border-zinc-800/80 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
               }`}
             >
               {sec < 60 ? `${sec}s` : `${sec / 60}m`}
@@ -167,21 +167,21 @@ export default function RestTimerModal({
         <div className="flex items-center justify-center gap-3">
           <button
             onClick={() => addTime(-15)}
-            className="px-3 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-xs font-bold text-zinc-700 active:scale-95"
+            className="px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-xs font-bold text-zinc-300 active:scale-95 transition"
           >
             -15s
           </button>
 
           <button
             onClick={() => setIsRunning(!isRunning)}
-            className="w-14 h-14 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black flex items-center justify-center shadow-lg shadow-orange-600/30 active:scale-95 transition-transform"
+            className="w-14 h-14 rounded-full bg-[#FF4A00] hover:bg-[#E04200] text-white font-black flex items-center justify-center shadow-lg shadow-orange-950/50 active:scale-95 transition-transform"
           >
             {isRunning ? <Pause className="w-6 h-6 fill-white" /> : <Play className="w-6 h-6 fill-white ml-0.5" />}
           </button>
 
           <button
             onClick={() => addTime(15)}
-            className="px-3 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-xs font-bold text-zinc-700 active:scale-95"
+            className="px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-xs font-bold text-zinc-300 active:scale-95 transition"
           >
             +15s
           </button>
@@ -189,7 +189,7 @@ export default function RestTimerModal({
 
         <button
           onClick={onClose}
-          className="w-full py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-600 text-xs font-bold"
+          className="w-full py-2.5 rounded-xl bg-zinc-900/90 border border-zinc-800 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs font-bold transition"
         >
           Dismiss / Back to Sets
         </button>

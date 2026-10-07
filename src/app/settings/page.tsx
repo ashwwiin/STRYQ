@@ -104,7 +104,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white text-[#111111] flex flex-col pb-24 selection:bg-[#FF4A00] selection:text-white">
+    <div className="min-h-screen w-full bg-[#09090b] text-white flex flex-col pb-24 selection:bg-[#FF4A00] selection:text-white">
       <Header
         userWeight={user?.weightKg}
         userName={user?.name}
@@ -112,26 +112,26 @@ export default function SettingsPage() {
 
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-10 py-8 sm:py-10 space-y-8">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-black text-zinc-900 tracking-tight uppercase">
+          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
             Settings &amp; Preferences
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-500 mt-1 font-medium">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1 font-medium">
             Customize workout timers, feedback audio, and system preferences.
           </p>
         </div>
 
         {/* Athlete Profile Summary Card */}
-        <div className="nike-card p-6 sm:p-8 space-y-6">
+        <div className="bg-[#141417] border border-zinc-800/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="p-3.5 rounded-2xl bg-orange-50 text-[#FF4A00]">
+              <div className="p-3.5 rounded-2xl bg-orange-500/10 border border-[#FF4A00]/20 text-[#FF4A00]">
                 <User className="w-6 h-6" />
               </div>
               <div>
-                <h2 suppressHydrationWarning className="font-black text-lg text-zinc-900 uppercase">
+                <h2 suppressHydrationWarning className="font-black text-lg text-white uppercase">
                   {user?.name || 'Athlete Profile'}
                 </h2>
-                <p className="text-xs text-zinc-500 font-medium">
+                <p className="text-xs text-zinc-400 font-medium">
                   {user?.weightKg || 75} kg &bull; {user?.heightCm || 175} cm &bull; {user?.sex || 'unspecified'}
                 </p>
               </div>
@@ -139,29 +139,29 @@ export default function SettingsPage() {
 
             <Link
               href="/profile"
-              className="py-2.5 px-5 rounded-full bg-[#111] hover:bg-[#222] text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5 active:scale-95 transition-all shrink-0"
+              className="py-2.5 px-5 rounded-full bg-[#FF4A00] hover:bg-[#E04200] text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5 active:scale-95 transition-all shrink-0 shadow-lg shadow-orange-950/40"
             >
               <span>Edit Profile</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
             </Link>
           </div>
         </div>
 
         {/* Workout & Timer Preferences */}
-        <div className="nike-card p-6 sm:p-8 space-y-6">
+        <div className="bg-[#141417] border border-zinc-800/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-zinc-100 text-zinc-800">
-                <Timer className="w-5 h-5" />
+              <div className="p-3 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-300">
+                <Timer className="w-5 h-5 text-[#FF4A00]" />
               </div>
               <div>
-                <h2 className="font-bold text-base text-zinc-900 uppercase">Default Rest Timer</h2>
-                <p className="text-xs text-zinc-500 font-medium">Auto-prompted countdown between sets</p>
+                <h2 className="font-bold text-base text-white uppercase">Default Rest Timer</h2>
+                <p className="text-xs text-zinc-400 font-medium">Auto-prompted countdown between sets</p>
               </div>
             </div>
 
             {prefSaved && (
-              <span className="text-xs font-bold text-emerald-600 flex items-center gap-1 animate-in fade-in">
+              <span className="text-xs font-bold text-emerald-400 flex items-center gap-1 animate-in fade-in">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Saved
               </span>
             )}
@@ -174,10 +174,10 @@ export default function SettingsPage() {
                 key={s}
                 type="button"
                 onClick={() => handleUpdateRest(s)}
-                className={`py-3 rounded-xl font-mono text-xs font-black uppercase transition-all ${
+                className={`py-3 rounded-xl font-mono text-xs font-black uppercase transition-all border ${
                   restSeconds === s
-                    ? 'bg-[#111] text-white shadow-md'
-                    : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border border-zinc-200/70'
+                    ? 'bg-[#FF4A00] border-[#FF4A00] text-white shadow-lg shadow-orange-950/50'
+                    : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 border-zinc-800 hover:text-zinc-200'
                 }`}
               >
                 {s >= 60 ? `${s / 60}m` : `${s}s`}
@@ -188,18 +188,18 @@ export default function SettingsPage() {
             ))}
           </div>
 
-          <div className="pt-2 border-t border-zinc-100 space-y-4">
+          <div className="pt-2 border-t border-zinc-800 space-y-4">
             {/* Auto-start rest */}
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-bold text-zinc-900">Auto-start rest timer</p>
-                <p className="text-xs text-zinc-500">Automatically trigger countdown when a set is marked complete</p>
+                <p className="text-sm font-bold text-white">Auto-start rest timer</p>
+                <p className="text-xs text-zinc-400">Automatically trigger countdown when a set is marked complete</p>
               </div>
               <button
                 type="button"
                 onClick={handleToggleAutoRest}
                 className={`w-12 h-7 rounded-full p-1 transition-colors ${
-                  autoRest ? 'bg-[#FF4A00]' : 'bg-zinc-200'
+                  autoRest ? 'bg-[#FF4A00]' : 'bg-zinc-800'
                 }`}
               >
                 <div
@@ -213,14 +213,14 @@ export default function SettingsPage() {
             {/* Audio Feedback */}
             <div className="flex items-center justify-between pt-2">
               <div>
-                <p className="text-sm font-bold text-zinc-900">Audio &amp; Vibration cues</p>
-                <p className="text-xs text-zinc-500">Play timer completions and set check-in haptics</p>
+                <p className="text-sm font-bold text-white">Audio &amp; Vibration cues</p>
+                <p className="text-xs text-zinc-400">Play timer completions and set check-in haptics</p>
               </div>
               <button
                 type="button"
                 onClick={handleToggleSound}
                 className={`w-12 h-7 rounded-full p-1 transition-colors ${
-                  soundEnabled ? 'bg-[#FF4A00]' : 'bg-zinc-200'
+                  soundEnabled ? 'bg-[#FF4A00]' : 'bg-zinc-800'
                 }`}
               >
                 <div
@@ -234,18 +234,18 @@ export default function SettingsPage() {
         </div>
 
         {/* Database Storage Information Card */}
-        <div className="nike-card p-6 sm:p-8 space-y-4">
+        <div className="bg-[#141417] border border-zinc-800/80 rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-zinc-100 text-zinc-800">
-              <Shield className="w-5 h-5" />
+            <div className="p-3 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-300">
+              <Shield className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
-              <h2 className="font-bold text-base text-zinc-900 uppercase">Cloud Workout Storage</h2>
-              <p className="text-xs text-zinc-500 font-medium">Secure MongoDB Atlas Database</p>
+              <h2 className="font-bold text-base text-white uppercase">Cloud Workout Storage</h2>
+              <p className="text-xs text-zinc-400 font-medium">Secure MongoDB Atlas Database</p>
             </div>
           </div>
 
-          <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-medium">
+          <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-medium">
             All your workout logs, exercise sets, weights, reps, volume calculations, and custom split templates are persisted safely in the cloud with zero paywalls.
           </p>
         </div>
@@ -254,7 +254,7 @@ export default function SettingsPage() {
         <div className="pt-2">
           <button
             onClick={handleLogout}
-            className="w-full py-3.5 px-6 rounded-full bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors active:scale-[0.99]"
+            className="w-full py-3.5 px-6 rounded-full bg-red-950/30 hover:bg-red-950/50 border border-red-500/30 text-red-400 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors active:scale-[0.99]"
           >
             <LogOut className="w-4 h-4" />
             <span>Log Out of STRYQ.</span>

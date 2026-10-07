@@ -117,7 +117,7 @@ export default function CalendarPage() {
   const totalSessions = workouts.length;
 
   return (
-    <div className="min-h-screen w-full bg-white text-[#111111] flex flex-col selection:bg-[#FF4A00] selection:text-white pb-24">
+    <div className="min-h-screen w-full bg-[#09090b] text-white flex flex-col selection:bg-[#FF4A00] selection:text-white pb-24">
       <Header
         userWeight={user?.weightKg}
         onOpenWeightModal={() => setIsWeightModalOpen(true)}
@@ -129,14 +129,14 @@ export default function CalendarPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-[#FF4A00] text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 rounded-full bg-orange-500/15 text-[#FF4A00] border border-orange-500/20 text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
                 Workout Calendar
               </span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 tracking-tight uppercase">
+            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase">
               Training Schedule &amp; History
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-500 font-medium mt-0.5">
+            <p className="text-xs sm:text-sm text-zinc-400 font-medium mt-0.5">
               Select any date on the calendar to inspect that day&apos;s workout session, set benchmarks, and muscle engagement.
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function CalendarPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/workout/active"
-              className="w-full sm:w-auto py-3 px-6 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 active:scale-95 transition-all"
+              className="w-full sm:w-auto py-3 px-6 rounded-full bg-[#FF4A00] hover:bg-[#e04000] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-600/30 active:scale-95 transition-all"
             >
               <Dumbbell className="w-4 h-4" />
               <span>Start Live Lift</span>
@@ -154,16 +154,16 @@ export default function CalendarPage() {
 
         {/* Top Telemetry Stats Grid for Larger Screens */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80">
+          <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-[#141417] border border-zinc-800/80 shadow-sm">
             <span className="text-[10px] font-black uppercase tracking-wider text-zinc-400 block">
               Total Logged
             </span>
-            <p className="text-xl sm:text-2xl font-black font-mono text-zinc-900 mt-1">
-              {totalSessions} <span className="text-xs font-sans font-bold text-zinc-400">sessions</span>
+            <p className="text-xl sm:text-2xl font-black font-mono text-white mt-1">
+              {totalSessions} <span className="text-xs font-sans font-bold text-zinc-500">sessions</span>
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-orange-50/60 border border-orange-200/80">
+          <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-[#141417] border border-zinc-800/80 shadow-sm">
             <span className="text-[10px] font-black uppercase tracking-wider text-[#FF4A00] block">
               Lifetime Tonnage
             </span>
@@ -172,24 +172,24 @@ export default function CalendarPage() {
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80">
+          <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-[#141417] border border-zinc-800/80 shadow-sm">
             <span className="text-[10px] font-black uppercase tracking-wider text-zinc-400 block">
               Selected Date
             </span>
-            <p className="text-base sm:text-lg font-black text-zinc-900 truncate mt-1">
+            <p className="text-base sm:text-lg font-black text-white truncate mt-1">
               {selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80">
+          <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-[#141417] border border-zinc-800/80 shadow-sm">
             <span className="text-[10px] font-black uppercase tracking-wider text-zinc-400 block">
               Workouts On Selected Day
             </span>
-            <p className="text-xl sm:text-2xl font-black font-mono text-zinc-900 mt-1">
+            <p className="text-xl sm:text-2xl font-black font-mono text-white mt-1">
               {workouts.filter((w) => {
                 const d = new Date(w.createdAt || w.startedAt || Date.now());
                 return d.toDateString() === selectedDate.toDateString();
-              }).length} <span className="text-xs font-sans font-bold text-zinc-400">logged</span>
+              }).length} <span className="text-xs font-sans font-bold text-zinc-500">logged</span>
             </p>
           </div>
         </div>
@@ -217,9 +217,9 @@ export default function CalendarPage() {
               if (activeMonthWorkouts.length === 0) return null;
 
               return (
-                <div className="bg-white rounded-2xl sm:rounded-3xl border border-zinc-200/80 p-4 sm:p-5 space-y-3 shadow-sm">
+                <div className="bg-[#141417] rounded-2xl sm:rounded-3xl border border-zinc-800/80 p-4 sm:p-5 space-y-3 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-black uppercase tracking-wider text-zinc-500">
+                    <h3 className="text-xs font-black uppercase tracking-wider text-zinc-400">
                       Active Days This Month ({activeMonthWorkouts.length})
                     </h3>
                   </div>
@@ -240,12 +240,12 @@ export default function CalendarPage() {
                           onClick={() => setSelectedDate(d)}
                           className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
                             isSelected
-                              ? 'bg-zinc-900 text-white shadow-sm ring-2 ring-[#FF4A00]'
-                              : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-700'
+                              ? 'bg-[#FF4A00] text-white shadow-md shadow-orange-600/30'
+                              : 'bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300'
                           }`}
                         >
                           <span>{dayLabel}</span>
-                          <span className="text-[10px] text-[#FF4A00] font-mono">
+                          <span className={`text-[10px] font-mono ${isSelected ? 'text-white' : 'text-[#FF4A00]'}`}>
                             {w.exercises?.length || 0} moves
                           </span>
                         </button>
